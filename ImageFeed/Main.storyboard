@@ -39,9 +39,8 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZM-fz-dxr">
-                                                    <rect key="frame" x="348.66666666666669" y="2" width="45" height="35"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZM-fz-dxr">
+                                                    <rect key="frame" x="347" y="5" width="45" height="35"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="&lt;3"/>
                                                 </button>
@@ -56,8 +55,10 @@
                                             <constraints>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="top" secondItem="2Fr-ho-nG5" secondAttribute="top" constant="4" id="0Ph-xx-lAm"/>
                                                 <constraint firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" id="AlQ-M4-Yy6"/>
+                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="top" secondItem="RFu-nI-tDi" secondAttribute="top" constant="1" id="BOx-HG-gki"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" id="ETZ-hL-PMB"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="bottom" secondItem="5PK-Nc-p86" secondAttribute="bottom" constant="8" id="ZBb-6T-jrf"/>
+                                                <constraint firstAttribute="trailing" secondItem="HZM-fz-dxr" secondAttribute="trailing" constant="1" id="d8I-U0-lDN"/>
                                                 <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" constant="8" id="hbY-yr-1gE"/>
                                                 <constraint firstAttribute="bottom" secondItem="RFu-nI-tDi" secondAttribute="bottom" constant="4" id="pyB-o6-riD"/>
                                             </constraints>

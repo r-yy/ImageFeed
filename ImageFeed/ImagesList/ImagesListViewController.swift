@@ -8,6 +8,7 @@
 import UIKit
 
 class ImagesListViewController: UIViewController {
+    
     // Энум для названия картинок кнопки лайка
     enum LikeButtonNames: String {
         case activeLike
@@ -33,11 +34,10 @@ class ImagesListViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
-
-
 }
 
 extension ImagesListViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
@@ -65,13 +65,14 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        
         addOverlay(for: imageListCell, with: indexPath)
         configCell(for: imageListCell, with: indexPath)
+        
         return imageListCell
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        
         // Инициализируем основную картинку
         guard let contentImage = UIImage(named: photosName[indexPath.row]) else {
             return
@@ -120,7 +121,6 @@ extension ImagesListViewController: UITableViewDataSource {
             multiplier: 1,
             constant: -4
         )
-
         
         cell.contentView.addConstraint(bottomConstrait)
     }
