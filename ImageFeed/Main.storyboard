@@ -39,27 +39,27 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current date label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5PK-Nc-p86">
-                                                    <rect key="frame" x="16" y="127" width="136.33333333333334" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZM-fz-dxr">
                                                     <rect key="frame" x="348.66666666666669" y="2" width="45" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="&lt;3"/>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current date label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5PK-Nc-p86">
+                                                    <rect key="frame" x="8" y="136" width="136" height="20"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" name="black"/>
                                             <constraints>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="top" secondItem="2Fr-ho-nG5" secondAttribute="top" constant="4" id="0Ph-xx-lAm"/>
-                                                <constraint firstItem="RFu-nI-tDi" firstAttribute="bottomMargin" secondItem="5PK-Nc-p86" secondAttribute="bottom" constant="8" id="3pQ-e3-c77"/>
                                                 <constraint firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" id="AlQ-M4-Yy6"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" id="ETZ-hL-PMB"/>
+                                                <constraint firstItem="RFu-nI-tDi" firstAttribute="bottom" secondItem="5PK-Nc-p86" secondAttribute="bottom" constant="8" id="ZBb-6T-jrf"/>
+                                                <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" constant="8" id="hbY-yr-1gE"/>
                                                 <constraint firstAttribute="bottom" secondItem="RFu-nI-tDi" secondAttribute="bottom" constant="4" id="pyB-o6-riD"/>
-                                                <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="RFu-nI-tDi" secondAttribute="leadingMargin" constant="8" id="ypf-nm-v97"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="black"/>

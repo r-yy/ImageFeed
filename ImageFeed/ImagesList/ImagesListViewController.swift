@@ -22,8 +22,7 @@ class ImagesListViewController: UIViewController {
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
         return formatter
     }()
     
@@ -41,6 +40,15 @@ class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return tableView.rowHeight
+        }
+        let multiplier = tableView.frame.width / image.size.width
+        return image.size.height * multiplier
+    }
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -57,6 +65,8 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        
+        addOverlay(for: imageListCell, with: indexPath)
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
@@ -70,6 +80,9 @@ extension ImagesListViewController: UITableViewDataSource {
         
         // Инициализируем текущую дату в лейбл
         cell.dateLabel.text = dateFormatter.string(from: Date())
+        cell.dateLabel.textColor = UIColor.ypWhite
+        cell.dateLabel.font = UIFont.systemFont(ofSize: 13)
+        cell.contentView.bringSubviewToFront(cell.dateLabel)
         
         // Инициализируем картинку для кнопки лайка
         guard let activeLike = UIImage(named: LikeButtonNames.activeLike.rawValue),
@@ -82,5 +95,33 @@ extension ImagesListViewController: UITableViewDataSource {
             cell.likeButton.setImage(inactiveLike, for: .normal)
         }
         cell.likeButton.setTitle(String(), for: .normal)
+    }
+    
+    func addOverlay(for cell: ImagesListCell, with indexPath: IndexPath) {
+        
+        let overlayView = GradientBlurView()
+        overlayView.layer.masksToBounds = true
+        overlayView.layer.cornerRadius = 16
+        overlayView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(overlayView)
+        
+        NSLayoutConstraint.activate([
+            overlayView.heightAnchor.constraint(equalToConstant: 30),
+            overlayView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            overlayView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+        ])
+        let bottomConstrait = NSLayoutConstraint(
+            item: overlayView,
+            attribute: NSLayoutConstraint.Attribute.bottom,
+            relatedBy: NSLayoutConstraint.Relation.equal,
+            toItem: cell.contentView,
+            attribute: NSLayoutConstraint.Attribute.bottom,
+            multiplier: 1,
+            constant: -4
+        )
+
+        
+        cell.contentView.addConstraint(bottomConstrait)
     }
 }
