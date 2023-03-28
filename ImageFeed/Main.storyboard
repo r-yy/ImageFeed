@@ -30,7 +30,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RFu-nI-tDi">
-                                                    <rect key="frame" x="0.0" y="4" width="393" height="160"/>
+                                                    <rect key="frame" x="16" y="4" width="361" height="160"/>
                                                     <color key="backgroundColor" name="black"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -40,12 +40,16 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZM-fz-dxr">
-                                                    <rect key="frame" x="347" y="5" width="45" height="35"/>
+                                                    <rect key="frame" x="346" y="16" width="21" height="18"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="18" id="4nl-SM-MAS"/>
+                                                        <constraint firstAttribute="width" constant="21" id="Vp1-aa-Sfe"/>
+                                                    </constraints>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="&lt;3"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current date label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5PK-Nc-p86">
-                                                    <rect key="frame" x="8" y="136" width="136" height="20"/>
+                                                    <rect key="frame" x="24" y="136" width="136" height="20"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -54,12 +58,12 @@
                                             <color key="backgroundColor" name="black"/>
                                             <constraints>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="top" secondItem="2Fr-ho-nG5" secondAttribute="top" constant="4" id="0Ph-xx-lAm"/>
-                                                <constraint firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" id="AlQ-M4-Yy6"/>
-                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="top" secondItem="RFu-nI-tDi" secondAttribute="top" constant="1" id="BOx-HG-gki"/>
-                                                <constraint firstItem="RFu-nI-tDi" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" id="ETZ-hL-PMB"/>
+                                                <constraint firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" constant="16" id="AlQ-M4-Yy6"/>
+                                                <constraint firstItem="RFu-nI-tDi" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" constant="16" id="ETZ-hL-PMB"/>
+                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="top" secondItem="RFu-nI-tDi" secondAttribute="top" constant="12" id="GBF-lR-Ld7"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="bottom" secondItem="5PK-Nc-p86" secondAttribute="bottom" constant="8" id="ZBb-6T-jrf"/>
-                                                <constraint firstAttribute="trailing" secondItem="HZM-fz-dxr" secondAttribute="trailing" constant="1" id="d8I-U0-lDN"/>
-                                                <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" constant="8" id="hbY-yr-1gE"/>
+                                                <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="RFu-nI-tDi" secondAttribute="leading" constant="8" id="hbY-yr-1gE"/>
+                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" constant="-10" id="kFv-QV-ham"/>
                                                 <constraint firstAttribute="bottom" secondItem="RFu-nI-tDi" secondAttribute="bottom" constant="4" id="pyB-o6-riD"/>
                                             </constraints>
                                         </tableViewCellContentView>
