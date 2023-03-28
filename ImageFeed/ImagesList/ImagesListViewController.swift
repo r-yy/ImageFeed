@@ -8,12 +8,6 @@
 import UIKit
 
 class ImagesListViewController: UIViewController {
-    
-    // Энум для названия картинок кнопки лайка
-    enum LikeButtonNames: String {
-        case activeLike
-        case inactiveLike
-    }
     // Предопределяем статус бар в темной теме
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -65,37 +59,15 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        let contentImage = UIImage(named: photosName[indexPath.row])
+        let date = dateFormatter.string(from: Date())
+        let isLiked = indexPath.row % 2 == 0
+        imageListCell.configCell(image: contentImage, date: date, isLiked: isLiked)
+        
         addOverlay(for: imageListCell, with: indexPath)
-        configCell(for: imageListCell, with: indexPath)
+        
         
         return imageListCell
-    }
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        
-        // Инициализируем основную картинку
-        guard let contentImage = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
-        cell.contentImage.image = contentImage
-        
-        // Инициализируем текущую дату в лейбл
-        cell.dateLabel.text = dateFormatter.string(from: Date())
-        cell.dateLabel.textColor = UIColor.ypWhite
-        cell.dateLabel.font = UIFont.systemFont(ofSize: 13)
-        cell.contentView.bringSubviewToFront(cell.dateLabel)
-        
-        // Инициализируем картинку для кнопки лайка
-        guard let activeLike = UIImage(named: LikeButtonNames.activeLike.rawValue),
-              let inactiveLike = UIImage(named: LikeButtonNames.inactiveLike.rawValue) else {
-            return
-        }
-        if indexPath.row % 2 != 0 {
-            cell.likeButton.setImage(activeLike, for: .normal)
-        } else {
-            cell.likeButton.setImage(inactiveLike, for: .normal)
-        }
-        cell.likeButton.setTitle(String(), for: .normal)
     }
     
     func addOverlay(for cell: ImagesListCell, with indexPath: IndexPath) {
