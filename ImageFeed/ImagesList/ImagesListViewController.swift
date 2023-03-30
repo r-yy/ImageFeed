@@ -30,13 +30,12 @@ class ImagesListViewController: UIViewController {
     }
 }
 
+//MARK: TableView delegate
 extension ImagesListViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return tableView.rowHeight
         }
@@ -45,14 +44,13 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+//MARK: TableView data source
 extension ImagesListViewController: UITableViewDataSource {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         photosName.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifer, for: indexPath)
         
         guard let imageListCell = cell as? ImagesListCell else {
@@ -62,38 +60,10 @@ extension ImagesListViewController: UITableViewDataSource {
         let contentImage = UIImage(named: photosName[indexPath.row])
         let date = dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
+        
         imageListCell.configCell(image: contentImage, date: date, isLiked: isLiked)
-        
-        addOverlay(for: imageListCell, with: indexPath)
-        
+        imageListCell.addGradient()
         
         return imageListCell
-    }
-    
-    func addOverlay(for cell: ImagesListCell, with indexPath: IndexPath) {
-        
-        let overlayView = GradientBlurView()
-        overlayView.layer.masksToBounds = true
-        overlayView.layer.cornerRadius = 16
-        overlayView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        overlayView.translatesAutoresizingMaskIntoConstraints = false
-        cell.contentView.addSubview(overlayView)
-        
-        NSLayoutConstraint.activate([
-            overlayView.heightAnchor.constraint(equalToConstant: 30),
-            overlayView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-            overlayView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
-        ])
-        let bottomConstrait = NSLayoutConstraint(
-            item: overlayView,
-            attribute: NSLayoutConstraint.Attribute.bottom,
-            relatedBy: NSLayoutConstraint.Relation.equal,
-            toItem: cell.contentView,
-            attribute: NSLayoutConstraint.Attribute.bottom,
-            multiplier: 1,
-            constant: -4
-        )
-        
-        cell.contentView.addConstraint(bottomConstrait)
     }
 }
