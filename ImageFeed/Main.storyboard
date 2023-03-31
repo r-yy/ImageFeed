@@ -45,16 +45,16 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZM-fz-dxr">
-                                                    <rect key="frame" x="346" y="16" width="21" height="18"/>
+                                                    <rect key="frame" x="335" y="4" width="42" height="42"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="18" id="4nl-SM-MAS"/>
-                                                        <constraint firstAttribute="width" constant="21" id="Vp1-aa-Sfe"/>
+                                                        <constraint firstAttribute="height" constant="42" id="4nl-SM-MAS"/>
+                                                        <constraint firstAttribute="width" constant="42" id="Vp1-aa-Sfe"/>
                                                     </constraints>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="&lt;3"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current date label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5PK-Nc-p86">
-                                                    <rect key="frame" x="24" y="140.33333333333334" width="109" height="15.666666666666657"/>
+                                                    <rect key="frame" x="24" y="140.33333333333334" width="104" height="15.666666666666657"/>
                                                     <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
                                                     <color key="textColor" name="white"/>
                                                     <nil key="highlightedColor"/>
@@ -65,10 +65,10 @@
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="top" secondItem="2Fr-ho-nG5" secondAttribute="top" constant="4" id="0Ph-xx-lAm"/>
                                                 <constraint firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" constant="16" id="AlQ-M4-Yy6"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="leading" secondItem="2Fr-ho-nG5" secondAttribute="leading" constant="16" id="ETZ-hL-PMB"/>
-                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="top" secondItem="RFu-nI-tDi" secondAttribute="top" constant="12" id="GBF-lR-Ld7"/>
+                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="top" secondItem="RFu-nI-tDi" secondAttribute="top" id="GBF-lR-Ld7"/>
                                                 <constraint firstItem="RFu-nI-tDi" firstAttribute="bottom" secondItem="5PK-Nc-p86" secondAttribute="bottom" constant="8" id="ZBb-6T-jrf"/>
                                                 <constraint firstItem="5PK-Nc-p86" firstAttribute="leading" secondItem="RFu-nI-tDi" secondAttribute="leading" constant="8" id="hbY-yr-1gE"/>
-                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" constant="-10" id="kFv-QV-ham"/>
+                                                <constraint firstItem="HZM-fz-dxr" firstAttribute="trailing" secondItem="RFu-nI-tDi" secondAttribute="trailing" id="kFv-QV-ham"/>
                                                 <constraint firstAttribute="bottom" secondItem="RFu-nI-tDi" secondAttribute="bottom" constant="4" id="pyB-o6-riD"/>
                                             </constraints>
                                         </tableViewCellContentView>
