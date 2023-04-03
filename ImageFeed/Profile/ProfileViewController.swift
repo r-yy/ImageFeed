@@ -16,7 +16,11 @@ final class ProfileViewController: UIViewController {
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var userDescription: UILabel!
-    @IBOutlet weak var exitButton: UIButton!
+    @IBOutlet weak var exitButton: UIButton! {
+        didSet {
+            exitButton.setTitle("", for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +28,6 @@ final class ProfileViewController: UIViewController {
         name.text = "Екатерина Новикова"
         username.text = "@ekaterina_nov"
         userDescription.text = "Hello, world!"
-        exitButton.setTitle("", for: .normal)
     }
     
     @IBAction private func exit(_ sender: UIButton) {

@@ -15,10 +15,19 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
-    @IBOutlet var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var backButton: UIButton! {
+        didSet {
+            backButton.setTitle("", for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = image
+    }
+    
+    @IBAction private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
     }
 }
