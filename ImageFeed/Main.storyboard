@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0yi-wa-dXv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eFn-IZ-dg6">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -104,6 +104,7 @@
                     <navigationItem key="navigationItem" id="AzS-t4-nkV"/>
                     <connections>
                         <outlet property="tableView" destination="e6d-VK-nZj" id="Amh-4g-R1x"/>
+                        <segue destination="0yi-wa-dXv" kind="show" identifier="ShowSingleImage" id="J9S-Mf-PDH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -240,7 +241,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="zo8-WE-nJE">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="25C-rT-UI8"/>
@@ -252,13 +253,14 @@
                             <constraint firstItem="zo8-WE-nJE" firstAttribute="top" secondItem="25C-rT-UI8" secondAttribute="top" id="lYg-u1-N3R"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="cN7-Om-xKd"/>
                     <connections>
                         <outlet property="imageView" destination="zo8-WE-nJE" id="Ub7-fD-kHH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3F-sp-Y2L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1492" y="70"/>
+            <point key="canvasLocation" x="1877" y="135"/>
         </scene>
     </scenes>
     <resources>
