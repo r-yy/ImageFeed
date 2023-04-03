@@ -18,6 +18,7 @@
 		E4D657F529D5EA3100E455B5 /* GradientBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D657F429D5EA3100E455B5 /* GradientBlurView.swift */; };
 		E4D6583329D6108100E455B5 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4D6580429D6107E00E455B5 /* SF-Pro-Text-Bold.otf */; };
 		E4D6583929D6108100E455B5 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4D6580A29D6107E00E455B5 /* SF-Pro-Text-Regular.otf */; };
+		E4F2677529DB1ECE00484A56 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F2677429DB1ECE00484A56 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		E4D657F429D5EA3100E455B5 /* GradientBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBlurView.swift; sourceTree = "<group>"; };
 		E4D6580429D6107E00E455B5 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		E4D6580A29D6107E00E455B5 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		E4F2677429DB1ECE00484A56 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 			children = (
 				E4A9749F29C3C96C00C30D23 /* ImagesListViewController.swift */,
 				E43AB17729D0C122005361BF /* ImagesListCell.swift */,
+				E4F2677429DB1ECE00484A56 /* ProfileViewController.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				E4AD177229D210AB00721CEA /* UIColor + Extensions.swift in Sources */,
 				E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */,
 				E4D657F529D5EA3100E455B5 /* GradientBlurView.swift in Sources */,
+				E4F2677529DB1ECE00484A56 /* ProfileViewController.swift in Sources */,
 				E4A9749C29C3C96C00C30D23 /* AppDelegate.swift in Sources */,
 				E4A9749E29C3C96C00C30D23 /* SceneDelegate.swift in Sources */,
 			);
