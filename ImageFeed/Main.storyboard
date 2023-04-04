@@ -248,15 +248,29 @@
                                     <action selector="didTapBackButton" destination="0yi-wa-dXv" eventType="touchUpInside" id="SId-Te-XSI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOO-DV-cxG" userLabel="Share Button">
+                                <rect key="frame" x="171.66666666666666" y="751" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="0OH-AS-L98"/>
+                                    <constraint firstAttribute="height" constant="50" id="11H-7l-EXJ"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="share"/>
+                                <connections>
+                                    <action selector="didTapShareButton" destination="0yi-wa-dXv" eventType="touchUpInside" id="e6u-di-KJm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="25C-rT-UI8"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
                             <constraint firstAttribute="leading" secondItem="RBq-WB-Tmg" secondAttribute="leading" id="1oS-u9-pZS"/>
                             <constraint firstItem="wXe-w9-DUH" firstAttribute="top" secondItem="25C-rT-UI8" secondAttribute="top" constant="8" id="AGb-YA-A49"/>
+                            <constraint firstItem="DOO-DV-cxG" firstAttribute="centerX" secondItem="25C-rT-UI8" secondAttribute="centerX" id="IQI-jW-NIJ"/>
                             <constraint firstAttribute="trailing" secondItem="RBq-WB-Tmg" secondAttribute="trailing" id="Yr2-aE-1aY"/>
                             <constraint firstAttribute="top" secondItem="RBq-WB-Tmg" secondAttribute="top" id="aP7-Ro-LFs"/>
                             <constraint firstAttribute="bottom" secondItem="RBq-WB-Tmg" secondAttribute="bottom" id="jli-hl-FFh"/>
+                            <constraint firstAttribute="bottom" secondItem="DOO-DV-cxG" secondAttribute="bottom" constant="51" id="thb-Oa-myR"/>
                             <constraint firstItem="wXe-w9-DUH" firstAttribute="leading" secondItem="25C-rT-UI8" secondAttribute="leading" constant="8" id="xsC-3p-Tki"/>
                         </constraints>
                     </view>
@@ -265,6 +279,7 @@
                         <outlet property="backButton" destination="wXe-w9-DUH" id="ZCF-no-Yi8"/>
                         <outlet property="imageView" destination="zo8-WE-nJE" id="Ub7-fD-kHH"/>
                         <outlet property="scrollView" destination="RBq-WB-Tmg" id="WP5-n5-Ycx"/>
+                        <outlet property="shareButton" destination="DOO-DV-cxG" id="jDc-rj-cNK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3F-sp-Y2L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -279,6 +294,7 @@
         <image name="back" width="9" height="15.666666984558105"/>
         <image name="exit" width="20" height="22"/>
         <image name="imagesListActive" width="20" height="22"/>
+        <image name="share" width="50" height="50"/>
         <namedColor name="black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

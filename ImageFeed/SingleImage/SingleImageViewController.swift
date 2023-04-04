@@ -8,7 +8,6 @@
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
@@ -32,6 +31,11 @@ final class SingleImageViewController: UIViewController {
             scrollView.maximumZoomScale = 1.25
         }
     }
+    @IBOutlet weak var shareButton: UIButton! {
+        didSet {
+            shareButton.setTitle("", for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +45,10 @@ final class SingleImageViewController: UIViewController {
     
     @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction private func didTapShareButton() {
+        presentActivityViewController()
     }
 }
 
@@ -71,5 +79,16 @@ extension SingleImageViewController {
         let yPoint = (scrollView.contentSize.width - scrollView.bounds.size.width) / 2
         let xPoint = (scrollView.contentSize.height - scrollView.bounds.size.height) / 2
         scrollView.setContentOffset(CGPoint(x: yPoint, y: xPoint), animated: false)
+    }
+}
+
+extension SingleImageViewController {
+    private func presentActivityViewController() {
+        guard let imageToShare = imageView.image else { return }
+        let activityViewController = UIActivityViewController(
+            activityItems: [imageToShare],
+            applicationActivities: nil
+        )
+        present(activityViewController, animated: true)
     }
 }
