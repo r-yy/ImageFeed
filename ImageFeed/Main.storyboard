@@ -217,9 +217,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="zo8-WE-nJE">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RBq-WB-Tmg">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="zo8-WE-nJE">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="zo8-WE-nJE" secondAttribute="trailing" id="1hq-sP-TTH"/>
+                                    <constraint firstItem="zo8-WE-nJE" firstAttribute="top" secondItem="RBq-WB-Tmg" secondAttribute="top" id="55K-fF-NI7"/>
+                                    <constraint firstItem="zo8-WE-nJE" firstAttribute="leading" secondItem="RBq-WB-Tmg" secondAttribute="leading" id="SY5-xg-ImY"/>
+                                    <constraint firstAttribute="bottom" secondItem="zo8-WE-nJE" secondAttribute="bottom" id="eH4-m3-CM9"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="XaN-12-Hjv"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="aS6-Rg-XcF"/>
+                                <connections>
+                                    <outlet property="delegate" destination="0yi-wa-dXv" id="r02-eQ-Jqf"/>
+                                </connections>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wXe-w9-DUH">
                                 <rect key="frame" x="8" y="67" width="48" height="48"/>
                                 <constraints>
@@ -236,11 +252,11 @@
                         <viewLayoutGuide key="safeArea" id="25C-rT-UI8"/>
                         <color key="backgroundColor" name="black"/>
                         <constraints>
-                            <constraint firstItem="25C-rT-UI8" firstAttribute="trailing" secondItem="zo8-WE-nJE" secondAttribute="trailing" id="9Pp-gg-Inc"/>
+                            <constraint firstAttribute="leading" secondItem="RBq-WB-Tmg" secondAttribute="leading" id="1oS-u9-pZS"/>
                             <constraint firstItem="wXe-w9-DUH" firstAttribute="top" secondItem="25C-rT-UI8" secondAttribute="top" constant="8" id="AGb-YA-A49"/>
-                            <constraint firstAttribute="bottom" secondItem="zo8-WE-nJE" secondAttribute="bottom" id="Kij-uv-2jr"/>
-                            <constraint firstItem="zo8-WE-nJE" firstAttribute="leading" secondItem="25C-rT-UI8" secondAttribute="leading" id="hKv-Na-4SL"/>
-                            <constraint firstItem="zo8-WE-nJE" firstAttribute="top" secondItem="8Y7-Cc-uo7" secondAttribute="top" id="lYg-u1-N3R"/>
+                            <constraint firstAttribute="trailing" secondItem="RBq-WB-Tmg" secondAttribute="trailing" id="Yr2-aE-1aY"/>
+                            <constraint firstAttribute="top" secondItem="RBq-WB-Tmg" secondAttribute="top" id="aP7-Ro-LFs"/>
+                            <constraint firstAttribute="bottom" secondItem="RBq-WB-Tmg" secondAttribute="bottom" id="jli-hl-FFh"/>
                             <constraint firstItem="wXe-w9-DUH" firstAttribute="leading" secondItem="25C-rT-UI8" secondAttribute="leading" constant="8" id="xsC-3p-Tki"/>
                         </constraints>
                     </view>
@@ -248,6 +264,7 @@
                     <connections>
                         <outlet property="backButton" destination="wXe-w9-DUH" id="ZCF-no-Yi8"/>
                         <outlet property="imageView" destination="zo8-WE-nJE" id="Ub7-fD-kHH"/>
+                        <outlet property="scrollView" destination="RBq-WB-Tmg" id="WP5-n5-Ycx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3F-sp-Y2L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
