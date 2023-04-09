@@ -7,12 +7,7 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
-    // Предопределяем статус бар в темной теме
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
+class ImagesListViewController: BaseViewController {
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
@@ -22,12 +17,15 @@ class ImagesListViewController: UIViewController {
         return formatter
     }()
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var tableView: UITableView! {
+        didSet {
+            tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+            tableView.showsVerticalScrollIndicator = false
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

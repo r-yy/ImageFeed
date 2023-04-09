@@ -7,15 +7,23 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
+final class ProfileViewController: BaseViewController {
     @IBOutlet weak var userpick: UIImageView!
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var username: UILabel!
-    @IBOutlet weak var userDescription: UILabel!
+    @IBOutlet weak var name: UILabel! {
+        didSet {
+            name.text = "Екатерина Новикова"
+        }
+    }
+    @IBOutlet weak var username: UILabel! {
+        didSet {
+            username.text = "@ekaterina_nov"
+        }
+    }
+    @IBOutlet weak var userDescription: UILabel! {
+        didSet {
+            userDescription.text = "Hello, world!"
+        }
+    }
     @IBOutlet weak var exitButton: UIButton! {
         didSet {
             exitButton.setTitle("", for: .normal)
@@ -24,10 +32,6 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        name.text = "Екатерина Новикова"
-        username.text = "@ekaterina_nov"
-        userDescription.text = "Hello, world!"
     }
     
     @IBAction private func exit(_ sender: UIButton) {
