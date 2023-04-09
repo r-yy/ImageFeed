@@ -8,15 +8,19 @@
 import UIKit
 
 final class ProfileViewController: BaseViewController {
-    @IBOutlet weak var userpick: UIImageView!
+    @IBOutlet weak var userpic: UIImageView! {
+        didSet {
+            userpic.layer.cornerRadius = userpic.frame.height / 2
+        }
+    }
     @IBOutlet weak var name: UILabel! {
         didSet {
-            name.text = "Екатерина Новикова"
+            name.text = "Рамиль Янбердин"
         }
     }
     @IBOutlet weak var username: UILabel! {
         didSet {
-            username.text = "@ekaterina_nov"
+            username.text = "@yanram"
         }
     }
     @IBOutlet weak var userDescription: UILabel! {

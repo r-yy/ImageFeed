@@ -120,7 +120,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-Ka-PKx">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="myImage" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-Ka-PKx">
                                 <rect key="frame" x="16" y="76" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="Q4h-Bf-GNz"/>
@@ -179,7 +179,7 @@
                         <outlet property="name" destination="SBH-C1-42S" id="rXV-ac-s1u"/>
                         <outlet property="userDescription" destination="Rpi-H5-DfG" id="7OC-46-XZO"/>
                         <outlet property="username" destination="tzk-8n-UUo" id="36A-PF-eiG"/>
-                        <outlet property="userpick" destination="jLp-Ka-PKx" id="7aR-57-TGS"/>
+                        <outlet property="userpic" destination="jLp-Ka-PKx" id="Rie-og-UHV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JyU-mT-FGJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -289,11 +289,11 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="Image" width="70" height="70"/>
         <image name="ProfileActive" width="24" height="24"/>
         <image name="back" width="9" height="15.666666984558105"/>
         <image name="exit" width="20" height="22"/>
         <image name="imagesListActive" width="20" height="22"/>
+        <image name="myImage" width="640" height="640"/>
         <image name="share" width="50" height="50"/>
         <namedColor name="black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
