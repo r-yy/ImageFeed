@@ -9,12 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="SF-Pro-Text-Bold.otf">
-            <string>SFProText-Bold</string>
-        </array>
-        <array key="SF-Pro-Text-Regular.otf">
-            <string>SFProText-Regular</string>
-        </array>
         <array key="SF-Pro.ttf">
             <string>SFPro-Regular</string>
         </array>
@@ -119,68 +113,9 @@
                     <view key="view" contentMode="scaleToFill" id="Cj2-S1-Evm">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="myImage" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-Ka-PKx">
-                                <rect key="frame" x="16" y="76" width="70" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="Q4h-Bf-GNz"/>
-                                    <constraint firstAttribute="width" constant="70" id="cHc-vw-nzo"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBH-C1-42S" userLabel="Name">
-                                <rect key="frame" x="16" y="154" width="66.666666666666671" height="27"/>
-                                <fontDescription key="fontDescription" name="SFProText-Bold" family="SF Pro Text" pointSize="23"/>
-                                <color key="textColor" name="white"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzk-8n-UUo" userLabel="username">
-                                <rect key="frame" x="15.999999999999996" y="189" width="60.666666666666657" height="15.666666666666657"/>
-                                <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="13"/>
-                                <color key="textColor" name="gray"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpi-H5-DfG" userLabel="Description">
-                                <rect key="frame" x="16" y="212.66666666666666" width="70.333333333333329" height="16"/>
-                                <fontDescription key="fontDescription" name="SFProText-Regular" family="SF Pro Text" pointSize="13"/>
-                                <color key="textColor" name="white"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udQ-lf-KHJ" userLabel="Exit">
-                                <rect key="frame" x="345" y="100" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="3dB-xq-HIg"/>
-                                    <constraint firstAttribute="width" constant="24" id="gv7-cF-E4E"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="exit"/>
-                                <connections>
-                                    <action selector="exit:" destination="Xr2-SB-BxM" eventType="touchUpInside" id="iys-hr-X9M"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="nSZ-BC-2lE"/>
-                        <color key="backgroundColor" name="black"/>
-                        <constraints>
-                            <constraint firstItem="SBH-C1-42S" firstAttribute="top" secondItem="jLp-Ka-PKx" secondAttribute="bottom" constant="8" id="89c-Va-43y"/>
-                            <constraint firstItem="Rpi-H5-DfG" firstAttribute="top" secondItem="tzk-8n-UUo" secondAttribute="bottom" constant="8" id="AKD-Hn-wBi"/>
-                            <constraint firstItem="tzk-8n-UUo" firstAttribute="leading" secondItem="SBH-C1-42S" secondAttribute="leading" id="JnI-ge-dPO"/>
-                            <constraint firstItem="SBH-C1-42S" firstAttribute="leading" secondItem="jLp-Ka-PKx" secondAttribute="leading" id="MXR-8b-9RE"/>
-                            <constraint firstItem="jLp-Ka-PKx" firstAttribute="top" secondItem="Cj2-S1-Evm" secondAttribute="top" constant="76" id="RRT-aw-ZDd"/>
-                            <constraint firstItem="udQ-lf-KHJ" firstAttribute="top" secondItem="Cj2-S1-Evm" secondAttribute="top" constant="100" id="VOy-CC-yvA"/>
-                            <constraint firstItem="Rpi-H5-DfG" firstAttribute="leading" secondItem="tzk-8n-UUo" secondAttribute="leading" id="cRE-il-8wI"/>
-                            <constraint firstItem="tzk-8n-UUo" firstAttribute="top" secondItem="SBH-C1-42S" secondAttribute="bottom" constant="8" id="f5M-RI-P2t"/>
-                            <constraint firstItem="nSZ-BC-2lE" firstAttribute="trailing" secondItem="udQ-lf-KHJ" secondAttribute="trailing" constant="24" id="nBv-gI-6aI"/>
-                            <constraint firstItem="jLp-Ka-PKx" firstAttribute="leading" secondItem="Cj2-S1-Evm" secondAttribute="leading" constant="16" id="npc-ck-t4e"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="ProfileActive" id="7z1-YP-7DA"/>
-                    <connections>
-                        <outlet property="exitButton" destination="udQ-lf-KHJ" id="RWt-4Q-C9r"/>
-                        <outlet property="name" destination="SBH-C1-42S" id="rXV-ac-s1u"/>
-                        <outlet property="userDescription" destination="Rpi-H5-DfG" id="7OC-46-XZO"/>
-                        <outlet property="username" destination="tzk-8n-UUo" id="36A-PF-eiG"/>
-                        <outlet property="userpic" destination="jLp-Ka-PKx" id="Rie-og-UHV"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JyU-mT-FGJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -291,15 +226,10 @@
         <image name="0" width="200" height="132"/>
         <image name="ProfileActive" width="24" height="24"/>
         <image name="back" width="9" height="15.666666984558105"/>
-        <image name="exit" width="20" height="22"/>
         <image name="imagesListActive" width="20" height="22"/>
-        <image name="myImage" width="640" height="640"/>
         <image name="share" width="50" height="50"/>
         <namedColor name="black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="gray">
-            <color red="0.68235294117647061" green="0.68627450980392157" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="white">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
