@@ -77,9 +77,9 @@ extension SingleImageViewController {
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
 
-        let yPoint = (scrollView.contentSize.width - scrollView.bounds.size.width) / 2
-        let xPoint = (scrollView.contentSize.height - scrollView.bounds.size.height) / 2
-        scrollView.setContentOffset(CGPoint(x: yPoint, y: xPoint), animated: false)
+        let xPoint = (scrollView.contentSize.width - scrollView.bounds.size.width) / 2
+        let yPoint = (scrollView.contentSize.height - scrollView.bounds.size.height) / 2
+        scrollView.setContentOffset(CGPoint(x: xPoint, y: yPoint), animated: false)
     }
 }
 
