@@ -11,9 +11,9 @@ final class ProfileViewController: BaseViewController {
     private var userpicImageView: CircularImageView = {
         let imageView = CircularImageView()
 
-        imageView.image = UIImage(named: "myImage")
-
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(
+            named: "myImage"
+        )
 
         return imageView
     }()
@@ -23,9 +23,10 @@ final class ProfileViewController: BaseViewController {
 
         label.text = "Рамиль Янбердин"
         label.textColor = .ypWhite
-        label.font = UIFont(name: "SF Pro Text Bold", size: 23)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(
+            name: "SF Pro Text Bold",
+            size: 23
+        )
 
         return label
     }()
@@ -35,9 +36,10 @@ final class ProfileViewController: BaseViewController {
 
         label.text = "@yanram"
         label.textColor = .ypGray
-        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(
+            name: "SF Pro Text Regular",
+            size: 13
+        )
 
         return label
     }()
@@ -47,9 +49,10 @@ final class ProfileViewController: BaseViewController {
 
         label.text = "Hello, world!"
         label.textColor = .white
-        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(
+            name: "SF Pro Text Regular",
+            size: 13
+        )
 
         return label
     }()
@@ -57,9 +60,10 @@ final class ProfileViewController: BaseViewController {
     private let exitButton: UIButton = {
         let button = UIButton()
 
-        button.setImage(UIImage(named: "exit"), for: .normal)
-
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(
+            UIImage(named: "exit"),
+            for: .normal
+        )
 
         return button
     }()
@@ -70,7 +74,9 @@ final class ProfileViewController: BaseViewController {
         addSubviews()
         applyConstraints()
     }
+}
 
+extension ProfileViewController {
     private func addSubviews() {
         view.addSubview(userpicImageView)
         view.addSubview(nameLabel)
@@ -78,8 +84,16 @@ final class ProfileViewController: BaseViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(exitButton)
     }
+}
 
+extension ProfileViewController {
     private func applyConstraints() {
+        userpicImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             userpicImageView.topAnchor.constraint(
                 equalTo: self.view.safeAreaLayoutGuide.topAnchor,
@@ -131,13 +145,5 @@ final class ProfileViewController: BaseViewController {
             )
 
         ])
-    }
-}
-
-extension ProfileViewController {
-    override var view: UIView! {
-        didSet {
-            view.backgroundColor = .ypBlack
-        }
     }
 }
