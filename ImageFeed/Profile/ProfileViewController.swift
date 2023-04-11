@@ -8,101 +8,136 @@
 import UIKit
 
 final class ProfileViewController: BaseViewController {
+    private var userpicImageView: CircularImageView = {
+        let imageView = CircularImageView()
 
-    private var userpic: CircularImageView?
-    private var name: UILabel?
-    private var username: UILabel?
-    private var exitButton: UIButton?
+        imageView.image = UIImage(named: "myImage")
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+
+        return imageView
+    }()
+
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "Рамиль Янбердин"
+        label.textColor = .ypWhite
+        label.font = UIFont(name: "SF Pro Text Bold", size: 23)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+
+    private var usernameLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "@yanram"
+        label.textColor = .ypGray
+        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+
+    private var descriptionLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "Hello, world!"
+        label.textColor = .white
+        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+
+    private var exitButton: UIButton = {
+        let button = UIButton()
+
+        button.setImage(UIImage(named: "exit"), for: .normal)
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        makeProfilePage()
+        addSubviews()
+        applyConstraints()
     }
 
-    private func addUserpic(named: String) {
-        userpic = CircularImageView()
-        guard let userpic else { return }
+    private func addSubviews() {
+        view.addSubview(userpicImageView)
+        view.addSubview(nameLabel)
+        view.addSubview(usernameLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(exitButton)
+    }
 
-        userpic.image = UIImage(named: named)
-        userpic.layer.masksToBounds = true
-
-        self.view.addSubview(userpic)
-
-        userpic.translatesAutoresizingMaskIntoConstraints = false
-
+    private func applyConstraints() {
         NSLayoutConstraint.activate([
-            userpic.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 76),
-            userpic.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 18),
-            userpic.widthAnchor.constraint(equalToConstant: 70),
-            userpic.heightAnchor.constraint(equalToConstant: 70)
+            userpicImageView.topAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.topAnchor,
+                constant: 22
+            ),
+            userpicImageView.leadingAnchor.constraint(
+                equalTo: self.view.leadingAnchor,
+                constant: 18
+            ),
+            userpicImageView.widthAnchor.constraint(
+                equalToConstant: 70
+            ),
+            userpicImageView.heightAnchor.constraint(
+                equalToConstant: 70
+            ),
+            nameLabel.topAnchor.constraint(
+                equalTo: userpicImageView.bottomAnchor,
+                constant: 8
+            ),
+            nameLabel.leadingAnchor.constraint(
+                equalTo: userpicImageView.leadingAnchor
+            ),
+            usernameLabel.topAnchor.constraint(
+                equalTo: nameLabel.bottomAnchor,
+                constant: 8
+            ),
+            usernameLabel.leadingAnchor.constraint(
+                equalTo: nameLabel.leadingAnchor
+            ),
+            descriptionLabel.topAnchor.constraint(
+                equalTo: usernameLabel.bottomAnchor,
+                constant: 8
+            ),
+            descriptionLabel.leadingAnchor.constraint(
+                equalTo: usernameLabel.leadingAnchor
+            ),
+            exitButton.centerYAnchor.constraint(
+                equalTo: userpicImageView.centerYAnchor
+            ),
+            exitButton.trailingAnchor.constraint(
+                equalTo: self.view.trailingAnchor,
+                constant: -26
+            ),
+            exitButton.widthAnchor.constraint(
+                equalToConstant: 24
+            ),
+            exitButton.heightAnchor.constraint(
+                equalToConstant: 24
+            )
+
         ])
     }
+}
 
-    private func addName(named: String) {
-        name = UILabel()
-        guard let name,
-              let userpic else { return }
-
-        name.text = named
-        name.textColor = .ypWhite
-        name.font = UIFont(name: "SF Pro Text Bold", size: 23)
-
-        self.view.addSubview(name)
-
-        name.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            name.topAnchor.constraint(equalTo: userpic.bottomAnchor, constant: 8),
-            name.leadingAnchor.constraint(equalTo: userpic.leadingAnchor)
-        ])
+extension ProfileViewController {
+    override var view: UIView! {
+        didSet {
+            view.backgroundColor = .ypBlack
+        }
     }
-
-    private func addUsername(named: String) {
-        username = UILabel()
-        guard let username,
-              let name else { return }
-
-        username.text = named
-        username.textColor = .ypGray
-        username.font = UIFont(name: "SF Pro Text Regular", size: 13)
-
-        self.view.addSubview(username)
-
-        username.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            username.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 8),
-            username.leadingAnchor.constraint(equalTo: name.leadingAnchor)
-        ])
-    }
-
-    private func addExitButton() {
-        exitButton = UIButton()
-        guard let exitButton,
-              let userpic else { return }
-
-        exitButton.setImage(UIImage(named: "exit"), for: .normal)
-
-        self.view.addSubview(exitButton)
-
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            exitButton.centerYAnchor.constraint(equalTo: userpic.centerYAnchor),
-            exitButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -26),
-            exitButton.widthAnchor.constraint(equalToConstant: 24),
-            exitButton.heightAnchor.constraint(equalToConstant: 24)
-        ])
-    }
-
-    fileprivate func makeProfilePage() {
-        self.view.backgroundColor = .ypBlack
-
-        addUserpic(named: "myImage")
-        addName(named: "Рамиль Янбердин")
-        addUsername(named: "@yanram")
-        addExitButton()
-    }
-
 }

@@ -10,6 +10,7 @@ import UIKit
 final class CircularImageView: UIImageView {
     override var bounds: CGRect {
         didSet {
+            layer.masksToBounds = true
             layer.cornerRadius = bounds.height / 2
         }
     }
