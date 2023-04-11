@@ -11,4 +11,10 @@ class BaseViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
+
+    override var view: UIView! {
+        didSet {
+            view.backgroundColor = .ypBlack
+        }
+    }
 }
