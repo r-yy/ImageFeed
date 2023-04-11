@@ -18,7 +18,7 @@ final class ProfileViewController: BaseViewController {
         return imageView
     }()
 
-    private let nameLabel: UILabel = {
+    private var nameLabel: UILabel = {
         let label = UILabel()
 
         label.text = "Рамиль Янбердин"
@@ -54,7 +54,7 @@ final class ProfileViewController: BaseViewController {
         return label
     }()
 
-    private var exitButton: UIButton = {
+    private let exitButton: UIButton = {
         let button = UIButton()
 
         button.setImage(UIImage(named: "exit"), for: .normal)

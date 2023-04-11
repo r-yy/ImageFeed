@@ -16,23 +16,23 @@ final class SingleImageViewController: BaseViewController {
         }
     }
     
-    @IBOutlet weak var imageView: UIImageView! {
+    @IBOutlet private weak var imageView: UIImageView! {
         didSet {
             imageView.image = image
         }
     }
-    @IBOutlet weak var backButton: UIButton! {
+    @IBOutlet private weak var backButton: UIButton! {
         didSet {
             backButton.setTitle("", for: .normal)
         }
     }
-    @IBOutlet var scrollView: UIScrollView! {
+    @IBOutlet private var scrollView: UIScrollView! {
         didSet {
             scrollView.minimumZoomScale = 0.1
             scrollView.maximumZoomScale = 1.25
         }
     }
-    @IBOutlet weak var shareButton: UIButton! {
+    @IBOutlet private weak var shareButton: UIButton! {
         didSet {
             shareButton.setTitle("", for: .normal)
         }

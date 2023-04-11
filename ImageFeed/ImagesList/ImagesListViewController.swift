@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImagesListViewController: BaseViewController {
+final class ImagesListViewController: BaseViewController {
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
@@ -30,8 +30,10 @@ class ImagesListViewController: BaseViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
+            guard let viewController = segue.destination as? SingleImageViewController,
+                  let indexPath = sender as? IndexPath else {
+                return
+            }
             let image = UIImage(named: photosName[indexPath.row])
             viewController.image = image
         } else {
