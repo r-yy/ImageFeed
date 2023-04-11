@@ -9,12 +9,114 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
     static var reuseIdentifer = "ImagesListCell"
+
+    private let contentImage: UIImageView = {
+        let imageView = UIImageView()
+
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 16
+
+        return imageView
+    }()
+
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+
+        label.textColor = .ypWhite
+        label.font = UIFont(
+            name: "SF Pro Text Regular",
+            size: 13
+        )
+
+        return label
+    }()
+
+    private let likeButton: UIButton = {
+        let button = UIButton()
+        return button
+    }()
     
     private var subview: GradientBlurView?
-    
-    @IBOutlet weak var contentImage: UIImageView!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
+
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+
+        contentView.backgroundColor = .ypBlack
+        contentView.clipsToBounds = true
+        addSubviews()
+        applyConstraints()
+        addGradient()
+    }
+
+    required init?(
+        coder: NSCoder
+    ) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+extension ImagesListCell {
+    func addSubviews() {
+        contentView.addSubview(contentImage)
+        contentView.addSubview(dateLabel)
+        contentView.bringSubviewToFront(dateLabel)
+        contentView.addSubview(likeButton)
+
+    }
+}
+
+extension ImagesListCell {
+    func applyConstraints() {
+        contentImage.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            contentImage.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 4
+            ),
+            contentImage.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -16
+            ),
+            contentImage.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -4
+            ),
+            contentImage.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: 16
+            ),
+            dateLabel.bottomAnchor.constraint(
+                equalTo: contentImage.bottomAnchor,
+                constant: -8
+            ),
+            dateLabel.leadingAnchor.constraint(
+                equalTo: contentImage.leadingAnchor,
+                constant: 8
+            ),
+            likeButton.topAnchor.constraint(
+                equalTo: contentImage.topAnchor
+            ),
+            likeButton.trailingAnchor.constraint(
+                equalTo: contentImage.trailingAnchor
+            ),
+            likeButton.widthAnchor.constraint(
+                equalToConstant: 42
+            ),
+            likeButton.heightAnchor.constraint(
+                equalToConstant: 42
+            )
+        ])
+    }
 }
 
 //MARK: Configurate cell
@@ -26,11 +128,15 @@ extension ImagesListCell {
     
     func configCell(image: UIImage?, date: String, isLiked: Bool) {
         contentImage.image = image
-        contentImage.bringSubviewToFront(dateLabel)
+
         
         dateLabel.text = date
 
-        let buttonImage = isLiked ? UIImage(named: LikeButtonNames.inactiveLike.rawValue) : UIImage(named: LikeButtonNames.activeLike.rawValue)
+        let buttonImage = isLiked ? UIImage(
+            named: LikeButtonNames.inactiveLike.rawValue
+        ) : UIImage(
+            named: LikeButtonNames.activeLike.rawValue
+        )
         likeButton.setImage(buttonImage, for: .normal)
         likeButton.setTitle(String(), for: .normal)
     }
@@ -47,24 +153,29 @@ extension ImagesListCell {
         
         overlayView.layer.masksToBounds = true
         overlayView.layer.cornerRadius = 16
-        overlayView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        overlayView.layer.maskedCorners = [
+            .layerMaxXMaxYCorner,
+            .layerMinXMaxYCorner]
         overlayView.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(overlayView)
                 
         NSLayoutConstraint.activate([
-            overlayView.heightAnchor.constraint(equalToConstant: 30),
-            overlayView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            overlayView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            overlayView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
+            overlayView.heightAnchor.constraint(
+                equalToConstant: 30
+            ),
+            overlayView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: 16
+            ),
+            overlayView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -16
+            ),
+            overlayView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -4
+            )
         ])
-    }
-}
-
-//MARK: Delete gradient for reused cells
-extension ImagesListCell {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        subview?.removeFromSuperview()
     }
 }
