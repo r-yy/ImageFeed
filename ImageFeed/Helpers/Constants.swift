@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnsplashAPI {
+struct API {
     let accessKey = "doLPUOLi1Ypom-FZmM09AlIKUpPkh6oI-dRFhhgqa_Q"
     let cecretKey = "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY"
 
