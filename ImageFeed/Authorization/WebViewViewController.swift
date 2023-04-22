@@ -62,13 +62,19 @@ extension WebViewViewController {
             webView.leadingAnchor.constraint(
                 equalTo: self.view.leadingAnchor
             ),
+            backButton.widthAnchor.constraint(
+                equalToConstant: 24
+            ),
+            backButton.heightAnchor.constraint(
+                equalToConstant: 24
+            ),
             backButton.leadingAnchor.constraint(
-                equalTo: webView.leadingAnchor,
-                constant: 16
+                equalTo: self.view.leadingAnchor,
+                constant: 9
             ),
             backButton.topAnchor.constraint(
-                equalTo: webView.topAnchor,
-                constant: 59
+                equalTo: self.view.safeAreaLayoutGuide.topAnchor,
+                constant: 9
             )
         ])
     }
