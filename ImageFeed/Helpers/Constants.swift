@@ -9,7 +9,7 @@ import Foundation
 
 struct API {
     let accessKey = "doLPUOLi1Ypom-FZmM09AlIKUpPkh6oI-dRFhhgqa_Q"
-    let cecretKey = "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY"
+    let secretKey = "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY"
 
     let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
 

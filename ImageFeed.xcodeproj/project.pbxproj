@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E40FC5F329F4531A00A810A7 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40FC5F229F4531A00A810A7 /* AuthViewController.swift */; };
 		E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AB17729D0C122005361BF /* ImagesListCell.swift */; };
 		E43AB17A29D0CF59005361BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E43AB17929D0CF59005361BF /* Main.storyboard */; };
 		E44AA81129E305F5000A8F03 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44AA81029E305F5000A8F03 /* BaseViewController.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E40FC5F229F4531A00A810A7 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E43AB17729D0C122005361BF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		E43AB17929D0CF59005361BF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E44AA81029E305F5000A8F03 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E40FC5F129F4530C00A810A7 /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				E40FC5F229F4531A00A810A7 /* AuthViewController.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
 		E43AB17629D0C102005361BF /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +113,7 @@
 		E4A9749A29C3C96C00C30D23 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				E40FC5F129F4530C00A810A7 /* Authorization */,
 				E468211829E4B89000B84D75 /* Classes */,
 				E44AA80F29E305E3000A8F03 /* BaseViewController */,
 				E4F2677729DB3FA400484A56 /* SingleImage */,
@@ -230,6 +241,7 @@
 				E4A3B09129F2D406001D15C0 /* Constants.swift in Sources */,
 				E4AD177229D210AB00721CEA /* UIColor + Extensions.swift in Sources */,
 				E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */,
+				E40FC5F329F4531A00A810A7 /* AuthViewController.swift in Sources */,
 				E4D657F529D5EA3100E455B5 /* GradientBlurView.swift in Sources */,
 				E4F2677529DB1ECE00484A56 /* ProfileViewController.swift in Sources */,
 				E468211A29E4B8A700B84D75 /* CircularImageView.swift in Sources */,
