@@ -29,7 +29,7 @@ final class SingleImageViewController: BaseViewController {
         let button = UIButton()
 
         button.setImage(
-            UIImage(named: "back"),
+            UIImage(named: "lightBack"),
             for: .normal
         )
         button.addTarget(
