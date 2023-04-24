@@ -80,11 +80,13 @@ final class SingleImageViewController: BaseViewController {
         )
     }
 
-    @objc func backButtonTapped() {
+    @objc
+    func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
 
-    @objc func shareButtonTapped() {
+    @objc
+    func shareButtonTapped() {
         presentActivityViewController()
     }
 }

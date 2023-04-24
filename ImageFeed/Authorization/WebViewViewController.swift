@@ -27,7 +27,6 @@ final class WebViewViewController: BaseViewController {
     private let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.tintColor = .ypBlack
-        progressView.progress = 0.5
         return progressView
     }()
 
@@ -39,11 +38,25 @@ final class WebViewViewController: BaseViewController {
         addSubviews()
         applyConstraints()
 
+
         loadWebView()
         webView.navigationDelegate = self
     }
 
-    @objc func backToAuthVC() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        addObserver()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        removeObserver()
+    }
+
+    @objc
+    func backToAuthVC() {
         delegate?.webViewViewControllerDidCandel(self)
     }
 }
@@ -99,6 +112,49 @@ extension WebViewViewController: WKNavigationDelegate {
             return codeItem.value
         } else {
             return nil
+        }
+    }
+}
+
+//MARK: KVO
+extension WebViewViewController {
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+            updateProgress()
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+
+    private func updateProgress() {
+        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 0.8)
+        progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
+    }
+
+    private func addObserver() {
+        webView.addObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            options: .new,
+            context: nil
+        )
+    }
+
+    private func removeObserver() {
+        webView.removeObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            context: nil)
+    }
+
+    private func updateProgressSmoothly(to value: Float, duration: TimeInterval) {
+        UIView.animate(withDuration: duration) {
+            self.progressView.setProgress(value, animated: true)
         }
     }
 }
