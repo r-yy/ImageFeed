@@ -27,6 +27,7 @@ final class WebViewViewController: BaseViewController {
     private let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.tintColor = .ypBlack
+        progressView.progress = 0.0
         return progressView
     }()
 
@@ -132,7 +133,7 @@ extension WebViewViewController {
     }
 
     private func updateProgress() {
-        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 0.8)
+        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 1)
         progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
     }
 
@@ -153,8 +154,11 @@ extension WebViewViewController {
     }
 
     private func updateProgressSmoothly(to value: Float, duration: TimeInterval) {
-        UIView.animate(withDuration: duration) {
+        UIView.animate(withDuration: duration, animations: {
             self.progressView.setProgress(value, animated: true)
+        }) {
+            _ in
+            self.progressView.progress = 1.0
         }
     }
 }
