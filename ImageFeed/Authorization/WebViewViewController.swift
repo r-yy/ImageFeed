@@ -9,7 +9,7 @@ import WebKit
 
 final class WebViewViewController: BaseViewController {
     private let webView = WKWebView()
-
+    private let api = API()
     private let backButton: UIButton = {
         let button = UIButton()
         button.setImage(
@@ -25,15 +25,75 @@ final class WebViewViewController: BaseViewController {
         return button
     }()
 
+    var delegate: WebViewViewControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addSubviews()
         applyConstraints()
+
+        loadWebView()
+        webView.navigationDelegate = self
     }
 
     @objc func backToAuthVC() {
-        dismiss(animated: true)
+        delegate?.webViewViewControllerDidCandel(self)
+    }
+}
+
+extension WebViewViewController {
+    private func getURL() -> URL {
+        guard let urlComponents = URLComponents(string: api.authUrlString) else {
+            fatalError("Auth URL is unvailable")
+        }
+
+        var composedURL = urlComponents
+        composedURL.queryItems = [
+            URLQueryItem(name: "client_id", value: api.accessKey),
+            URLQueryItem(name: "redirect_uri", value: api.redirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: api.acessScope)
+        ]
+
+        guard let url = composedURL.url else {
+            fatalError("Unable to construct composed Auth URL")
+        }
+        return url
+    }
+
+    private func loadWebView() {
+        let request = URLRequest(url: getURL())
+        webView.load(request)
+    }
+}
+
+extension WebViewViewController: WKNavigationDelegate {
+    private func webView(
+        webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            //TODO: process code
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        if
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == "/oauth/authorize/native",
+            let queryItems = urlComponents.queryItems,
+            let codeItem = queryItems.first(where: { $0.name == "code" })
+        {
+            return codeItem.value
+        } else {
+            return nil
+        }
     }
 }
 

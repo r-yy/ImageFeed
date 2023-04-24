@@ -94,7 +94,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="dfG-Kw-RJu"/>
                     <connections>
-                        <segue destination="BWi-FX-fwu" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="NbY-ds-yBD"/>
+                        <segue destination="BWi-FX-fwu" kind="presentation" identifier="ShowAuthWebView" modalPresentationStyle="overFullScreen" id="NbY-ds-yBD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Ic-AV-mBY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

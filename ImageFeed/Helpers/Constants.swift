@@ -15,10 +15,12 @@ struct API {
 
     let acessScope = "public+read_user+write_likes"
 
+
     let defaultBaseUrl: URL = {
         guard let url = URL(string: "https://api.unsplash.com/") else {
             preconditionFailure("Unsplash API is unavailable")
         }
         return url
     }()
+    let authUrlString = "https://unsplash.com/oauth/authorize"
 }

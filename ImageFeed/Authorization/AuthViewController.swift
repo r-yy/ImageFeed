@@ -8,6 +8,8 @@
 import UIKit
 
 final class AuthViewController: BaseViewController {
+    private let segueIdentifier = "ShowAuthWebView"
+
     private var logoImage: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "logoUnsplash")
@@ -41,7 +43,7 @@ final class AuthViewController: BaseViewController {
     }
 
     @objc func openWebViewVC() {
-        performSegue(withIdentifier: "ShowWebView", sender: self)
+        performSegue(withIdentifier: "ShowAuthWebView", sender: self)
     }
 }
 
@@ -80,5 +82,28 @@ extension AuthViewController {
                 equalToConstant: 48
             )
         ])
+    }
+}
+
+extension AuthViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == segueIdentifier {
+            guard let vc = segue.destination as? WebViewViewController else {
+                fatalError("Failed to prepare \(segueIdentifier)")
+            }
+            vc.delegate = self
+        } else {
+            prepare(for: segue, sender: sender)
+        }
+    }
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+
+    }
+
+    func webViewViewControllerDidCandel(_ vc: WebViewViewController) {
+        dismiss(animated: true)
     }
 }
