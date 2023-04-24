@@ -133,7 +133,7 @@ extension WebViewViewController {
     }
 
     private func updateProgress() {
-        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 1)
+        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 0.8)
         progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
     }
 
