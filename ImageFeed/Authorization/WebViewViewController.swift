@@ -24,6 +24,12 @@ final class WebViewViewController: BaseViewController {
         )
         return button
     }()
+    private let progressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.tintColor = .ypBlack
+        progressView.progress = 0.5
+        return progressView
+    }()
 
     var delegate: WebViewViewControllerDelegate?
 
@@ -101,6 +107,7 @@ extension WebViewViewController {
     private func addSubviews() {
         self.view.addSubview(webView)
         webView.addSubview(backButton)
+        webView.addSubview(progressView)
     }
 }
 
@@ -108,6 +115,7 @@ extension WebViewViewController {
     private func applyConstraints() {
         webView.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
+        progressView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(
@@ -123,18 +131,26 @@ extension WebViewViewController {
                 equalTo: self.view.leadingAnchor
             ),
             backButton.widthAnchor.constraint(
-                equalToConstant: 24
+                equalToConstant: 30
             ),
             backButton.heightAnchor.constraint(
-                equalToConstant: 24
+                equalToConstant: 30
             ),
             backButton.leadingAnchor.constraint(
                 equalTo: self.view.leadingAnchor,
-                constant: 9
+                constant: 5
             ),
             backButton.topAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.topAnchor,
-                constant: 9
+                equalTo: self.view.safeAreaLayoutGuide.topAnchor
+            ),
+            progressView.topAnchor.constraint(
+                equalTo: backButton.bottomAnchor
+            ),
+            progressView.leadingAnchor.constraint(
+                equalTo: webView.leadingAnchor
+            ),
+            progressView.trailingAnchor.constraint(
+                equalTo: webView.trailingAnchor
             )
         ])
     }
