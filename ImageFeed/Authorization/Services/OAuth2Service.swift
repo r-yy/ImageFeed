@@ -12,21 +12,40 @@ final class OAuth2Service {
         case codeError
     }
 
+    private let oAuthTokenStorage = OAuth2TokenStorage()
+
     func fetchAuthToken(
         code: String,
         completition: @escaping (Result<String, Error>) -> Void
     ) {
-        guard let urlComponents = URLComponents(string: API.OAuthTokenURLString) else {
+        guard let urlComponents = URLComponents(
+            string: API.OAuthTokenURLString
+        ) else {
             fatalError("Auth token URL is unvailable")
         }
 
         var composedURL = urlComponents
         composedURL.queryItems = [
-            URLQueryItem(name: "client_id", value: API.accessKey),
-            URLQueryItem(name: "client_secret", value: API.secretKey),
-            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
-            URLQueryItem(name: "code", value: code),
-            URLQueryItem(name: "grant_type", value: "authorization_code")
+            URLQueryItem(
+                name: "client_id",
+                value: API.accessKey
+            ),
+            URLQueryItem(
+                name: "client_secret",
+                value: API.secretKey
+            ),
+            URLQueryItem(
+                name: "redirect_uri",
+                value: API.redirectURI
+            ),
+            URLQueryItem(
+                name: "code",
+                value: code
+            ),
+            URLQueryItem(
+                name: "grant_type",
+                value: "authorization_code"
+            )
         ]
 
         guard let url = composedURL.url else {
@@ -36,11 +55,9 @@ final class OAuth2Service {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
-        let task = URLSession.shared.dataTask(with: request) {
-            data,
-            response,
-            error in
-
+        let task = URLSession.shared.dataTask(
+            with: request
+        ) { data, response, error in
             if
                 let error = error {
                 completition(.failure(error))
@@ -57,10 +74,12 @@ final class OAuth2Service {
             guard let data = data else { return }
 
             do {
-                let OAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
-                completition(.success(OAuthToken.acessToken))
+                let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
+                self.oAuthTokenStorage.token = oAuthToken.access_token
+                completition(.success(oAuthToken.access_token))
             }
-            catch {
+            catch let decodingError {
+                print("Decoding error: \(decodingError)")
                 completition(.failure(FetchError.codeError))
             }
         }

@@ -8,8 +8,9 @@
 import Foundation
 
 struct OAuthToken: Decodable {
-    var acessToken: String
-    var tokenType: String
+    var access_token: String
+    var token_type: String
+    var refresh_token: String
     var scope: String
-    var createdAt: Int
+    var created_at: Int
 }

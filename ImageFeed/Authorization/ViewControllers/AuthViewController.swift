@@ -35,29 +35,32 @@ final class AuthViewController: BaseViewController {
         return button
     }()
 
-    private var OAuthService: OAuth2Service?
-    private var OAuthTokenStorage: OAuth2TokenStorage?
+    var delegate: AuthViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
-        addSubview()
-        applyConstraints()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        makeView()
     }
 
     @objc func openWebViewVC() {
-        performSegue(withIdentifier: "ShowAuthWebView", sender: self)
+        performSegue(
+            withIdentifier: "ShowAuthWebView",
+            sender: self
+        )
     }
 }
 
+//MARK: Make View
 extension AuthViewController {
     private func addSubview() {
         self.view.addSubview(logoImage)
         self.view.addSubview(authButton)
     }
-}
 
-extension AuthViewController {
     private func applyConstraints() {
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         authButton.translatesAutoresizingMaskIntoConstraints = false
@@ -86,12 +89,39 @@ extension AuthViewController {
             )
         ])
     }
+
+    private func preferNavigationBar() {
+        navigationController?.navigationBar.barStyle = .black
+    }
+
+    private func preferBackButton() {
+        let backButton = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        navigationItem.backBarButtonItem = backButton
+    }
+
+    private func makeView() {
+        addSubview()
+        applyConstraints()
+        preferNavigationBar()
+        preferBackButton()
+    }
 }
 
+//MARK: Segue to WebView
 extension AuthViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(
+        for segue: UIStoryboardSegue,
+        sender: Any?
+    ) {
         if segue.identifier == segueIdentifier {
-            guard let vc = segue.destination as? WebViewViewController else {
+            guard let vc = segue
+                .destination as? WebViewViewController else {
+
                 fatalError("Failed to prepare \(segueIdentifier)")
             }
             vc.delegate = self
@@ -101,27 +131,21 @@ extension AuthViewController {
     }
 }
 
+//MARK: Delegate implementation
 extension AuthViewController: WebViewViewControllerDelegate {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuthService = OAuth2Service()
-        OAuthTokenStorage = OAuth2TokenStorage()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-
-            self.OAuthService?.fetchAuthToken(code: code) { result in
-                switch result {
-                case .success(let success):
-                    self.OAuthTokenStorage?.token = success
-                case .failure(let failure):
-                    //TODO: Make alert
-                    return
-                }
-            }
-        }
+    func webViewViewController(
+        _ vc: WebViewViewController,
+        didAuthenticateWithCode code: String
+    ) {
+        delegate?.authViewController(
+            self,
+            didAuthenticateWithCode: code
+        )
     }
 
-    func webViewViewControllerDidCandel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
+    func webViewViewControllerDidCandel(
+        _ vc: WebViewViewController
+    ) {
+        navigationController?.popViewController(animated: true)
     }
 }

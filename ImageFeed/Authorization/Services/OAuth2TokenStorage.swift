@@ -8,15 +8,12 @@
 import Foundation
 
 final class OAuth2TokenStorage {
-    let userDefaults = UserDefaults.standard
-    let key = "OAuth2Token"
+    private let userDefaults = UserDefaults.standard
+    private let key = "OAuth2Token"
 
-    var token: String {
+    var token: String? {
         get {
-            guard let token = userDefaults.string(forKey: key) else {
-                preconditionFailure("Token is empty")
-            }
-            return token
+            userDefaults.string(forKey: key)
         }
         set {
             userDefaults.set(newValue, forKey: key)

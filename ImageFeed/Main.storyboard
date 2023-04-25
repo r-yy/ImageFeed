@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HGZ-ky-g9T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WA2-2k-Vdd">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -47,7 +47,8 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Odl-qJ-7lk">
             <objects>
-                <tabBarController id="eFn-IZ-dg6" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="eFn-IZ-dg6" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="DRJ-tw-tfO"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="HbA-8N-CAY">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -94,18 +95,19 @@
                     </view>
                     <navigationItem key="navigationItem" id="dfG-Kw-RJu"/>
                     <connections>
-                        <segue destination="BWi-FX-fwu" kind="presentation" identifier="ShowAuthWebView" modalPresentationStyle="overFullScreen" id="NbY-ds-yBD"/>
+                        <segue destination="BWi-FX-fwu" kind="show" identifier="ShowAuthWebView" id="NbY-ds-yBD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Ic-AV-mBY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2372" y="-120"/>
+            <point key="canvasLocation" x="1030" y="-593"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="luV-Pq-wop">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HGZ-ky-g9T" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="dH6-s2-jaN"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="yC4-Xl-zfX">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -117,7 +119,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ny-jG-Pqh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3298" y="-120"/>
+            <point key="canvasLocation" x="105" y="-593"/>
         </scene>
         <!--Web View View Controller-->
         <scene sceneID="4XC-ds-cV6">
@@ -129,10 +131,30 @@
                         <viewLayoutGuide key="safeArea" id="CNW-k8-RM1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="mZH-s3-3Bo"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ASa-Sc-GRP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1460" y="-120"/>
+            <point key="canvasLocation" x="1943" y="-593"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="a09-dq-drD">
+            <objects>
+                <viewController id="WA2-2k-Vdd" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KZV-qa-dO8">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="jRW-Kt-w2s"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <segue destination="HGZ-ky-g9T" kind="presentation" identifier="ShowAuthScreen" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="39P-P0-EiG"/>
+                        <segue destination="eFn-IZ-dg6" kind="presentation" identifier="ShowMainScreen" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="sBB-Oh-i9o"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JBn-Tl-1yv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-923" y="-19"/>
         </scene>
     </scenes>
     <resources>

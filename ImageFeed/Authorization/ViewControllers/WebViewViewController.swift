@@ -7,22 +7,16 @@
 
 import WebKit
 
-final class WebViewViewController: BaseViewController {
+final class WebViewViewController: UIViewController {
     private let webView = WKWebView()
-    private let backButton: UIButton = {
-        let button = UIButton()
-        button.setImage(
-            UIImage(named: "darkBack"),
-            for: .normal
-        )
-        button.setTitle(nil, for: .normal)
-        button.addTarget(
-            self,
-            action: #selector(backToAuthVC),
-            for: .touchUpInside
-        )
+
+    private let backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.action = #selector(backToAuthVC)
+        button.image = UIImage(named: "darkBack")
         return button
     }()
+
     private let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.tintColor = .ypBlack
@@ -35,10 +29,6 @@ final class WebViewViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addSubviews()
-        applyConstraints()
-
-
         loadWebView()
         webView.navigationDelegate = self
     }
@@ -46,12 +36,12 @@ final class WebViewViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        makeView()
         addObserver()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
         removeObserver()
     }
 
@@ -61,18 +51,33 @@ final class WebViewViewController: BaseViewController {
     }
 }
 
+//MARK: Load WebView
 extension WebViewViewController {
     private func getURL() -> URL {
-        guard let urlComponents = URLComponents(string: API.authUrlString) else {
+        guard let urlComponents = URLComponents(
+            string: API.authUrlString
+        ) else {
             fatalError("Auth URL is unvailable")
         }
 
         var composedURL = urlComponents
         composedURL.queryItems = [
-            URLQueryItem(name: "client_id", value: API.accessKey),
-            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: API.acessScope)
+            URLQueryItem(
+                name: "client_id",
+                value: API.accessKey
+            ),
+            URLQueryItem(
+                name: "redirect_uri",
+                value: API.redirectURI
+            ),
+            URLQueryItem(
+                name: "response_type",
+                value: "code"
+            ),
+            URLQueryItem(
+                name: "scope",
+                value: API.acessScope
+            )
         ]
 
         guard let url = composedURL.url else {
@@ -87,21 +92,27 @@ extension WebViewViewController {
     }
 }
 
+//MARK: WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
-    private func webView(
-        webView: WKWebView,
+    func webView(
+        _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if let code = code(from: navigationAction) {
-            //TODO: process code
+            delegate?.webViewViewController(
+                self,
+                didAuthenticateWithCode: code
+            )
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
         }
     }
 
-    private func code(from navigationAction: WKNavigationAction) -> String? {
+    private func code(
+        from navigationAction: WKNavigationAction
+    ) -> String? {
         if
             let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
@@ -127,12 +138,20 @@ extension WebViewViewController {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
             updateProgress()
         } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            super.observeValue(
+                forKeyPath: keyPath,
+                of: object,
+                change: change,
+                context: context
+            )
         }
     }
 
     private func updateProgress() {
-        updateProgressSmoothly(to: Float(webView.estimatedProgress), duration: 0.8)
+        updateProgressSmoothly(
+            to: Float(webView.estimatedProgress),
+            duration: 0.8
+        )
         progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
     }
 
@@ -152,7 +171,10 @@ extension WebViewViewController {
             context: nil)
     }
 
-    private func updateProgressSmoothly(to value: Float, duration: TimeInterval) {
+    private func updateProgressSmoothly(
+        to value: Float,
+        duration: TimeInterval
+    ) {
         UIView.animate(withDuration: duration, animations: {
             self.progressView.setProgress(value, animated: true)
         }) {
@@ -162,18 +184,15 @@ extension WebViewViewController {
     }
 }
 
+//MARK: Make View
 extension WebViewViewController {
-    private func addSubviews() {
+    private func addSubview() {
         self.view.addSubview(webView)
-        webView.addSubview(backButton)
         webView.addSubview(progressView)
     }
-}
 
-extension WebViewViewController {
     private func applyConstraints() {
         webView.translatesAutoresizingMaskIntoConstraints = false
-        backButton.translatesAutoresizingMaskIntoConstraints = false
         progressView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -189,21 +208,8 @@ extension WebViewViewController {
             webView.leadingAnchor.constraint(
                 equalTo: self.view.leadingAnchor
             ),
-            backButton.widthAnchor.constraint(
-                equalToConstant: 30
-            ),
-            backButton.heightAnchor.constraint(
-                equalToConstant: 30
-            ),
-            backButton.leadingAnchor.constraint(
-                equalTo: self.view.leadingAnchor,
-                constant: 5
-            ),
-            backButton.topAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.topAnchor
-            ),
             progressView.topAnchor.constraint(
-                equalTo: backButton.bottomAnchor
+                equalTo: self.view.safeAreaLayoutGuide.topAnchor
             ),
             progressView.leadingAnchor.constraint(
                 equalTo: webView.leadingAnchor
@@ -212,5 +218,19 @@ extension WebViewViewController {
                 equalTo: webView.trailingAnchor
             )
         ])
+    }
+
+    private func preferNavigationBar() {
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.tintColor = .black
+        backButton.target = self
+        navigationItem.leftBarButtonItem = backButton
+        navigationController?.navigationBar.backgroundColor = .clear
+    }
+
+    private func makeView() {
+        addSubview()
+        applyConstraints()
+        preferNavigationBar()
     }
 }
