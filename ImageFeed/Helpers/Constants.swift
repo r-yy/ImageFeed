@@ -8,19 +8,20 @@
 import Foundation
 
 struct API {
-    let accessKey = "doLPUOLi1Ypom-FZmM09AlIKUpPkh6oI-dRFhhgqa_Q"
-    let secretKey = "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY"
+    static let accessKey = "doLPUOLi1Ypom-FZmM09AlIKUpPkh6oI-dRFhhgqa_Q"
+    static let secretKey = "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY"
 
-    let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
+    static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
 
-    let acessScope = "public+read_user+write_likes"
+    static let acessScope = "public+read_user+write_likes"
 
 
-    let defaultBaseUrl: URL = {
+    static let defaultBaseUrl: URL = {
         guard let url = URL(string: "https://api.unsplash.com/") else {
             preconditionFailure("Unsplash API is unavailable")
         }
         return url
     }()
-    let authUrlString = "https://unsplash.com/oauth/authorize"
+    static let authUrlString = "https://unsplash.com/oauth/authorize"
+    static let OAuthTokenURLString = "https://unsplash.com/oauth/token"
 }

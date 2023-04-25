@@ -35,6 +35,9 @@ final class AuthViewController: BaseViewController {
         return button
     }()
 
+    private var OAuthService: OAuth2Service?
+    private var OAuthTokenStorage: OAuth2TokenStorage?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -100,7 +103,22 @@ extension AuthViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        OAuthService = OAuth2Service()
+        OAuthTokenStorage = OAuth2TokenStorage()
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+
+            self.OAuthService?.fetchAuthToken(code: code) { result in
+                switch result {
+                case .success(let success):
+                    self.OAuthTokenStorage?.token = success
+                case .failure(let failure):
+                    //TODO: Make alert
+                    return
+                }
+            }
+        }
     }
 
     func webViewViewControllerDidCandel(_ vc: WebViewViewController) {

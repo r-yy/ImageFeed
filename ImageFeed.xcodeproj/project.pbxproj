@@ -20,6 +20,9 @@
 		E4A974A529C3C96C00C30D23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4A974A429C3C96C00C30D23 /* Assets.xcassets */; };
 		E4A974A829C3C96C00C30D23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4A974A629C3C96C00C30D23 /* LaunchScreen.storyboard */; };
 		E4AD177229D210AB00721CEA /* UIColor + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AD177129D210AB00721CEA /* UIColor + Extensions.swift */; };
+		E4D2B77929F73D39007289AD /* OAuthToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D2B77829F73D39007289AD /* OAuthToken.swift */; };
+		E4D2B77D29F73E4A007289AD /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D2B77C29F73E4A007289AD /* OAuth2Service.swift */; };
+		E4D2B77F29F74EDD007289AD /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D2B77E29F74EDD007289AD /* OAuth2TokenStorage.swift */; };
 		E4D657F529D5EA3100E455B5 /* GradientBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D657F429D5EA3100E455B5 /* GradientBlurView.swift */; };
 		E4D6583329D6108100E455B5 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4D6580429D6107E00E455B5 /* SF-Pro-Text-Bold.otf */; };
 		E4D6583929D6108100E455B5 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4D6580A29D6107E00E455B5 /* SF-Pro-Text-Regular.otf */; };
@@ -44,6 +47,9 @@
 		E4A974A729C3C96C00C30D23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E4A974A929C3C96C00C30D23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4AD177129D210AB00721CEA /* UIColor + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extensions.swift"; sourceTree = "<group>"; };
+		E4D2B77829F73D39007289AD /* OAuthToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthToken.swift; sourceTree = "<group>"; };
+		E4D2B77C29F73E4A007289AD /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
+		E4D2B77E29F74EDD007289AD /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		E4D657F429D5EA3100E455B5 /* GradientBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBlurView.swift; sourceTree = "<group>"; };
 		E4D6580429D6107E00E455B5 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
 		E4D6580A29D6107E00E455B5 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
@@ -66,9 +72,9 @@
 		E40FC5F129F4530C00A810A7 /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
-				E40FC5F229F4531A00A810A7 /* AuthViewController.swift */,
-				E40FC5F429F45C7600A810A7 /* WebViewViewController.swift */,
-				E4F2F0A529F715C100172E8A /* WebViewViewControllerDelegate.swift */,
+				E4D2B77B29F73E18007289AD /* ViewControllers */,
+				E4D2B77A29F73E09007289AD /* Services */,
+				E4D2B77729F73D14007289AD /* Models */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -143,6 +149,33 @@
 				E4A3B09029F2D406001D15C0 /* Constants.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E4D2B77729F73D14007289AD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E4D2B77829F73D39007289AD /* OAuthToken.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E4D2B77A29F73E09007289AD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E4F2F0A529F715C100172E8A /* WebViewViewControllerDelegate.swift */,
+				E4D2B77C29F73E4A007289AD /* OAuth2Service.swift */,
+				E4D2B77E29F74EDD007289AD /* OAuth2TokenStorage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E4D2B77B29F73E18007289AD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E40FC5F229F4531A00A810A7 /* AuthViewController.swift */,
+				E40FC5F429F45C7600A810A7 /* WebViewViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		E4D657F929D6106200E455B5 /* Fonts */ = {
@@ -245,8 +278,11 @@
 			files = (
 				E4A974A029C3C96C00C30D23 /* ImagesListViewController.swift in Sources */,
 				E4A3B09129F2D406001D15C0 /* Constants.swift in Sources */,
+				E4D2B77D29F73E4A007289AD /* OAuth2Service.swift in Sources */,
+				E4D2B77929F73D39007289AD /* OAuthToken.swift in Sources */,
 				E4AD177229D210AB00721CEA /* UIColor + Extensions.swift in Sources */,
 				E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */,
+				E4D2B77F29F74EDD007289AD /* OAuth2TokenStorage.swift in Sources */,
 				E40FC5F329F4531A00A810A7 /* AuthViewController.swift in Sources */,
 				E4F2F0A629F715C100172E8A /* WebViewViewControllerDelegate.swift in Sources */,
 				E4D657F529D5EA3100E455B5 /* GradientBlurView.swift in Sources */,

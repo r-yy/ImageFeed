@@ -9,7 +9,6 @@ import WebKit
 
 final class WebViewViewController: BaseViewController {
     private let webView = WKWebView()
-    private let api = API()
     private let backButton: UIButton = {
         let button = UIButton()
         button.setImage(
@@ -64,16 +63,16 @@ final class WebViewViewController: BaseViewController {
 
 extension WebViewViewController {
     private func getURL() -> URL {
-        guard let urlComponents = URLComponents(string: api.authUrlString) else {
+        guard let urlComponents = URLComponents(string: API.authUrlString) else {
             fatalError("Auth URL is unvailable")
         }
 
         var composedURL = urlComponents
         composedURL.queryItems = [
-            URLQueryItem(name: "client_id", value: api.accessKey),
-            URLQueryItem(name: "redirect_uri", value: api.redirectURI),
+            URLQueryItem(name: "client_id", value: API.accessKey),
+            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: api.acessScope)
+            URLQueryItem(name: "scope", value: API.acessScope)
         ]
 
         guard let url = composedURL.url else {
