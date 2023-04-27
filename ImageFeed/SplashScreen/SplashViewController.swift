@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: BaseViewController {
     enum SegueIdentifiers: String {
@@ -98,15 +99,17 @@ extension SplashViewController: AuthViewControllerDelegate {
         _ vc: AuthViewController,
         didAuthenticateWithCode code: String
     ) {
+        ProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
-
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     self.switchToTabBarController()
+                    ProgressHUD.dismiss()
                 case .failure:
                     //TODO: Make alert
+                    ProgressHUD.dismiss()
                     break
                 }
             }
