@@ -29,7 +29,7 @@ final class SingleImageViewController: BaseViewController {
         let button = UIButton()
 
         button.setImage(
-            UIImage(named: "back"),
+            UIImage(named: "lightBack"),
             for: .normal
         )
         button.addTarget(
@@ -80,11 +80,13 @@ final class SingleImageViewController: BaseViewController {
         )
     }
 
-    @objc func backButtonTapped() {
+    @objc
+    private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
 
-    @objc func shareButtonTapped() {
+    @objc
+    private func shareButtonTapped() {
         presentActivityViewController()
     }
 }
