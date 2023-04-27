@@ -12,8 +12,6 @@ final class OAuth2Service {
         case codeError
     }
 
-    private let oAuthTokenStorage = OAuth2TokenStorage()
-
     func fetchAuthToken(
         code: String,
         completition: @escaping (Result<String, Error>) -> Void
@@ -21,7 +19,8 @@ final class OAuth2Service {
         guard let urlComponents = URLComponents(
             string: API.OAuthTokenURLString
         ) else {
-            fatalError("Auth token URL is unvailable")
+            assertionFailure("Auth token URL is unvailable")
+            return
         }
 
         var composedURL = urlComponents
@@ -49,7 +48,8 @@ final class OAuth2Service {
         ]
 
         guard let url = composedURL.url else {
-            fatalError("Unable to construct composed Auth token URL")
+            assertionFailure("Unable to construct composed Auth token URL")
+            return
         }
 
         var request = URLRequest(url: url)
@@ -75,11 +75,11 @@ final class OAuth2Service {
 
             do {
                 let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
-                self.oAuthTokenStorage.token = oAuthToken.access_token
-                completition(.success(oAuthToken.access_token))
+                OAuth2TokenStorage.shared.token = oAuthToken.accesToken
+                completition(.success(oAuthToken.accesToken))
             }
             catch let decodingError {
-                print("Decoding error: \(decodingError)")
+                assertionFailure("Decoding error: \(decodingError)")
                 completition(.failure(FetchError.codeError))
             }
         }

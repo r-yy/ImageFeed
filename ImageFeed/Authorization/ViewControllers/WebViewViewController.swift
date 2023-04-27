@@ -46,7 +46,7 @@ final class WebViewViewController: UIViewController {
     }
 
     @objc
-    func backToAuthVC() {
+    private func backToAuthVC() {
         delegate?.webViewViewControllerDidCandel(self)
     }
 }
@@ -57,7 +57,8 @@ extension WebViewViewController {
         guard let urlComponents = URLComponents(
             string: API.authUrlString
         ) else {
-            fatalError("Auth URL is unvailable")
+            assertionFailure("Auth URL is unvailable")
+            return URL(string: "about:blank")!
         }
 
         var composedURL = urlComponents
@@ -81,7 +82,8 @@ extension WebViewViewController {
         ]
 
         guard let url = composedURL.url else {
-            fatalError("Unable to construct composed Auth URL")
+            assertionFailure("Unable to construct composed Auth URL")
+            return URL(string: "about:blank")!
         }
         return url
     }

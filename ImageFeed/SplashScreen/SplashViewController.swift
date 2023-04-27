@@ -19,7 +19,6 @@ final class SplashViewController: BaseViewController {
     }()
 
     private var oAuthService = OAuth2Service()
-    private var oAuthToken = OAuth2TokenStorage()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +58,7 @@ extension SplashViewController {
 //MARK: Choose next screen
 extension SplashViewController {
     private func showNextScreen() {
-        if let _ = oAuthToken.token {
+        if let _ = OAuth2TokenStorage.shared.token {
             switchToTabBarController()
         } else {
             performSegue(
@@ -85,7 +84,8 @@ extension SplashViewController {
                   let viewController = navigationController
                 .viewControllers[0] as? AuthViewController else {
 
-                fatalError("Failed to prepare to ShowAuthScreen")
+                assertionFailure("Failed to prepare to ShowAuthScreen")
+                return
             }
             viewController.delegate = self
         }
@@ -98,7 +98,9 @@ extension SplashViewController: AuthViewControllerDelegate {
         _ vc: AuthViewController,
         didAuthenticateWithCode code: String
     ) {
-        oAuthService.fetchAuthToken(code: code) { result in
+        oAuthService.fetchAuthToken(code: code) { [weak self] result in
+            guard let self = self else { return }
+
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -116,7 +118,8 @@ extension SplashViewController: AuthViewControllerDelegate {
 extension SplashViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            fatalError("Fatal Error: Invalid configuration")
+            assertionFailure("Failed to invalid configuration")
+            return
         }
 
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)

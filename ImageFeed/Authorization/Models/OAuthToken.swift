@@ -8,9 +8,17 @@
 import Foundation
 
 struct OAuthToken: Decodable {
-    var access_token: String
-    var token_type: String
-    var refresh_token: String
+    var accesToken: String
+    var tokenType: String
+    var refreshToken: String
     var scope: String
-    var created_at: Int
+    var createdAt: Int
+
+    private enum CodingKeys: String, CodingKey {
+        case accesToken = "access_token"
+        case tokenType = "token_type"
+        case refreshToken = "refresh_token"
+        case scope
+        case createdAt = "created_at"
+    }
 }

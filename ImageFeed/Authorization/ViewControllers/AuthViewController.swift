@@ -46,7 +46,8 @@ final class AuthViewController: BaseViewController {
         makeView()
     }
 
-    @objc func openWebViewVC() {
+    @objc
+    private func openWebViewVC() {
         performSegue(
             withIdentifier: "ShowAuthWebView",
             sender: self
@@ -122,7 +123,8 @@ extension AuthViewController {
             guard let vc = segue
                 .destination as? WebViewViewController else {
 
-                fatalError("Failed to prepare \(segueIdentifier)")
+                assertionFailure("Failed to prepare \(segueIdentifier)")
+                return
             }
             vc.delegate = self
         } else {

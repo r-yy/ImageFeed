@@ -112,7 +112,6 @@
 		E4A9748F29C3C96C00C30D23 = {
 			isa = PBXGroup;
 			children = (
-				E4D657F929D6106200E455B5 /* Fonts */,
 				E4A9749A29C3C96C00C30D23 /* ImageFeed */,
 				E4A9749929C3C96C00C30D23 /* Products */,
 			);
@@ -137,6 +136,7 @@
 				E4F2677629DB3F9200484A56 /* Profile */,
 				E43AB17629D0C102005361BF /* ImagesList */,
 				E4AD177029D2109B00721CEA /* Helpers */,
+				E4D657F929D6106200E455B5 /* Fonts */,
 				E4A9749B29C3C96C00C30D23 /* AppDelegate.swift */,
 				E4A9749D29C3C96C00C30D23 /* SceneDelegate.swift */,
 				E43AB17929D0CF59005361BF /* Main.storyboard */,
