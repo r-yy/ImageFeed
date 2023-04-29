@@ -12,77 +12,83 @@ final class OAuth2Service {
         case codeError
     }
 
+    private var task: URLSessionTask?
+    private var lastCode: String?
+
     func fetchAuthToken(
         code: String,
         completition: @escaping (Result<String, Error>) -> Void
     ) {
-        guard let urlComponents = URLComponents(
-            string: API.OAuthTokenURLString
-        ) else {
-            assertionFailure("Auth token URL is unvailable")
-            return
-        }
+        assert(Thread.isMainThread)
 
-        var composedURL = urlComponents
-        composedURL.queryItems = [
-            URLQueryItem(
-                name: "client_id",
-                value: API.accessKey
-            ),
-            URLQueryItem(
-                name: "client_secret",
-                value: API.secretKey
-            ),
-            URLQueryItem(
-                name: "redirect_uri",
-                value: API.redirectURI
-            ),
-            URLQueryItem(
-                name: "code",
-                value: code
-            ),
-            URLQueryItem(
-                name: "grant_type",
-                value: "authorization_code"
-            )
-        ]
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
 
-        guard let url = composedURL.url else {
-            assertionFailure("Unable to construct composed Auth token URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        let request = makeAuthTokenRequest(code: code)
 
         let task = URLSession.shared.dataTask(
             with: request
         ) { data, response, error in
-            if
-                let error = error {
-                completition(.failure(error))
-                return
-            }
+            DispatchQueue.main.async {
+                if
+                    let error = error {
+                    completition(.failure(error))
+                    self.lastCode = nil
+                    return
+                }
 
-            if
-                let response = response as? HTTPURLResponse,
-                response.statusCode < 200 || response.statusCode >= 300 {
-                completition(.failure(FetchError.codeError))
-                return
-            }
+                if
+                    let response = response as? HTTPURLResponse,
+                    response.statusCode < 200 || response.statusCode >= 300 {
+                    completition(.failure(FetchError.codeError))
+                    self.lastCode = nil
+                    return
+                }
 
-            guard let data = data else { return }
+                guard let data = data else { return }
 
-            do {
-                let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
-                OAuth2TokenStorage.shared.token = oAuthToken.accesToken
-                completition(.success(oAuthToken.accesToken))
-            }
-            catch let decodingError {
-                assertionFailure("Decoding error: \(decodingError)")
-                completition(.failure(FetchError.codeError))
+                do {
+                    let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
+                    OAuth2TokenStorage.shared.token = oAuthToken.accesToken
+                    completition(.success(oAuthToken.accesToken))
+                    self.task = nil
+                }
+                catch let decodingError {
+                    assertionFailure("Decoding error: \(decodingError)")
+                    completition(.failure(FetchError.codeError))
+                    self.lastCode = nil
+                }
+
             }
         }
+        self.task = task
         task.resume()
+    }
+
+    private func makeAuthTokenRequest(code: String) -> URLRequest {
+        guard let baseURL = URL(string: API.OAuthTokenURLString)
+        else { preconditionFailure("Auth token URL is unvailable") }
+
+        let queryItems = [
+            URLQueryItem(name: "client_id", value: API.accessKey),
+            URLQueryItem(name: "client_secret", value: API.secretKey),
+            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code")
+        ]
+
+        var urlComponents = URLComponents(
+            url: baseURL, resolvingAgainstBaseURL: false)
+        urlComponents?.queryItems = queryItems
+
+
+        guard let url = urlComponents?.url else {
+            preconditionFailure("Unable to construct urlComponents")
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+
+        return request
     }
 }
