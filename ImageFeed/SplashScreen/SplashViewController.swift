@@ -99,17 +99,17 @@ extension SplashViewController: AuthViewControllerDelegate {
         _ vc: AuthViewController,
         didAuthenticateWithCode code: String
     ) {
-        ProgressHUD.show()
+        UIBlocingProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     self.switchToTabBarController()
-                    ProgressHUD.dismiss()
+                    UIBlocingProgressHUD.dismiss()
                 case .failure:
                     //TODO: Make alert
-                    ProgressHUD.dismiss()
+                    UIBlocingProgressHUD.dismiss()
                     break
                 }
             }
