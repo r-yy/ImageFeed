@@ -68,11 +68,41 @@ final class ProfileViewController: BaseViewController {
         return button
     }()
 
+    private let profileService = ProfileService()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addSubviews()
         applyConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        getProfile()
+    }
+}
+
+extension ProfileViewController {
+    func getProfile() {
+        guard let token = OAuth2TokenStorage.shared.token else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.profileService.fetchProfile(token) {
+                result in
+                switch result {
+                case .success(let success):
+                    self.nameLabel.text = success.name
+                    self.usernameLabel.text = success.loginName
+                    self.descriptionLabel.text = success.bio
+                case .failure:
+                    break
+                }
+            }
+        }
     }
 }
 
