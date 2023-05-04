@@ -24,6 +24,8 @@ final class WebViewViewController: UIViewController {
         return progressView
     }()
 
+    private var observer: NSKeyValueObservation?
+
     var delegate: WebViewViewControllerDelegate?
 
     override func viewDidLoad() {
@@ -42,7 +44,7 @@ final class WebViewViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        removeObserver()
+        observer?.invalidate()
     }
 
     @objc
@@ -131,57 +133,25 @@ extension WebViewViewController: WKNavigationDelegate {
 
 //MARK: KVO
 extension WebViewViewController {
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(
-                forKeyPath: keyPath,
-                of: object,
-                change: change,
-                context: context
-            )
-        }
-    }
-
     private func updateProgress() {
-        updateProgressSmoothly(
-            to: Float(webView.estimatedProgress),
-            duration: 0.8
-        )
+        let duration = 0.8
+        let progress: Float = Float(webView.estimatedProgress)
+
+        UIView.animate(withDuration: duration, animations: {
+            self.progressView.setProgress(progress, animated: true)
+        }) {
+            _ in
+            self.progressView.progress = 1.0
+        }
+
         progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
     }
 
     private func addObserver() {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-
-    private func removeObserver() {
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil)
-    }
-
-    private func updateProgressSmoothly(
-        to value: Float,
-        duration: TimeInterval
-    ) {
-        UIView.animate(withDuration: duration, animations: {
-            self.progressView.setProgress(value, animated: true)
-        }) {
-            _ in
-            self.progressView.progress = 1.0
+        observer = webView.observe(\.estimatedProgress) {
+            [weak self] _, _ in
+            guard let self else { return }
+            self.updateProgress()
         }
     }
 }
