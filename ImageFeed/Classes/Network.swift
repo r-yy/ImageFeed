@@ -8,6 +8,10 @@
 import Foundation
 
 final class Network {
+    static let shared = Network()
+
+    private let dataTask = URLSession.shared
+
     func getURL(withPath: String, baseURL: URL) -> URL {
         if var urlComponents = URLComponents(
             url: baseURL,

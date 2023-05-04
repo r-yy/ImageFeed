@@ -11,9 +11,9 @@ final class ProfileViewController: BaseViewController {
     private var userpicImageView: CircularImageView = {
         let imageView = CircularImageView()
 
-        imageView.image = UIImage(
-            named: "myImage"
-        )
+//        imageView.image = UIImage(
+//            named: "myImage"
+//        )
 
         return imageView
     }()
@@ -66,6 +66,7 @@ final class ProfileViewController: BaseViewController {
     }()
 
     var profileService: ProfileService?
+    var profileImageService: ProfileImageService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,16 +78,38 @@ final class ProfileViewController: BaseViewController {
     }
 
     private func updateUI() {
-        guard let profile = profileService?.currentProfile
+        guard let profile = profileService?.currentProfile,
+              let profileImage = profileImageService?.imageUrl
         else { return }
         
-        updateProfile(profile: profile)
+        updateProfile(profile: profile, imageURL: profileImage)
     }
 
-    func updateProfile(profile: Profile) {
+    func updateProfile(profile: Profile, imageURL: String) {
         nameLabel.text = profile.name
         usernameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+
+        fetchImage(urlString: imageURL)
+    }
+
+    private func fetchImage(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            assertionFailure("Unable to construct profile image URL")
+            return
+        }
+        var data: Data?
+        let globalQueue = DispatchQueue.global(qos: .utility)
+        let mainQueue = DispatchQueue.main
+        let workItem = DispatchWorkItem { data = try? Data(contentsOf: url) }
+
+        globalQueue.async(execute: workItem)
+
+        workItem.notify(queue: mainQueue) {
+            if let data = data {
+                self.userpicImageView.image = UIImage(data: data)
+            }
+        }
     }
 }
 

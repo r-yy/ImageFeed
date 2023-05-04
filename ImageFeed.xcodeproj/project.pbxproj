@@ -12,6 +12,8 @@
 		E417069B2A02B7E500166399 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E417069A2A02B7E500166399 /* ProfileService.swift */; };
 		E417069E2A02B81E00166399 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E417069D2A02B81E00166399 /* Profile.swift */; };
 		E41706A02A02BC0400166399 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = E417069F2A02BC0400166399 /* Network.swift */; };
+		E41706A52A03C33F00166399 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41706A42A03C33F00166399 /* ProfileImageService.swift */; };
+		E41706A72A03C41F00166399 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41706A62A03C41F00166399 /* ProfileImage.swift */; };
 		E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AB17729D0C122005361BF /* ImagesListCell.swift */; };
 		E43AB17A29D0CF59005361BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E43AB17929D0CF59005361BF /* Main.storyboard */; };
 		E44AA81129E305F5000A8F03 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44AA81029E305F5000A8F03 /* BaseViewController.swift */; };
@@ -44,6 +46,8 @@
 		E417069A2A02B7E500166399 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		E417069D2A02B81E00166399 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		E417069F2A02BC0400166399 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		E41706A42A03C33F00166399 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
+		E41706A62A03C41F00166399 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		E43AB17729D0C122005361BF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		E43AB17929D0CF59005361BF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E44AA81029E305F5000A8F03 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				E417069A2A02B7E500166399 /* ProfileService.swift */,
+				E41706A42A03C33F00166399 /* ProfileImageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -105,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				E417069D2A02B81E00166399 /* Profile.swift */,
+				E41706A62A03C41F00166399 /* ProfileImage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -342,7 +348,9 @@
 				E4D2B78229F7D46D007289AD /* SplashViewController.swift in Sources */,
 				E4D2B77929F73D39007289AD /* OAuthToken.swift in Sources */,
 				E4AD177229D210AB00721CEA /* UIColor + Extensions.swift in Sources */,
+				E41706A72A03C41F00166399 /* ProfileImage.swift in Sources */,
 				E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */,
+				E41706A52A03C33F00166399 /* ProfileImageService.swift in Sources */,
 				E4D2B77F29F74EDD007289AD /* OAuth2TokenStorage.swift in Sources */,
 				E40FC5F329F4531A00A810A7 /* AuthViewController.swift in Sources */,
 				E4F2F0A629F715C100172E8A /* WebViewViewControllerDelegate.swift in Sources */,

@@ -21,6 +21,7 @@ final class SplashViewController: BaseViewController {
 
     private var oAuthService = OAuth2Service()
     private var profileService = ProfileService()
+    private var profileImageService = ProfileImageService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,11 +124,24 @@ extension SplashViewController {
         profileService.fetchProfile(token) {
             result in
             switch result {
+            case .success(let profile):
+                self.fetchImage(username: profile.username, token: token)
+            case .failure:
+                //Make alert
+                UIBlocingProgressHUD.dismiss()
+            }
+        }
+    }
+
+    func fetchImage(username: String, token: String) {
+        profileImageService.fetchProfileImage(username, token: token) {
+            result in
+            switch result {
             case .success:
                 self.switchToTabBarController()
                 UIBlocingProgressHUD.dismiss()
             case .failure:
-                //Make alert
+                //make alert
                 UIBlocingProgressHUD.dismiss()
             }
         }
@@ -149,6 +163,7 @@ extension SplashViewController {
             $0 is ProfileViewController
         }) as? ProfileViewController {
             profileVC.profileService = self.profileService
+            profileVC.profileImageService = self.profileImageService
         }
 
         window.rootViewController = tabBarController

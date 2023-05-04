@@ -45,4 +45,5 @@ struct API {
     static let OAuthTokenURLString = "https://unsplash.com/oauth/token"
 
     static let mePath = "/me"
+    static let usersPath = "/users/"
 }
