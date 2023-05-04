@@ -15,6 +15,8 @@ final class ProfileService {
 
     private var task: URLSessionTask?
 
+    private(set) var currentProfile: Profile?
+
     func fetchProfile(
         _ token: String,
         completition: @escaping (Result<Profile, Error>) -> Void
@@ -58,6 +60,7 @@ final class ProfileService {
                         Profile.self,
                         from: data
                     )
+                    self.currentProfile = profile
                     DispatchQueue.main.async {
                         completition(.success(profile))
                     }

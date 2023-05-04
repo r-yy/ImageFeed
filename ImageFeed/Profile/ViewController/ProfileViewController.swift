@@ -18,10 +18,9 @@ final class ProfileViewController: BaseViewController {
         return imageView
     }()
 
-    private var nameLabel: UILabel = {
+    var nameLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "Рамиль Янбердин"
         label.textColor = .ypWhite
         label.font = UIFont(
             name: "SF Pro Text Bold",
@@ -31,10 +30,9 @@ final class ProfileViewController: BaseViewController {
         return label
     }()
 
-    private var usernameLabel: UILabel = {
+    var usernameLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "@yanram"
         label.textColor = .ypGray
         label.font = UIFont(
             name: "SF Pro Text Regular",
@@ -44,10 +42,9 @@ final class ProfileViewController: BaseViewController {
         return label
     }()
 
-    private var descriptionLabel: UILabel = {
+    var descriptionLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "Hello, world!"
         label.textColor = .white
         label.font = UIFont(
             name: "SF Pro Text Regular",
@@ -68,41 +65,28 @@ final class ProfileViewController: BaseViewController {
         return button
     }()
 
-    private let profileService = ProfileService()
+    var profileService: ProfileService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        updateUI()
 
         addSubviews()
         applyConstraints()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        getProfile()
+    private func updateUI() {
+        guard let profile = profileService?.currentProfile
+        else { return }
+        
+        updateProfile(profile: profile)
     }
-}
 
-extension ProfileViewController {
-    func getProfile() {
-        guard let token = OAuth2TokenStorage.shared.token else {
-            return
-        }
-
-        DispatchQueue.main.async {
-            self.profileService.fetchProfile(token) {
-                result in
-                switch result {
-                case .success(let success):
-                    self.nameLabel.text = success.name
-                    self.usernameLabel.text = success.loginName
-                    self.descriptionLabel.text = success.bio
-                case .failure:
-                    break
-                }
-            }
-        }
+    func updateProfile(profile: Profile) {
+        nameLabel.text = profile.name
+        usernameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
 }
 

@@ -20,6 +20,7 @@ final class SplashViewController: BaseViewController {
     }()
 
     private var oAuthService = OAuth2Service()
+    private var profileService = ProfileService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +60,8 @@ extension SplashViewController {
 //MARK: Choose next screen
 extension SplashViewController {
     private func showNextScreen() {
-        if let _ = OAuth2TokenStorage.shared.token {
+        if let token = OAuth2TokenStorage.shared.token {
+            fetchProfile(token: token)
             switchToTabBarController()
         } else {
             performSegue(
@@ -104,14 +106,29 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success:
-                    self.switchToTabBarController()
-                    UIBlocingProgressHUD.dismiss()
+                case .success(let token):
+                    self.fetchProfile(token: token)
                 case .failure:
                     //TODO: Make alert
                     UIBlocingProgressHUD.dismiss()
                     break
                 }
+            }
+        }
+    }
+}
+
+extension SplashViewController {
+    func fetchProfile(token: String) {
+        profileService.fetchProfile(token) {
+            result in
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+                UIBlocingProgressHUD.dismiss()
+            case .failure:
+                //Make alert
+                UIBlocingProgressHUD.dismiss()
             }
         }
     }
@@ -127,6 +144,12 @@ extension SplashViewController {
 
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
+
+        if let profileVC = tabBarController.children.first(where: {
+            $0 is ProfileViewController
+        }) as? ProfileViewController {
+            profileVC.profileService = self.profileService
+        }
 
         window.rootViewController = tabBarController
     }
