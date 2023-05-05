@@ -29,8 +29,7 @@ final class ImagesListViewController: BaseViewController {
             right: 0
         )
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundView = UIView()
-        tableView.backgroundView?.backgroundColor = .ypBlack
+        tableView.backgroundColor = .ypBlack
         tableView.register(
             ImagesListCell.self,
             forCellReuseIdentifier: ImagesListCell.reuseIdentifer
@@ -56,10 +55,14 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        performSegue(
-            withIdentifier: showSingleImageSegueIdentifier,
-            sender: indexPath
-        )
+        let viewController = SingleImageViewController()
+        let image = UIImage(named: photosName[indexPath.row])
+        viewController.image = image
+
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+
+        present(viewController, animated: true)
     }
     
     func tableView(
@@ -110,21 +113,6 @@ extension ImagesListViewController: UITableViewDataSource {
         )
 
         return imageListCell
-    }
-}
-
-extension ImagesListViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard let vc = segue.destination as? SingleImageViewController,
-                  let indexPath = sender as? IndexPath else {
-                return
-            }
-            let image = UIImage(named: photosName[indexPath.row])
-            vc.image = image
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
     }
 }
 

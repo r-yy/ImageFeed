@@ -65,33 +65,15 @@ extension SplashViewController {
             fetchProfile(token: token)
             switchToTabBarController()
         } else {
-            performSegue(
-                withIdentifier: SegueIdentifiers.ShowAuthScreen.rawValue,
-                sender: nil
-            )
-        }
-    }
-}
+            let viewController = AuthViewController()
+            let navigationViewController = UINavigationController(rootViewController: viewController)
 
-//MARK: Delegate declaration
-extension SplashViewController {
-    override func prepare(
-        for segue: UIStoryboardSegue,
-        sender: Any?
-    ) {
-        if segue.identifier == SegueIdentifiers
-            .ShowAuthScreen.rawValue {
-
-            guard let navigationController = segue
-                .destination as? UINavigationController,
-
-                  let viewController = navigationController
-                .viewControllers[0] as? AuthViewController else {
-
-                assertionFailure("Failed to prepare to ShowAuthScreen")
-                return
-            }
             viewController.delegate = self
+
+            navigationViewController.modalPresentationStyle = .fullScreen
+            navigationViewController.modalTransitionStyle = .crossDissolve
+
+            self.present(navigationViewController, animated: true)
         }
     }
 }
@@ -189,8 +171,7 @@ extension SplashViewController {
             return
         }
 
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+        let tabBarController = TabBarController()
 
         if let profileVC = tabBarController.children.first(where: {
             $0 is ProfileViewController

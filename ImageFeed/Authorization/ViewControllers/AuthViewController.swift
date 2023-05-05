@@ -48,10 +48,15 @@ final class AuthViewController: BaseViewController {
 
     @objc
     private func openWebViewVC() {
-        performSegue(
-            withIdentifier: "ShowAuthWebView",
-            sender: self
-        )
+        let webViewViewController = WebViewViewController()
+
+        webViewViewController.delegate = self
+
+        webViewViewController.modalPresentationStyle = .fullScreen
+        webViewViewController.modalTransitionStyle = .crossDissolve
+
+        self.navigationController?.pushViewController(webViewViewController, animated: true)
+
     }
 }
 
@@ -113,25 +118,6 @@ extension AuthViewController {
     }
 }
 
-//MARK: Segue to WebView
-extension AuthViewController {
-    override func prepare(
-        for segue: UIStoryboardSegue,
-        sender: Any?
-    ) {
-        if segue.identifier == segueIdentifier {
-            guard let vc = segue
-                .destination as? WebViewViewController else {
-
-                assertionFailure("Failed to prepare \(segueIdentifier)")
-                return
-            }
-            vc.delegate = self
-        } else {
-            prepare(for: segue, sender: sender)
-        }
-    }
-}
 
 //MARK: Delegate implementation
 extension AuthViewController: WebViewViewControllerDelegate {
