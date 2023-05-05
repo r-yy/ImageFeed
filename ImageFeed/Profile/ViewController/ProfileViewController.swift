@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: BaseViewController {
     private var userpicImageView: CircularImageView = {
@@ -98,18 +99,10 @@ final class ProfileViewController: BaseViewController {
             assertionFailure("Unable to construct profile image URL")
             return
         }
-        var data: Data?
-        let globalQueue = DispatchQueue.global(qos: .utility)
-        let mainQueue = DispatchQueue.main
-        let workItem = DispatchWorkItem { data = try? Data(contentsOf: url) }
-
-        globalQueue.async(execute: workItem)
-
-        workItem.notify(queue: mainQueue) {
-            if let data = data {
-                self.userpicImageView.image = UIImage(data: data)
-            }
-        }
+        userpicImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "imageStub")
+        )
     }
 }
 

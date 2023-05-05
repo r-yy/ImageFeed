@@ -8,10 +8,10 @@
 import Foundation
 
 struct ProfileImage: Decodable {
-    let small: String
+    let large: String
 
     enum CodingKeys: String, CodingKey {
-        case small
+        case large
     }
 }
 
@@ -31,10 +31,10 @@ struct User: Decodable {
             keyedBy: ProfileImage.CodingKeys.self,
             forKey: .profileImage
         )
-        let small = try profileImageContainer.decode(
+        let large = try profileImageContainer.decode(
             String.self,
-            forKey: .small
+            forKey: .large
         )
-        profileImage = ProfileImage(small: small)
+        profileImage = ProfileImage(large: large)
     }
 }

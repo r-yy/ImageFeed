@@ -45,8 +45,8 @@ final class ProfileImageService {
 
             switch result {
             case .success(let user):
-                self.imageUrl = user.profileImage.small
-                completition(.success(user.profileImage.small))
+                self.imageUrl = user.profileImage.large
+                completition(.success(user.profileImage.large))
             case .failure:
                 completition(.failure(FetchError.codeError))
                 return
