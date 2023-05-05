@@ -13,7 +13,7 @@ final class ProfileImageService {
     }
 
     private let network = Network.shared
-    private let dataTask = URLSession.shared
+    private let session = URLSession.shared
 
     private var task: URLSessionTask?
 
@@ -39,36 +39,20 @@ final class ProfileImageService {
             forHTTPHeaderField: "Authorization"
         )
 
-        DispatchQueue.global(qos: .utility).async {
-            let task = self.dataTask.dataTask(with: request) {
-                data, response, error in
-                if
-                    let error {
-                    completition(.failure(error))
-                }
+        let task = session.objectTask(for: request) {
+            [weak self] (result: Result<User, Error>) in
+            guard let self else { return }
 
-                if
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode < 200 || response.statusCode > 299 {
-                    completition(.failure(FetchError.codeError))
-                }
-
-                guard let data else { return }
-
-                do {
-                    let user = try JSONDecoder().decode(User.self, from: data)
-                    self.imageUrl = user.profileImage.small
-                    DispatchQueue.main.async {
-                        completition(.success(user.profileImage.small))
-                    }
-                }
-                catch let error {
-                    assertionFailure("Decoding error: \(error)")
-                    completition(.failure(FetchError.codeError))
-                }
+            switch result {
+            case .success(let user):
+                self.imageUrl = user.profileImage.small
+                completition(.success(user.profileImage.small))
+            case .failure:
+                completition(.failure(FetchError.codeError))
+                return
             }
-            self.task = task
-            task.resume()
         }
+        self.task = task
+        task.resume()
     }
 }

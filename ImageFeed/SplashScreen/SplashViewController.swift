@@ -105,17 +105,46 @@ extension SplashViewController: AuthViewControllerDelegate {
         UIBlocingProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let token):
-                    self.fetchProfile(token: token)
-                case .failure:
-                    //TODO: Make alert
+            switch result {
+            case .success(let token):
+                self.fetchProfile(token: token)
+            case .failure:
+                DispatchQueue.main.async {
+                    self.showErrorAlert()
                     UIBlocingProgressHUD.dismiss()
-                    break
                 }
+                break
             }
         }
+    }
+
+    func showErrorAlert() {
+        guard let keyWindow = getKeyWindow(),
+                  let topViewController = keyWindow.rootViewController?.topMostViewController() else {
+                return
+            }
+
+        let alert = UIAlertController(
+            title: "Ой",
+            message: "Что то пошло не так",
+            preferredStyle: .alert
+        )
+
+        let action = UIAlertAction(title: "ОК", style: .default) { _ in
+            alert.dismiss(animated: true)
+        }
+
+        alert.addAction(action)
+        topViewController.present(alert, animated: false)
+    }
+
+    private func getKeyWindow() -> UIWindow? {
+        return UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .filter { $0.isKeyWindow }
+            .first
     }
 }
 
@@ -127,8 +156,10 @@ extension SplashViewController {
             case .success(let profile):
                 self.fetchImage(username: profile.username, token: token)
             case .failure:
-                //Make alert
-                UIBlocingProgressHUD.dismiss()
+                DispatchQueue.main.async {
+                    self.showErrorAlert()
+                    UIBlocingProgressHUD.dismiss()
+                }
             }
         }
     }
@@ -141,8 +172,10 @@ extension SplashViewController {
                 self.switchToTabBarController()
                 UIBlocingProgressHUD.dismiss()
             case .failure:
-                //make alert
-                UIBlocingProgressHUD.dismiss()
+                DispatchQueue.main.async {
+                    self.showErrorAlert()
+                    UIBlocingProgressHUD.dismiss()
+                }
             }
         }
     }

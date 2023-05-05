@@ -15,6 +15,8 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
 
+    private let session = URLSession.shared
+
     func fetchAuthToken(
         code: String,
         completition: @escaping (Result<String, Error>) -> Void
@@ -27,39 +29,19 @@ final class OAuth2Service {
 
         let request = makeAuthTokenRequest(code: code)
 
-        let task = URLSession.shared.dataTask(
-            with: request
-        ) { data, response, error in
-            DispatchQueue.main.async {
-                if
-                    let error = error {
-                    completition(.failure(error))
-                    self.lastCode = nil
-                    return
-                }
+        let task = session.objectTask(for: request) {
+            [weak self] (result: Result<OAuthToken, Error>) in
+            guard let self else { return }
 
-                if
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode < 200 || response.statusCode >= 300 {
-                    completition(.failure(FetchError.codeError))
-                    self.lastCode = nil
-                    return
-                }
-
-                guard let data = data else { return }
-
-                do {
-                    let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
-                    OAuth2TokenStorage.shared.token = oAuthToken.accesToken
-                    completition(.success(oAuthToken.accesToken))
-                    self.task = nil
-                }
-                catch let decodingError {
-                    assertionFailure("Decoding error: \(decodingError)")
-                    completition(.failure(FetchError.codeError))
-                    self.lastCode = nil
-                }
-
+            switch result {
+            case .success(let token):
+                OAuth2TokenStorage.shared.token = token.accesToken
+                completition(.success(token.accesToken))
+                self.task = nil
+            case .failure:
+                completition(.failure(FetchError.codeError))
+                self.lastCode = nil
+                return
             }
         }
         self.task = task

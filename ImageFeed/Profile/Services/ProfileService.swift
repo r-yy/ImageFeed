@@ -12,6 +12,7 @@ final class ProfileService {
         case codeError
     }
     private let network = Network.shared
+    private let session = URLSession.shared
 
     private var task: URLSessionTask?
 
@@ -36,39 +37,17 @@ final class ProfileService {
             forHTTPHeaderField: "Authorization"
         )
 
-        let task = URLSession.shared.dataTask(with: request) {
-            data, response, error in
+        let task = session.objectTask(for: request) {
+            [weak self] (result: Result<Profile, Error>) in
+            guard let self else { return }
 
-            DispatchQueue.global(qos: .userInitiated).async {
-                if
-                    let error = error {
-                    completition(.failure(error))
-                    return
-                }
-
-                if
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode < 200 || response.statusCode > 299 {
-                    completition(.failure(FetchError.codeError))
-                    return
-                }
-
-                guard let data else { return }
-
-                do {
-                    let profile = try JSONDecoder().decode(
-                        Profile.self,
-                        from: data
-                    )
-                    self.currentProfile = profile
-                    DispatchQueue.main.async {
-                        completition(.success(profile))
-                    }
-                }
-                catch let decodingError {
-                    assertionFailure("Decoding error: \(decodingError)")
-                    completition(.failure(FetchError.codeError))
-                }
+            switch result {
+            case .success(let profile):
+                self.currentProfile = profile
+                completition(.success(profile))
+            case .failure:
+                completition(.failure(FetchError.codeError))
+                return
             }
         }
         self.task = task
