@@ -9,6 +9,7 @@ import WebKit
 
 final class WebViewViewController: UIViewController {
     private let webView = WKWebView()
+    private let network = Network.shared
 
     private let backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -55,16 +56,8 @@ final class WebViewViewController: UIViewController {
 
 //MARK: Load WebView
 extension WebViewViewController {
-    private func getURL() -> URL {
-        guard let urlComponents = URLComponents(
-            string: API.authUrlString
-        ) else {
-            assertionFailure("Auth URL is unvailable")
-            return URL(string: "about:blank")!
-        }
-
-        var composedURL = urlComponents
-        composedURL.queryItems = [
+    private func loadWebView() {
+        let queryParams: [URLQueryItem] = [
             URLQueryItem(
                 name: "client_id",
                 value: API.accessKey
@@ -82,16 +75,12 @@ extension WebViewViewController {
                 value: API.acessScope
             )
         ]
+        let url = network.getURL(
+            queryParams: queryParams,
+            baseURL: API.authUrlString
+        )
+        let request = URLRequest(url: url)
 
-        guard let url = composedURL.url else {
-            assertionFailure("Unable to construct composed Auth URL")
-            return URL(string: "about:blank")!
-        }
-        return url
-    }
-
-    private func loadWebView() {
-        let request = URLRequest(url: getURL())
         webView.load(request)
     }
 }

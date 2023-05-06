@@ -9,10 +9,6 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: BaseViewController {
-    enum SegueIdentifiers: String {
-        case ShowAuthScreen, ShowMainScreen
-    }
-
     private let imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "Vector")
@@ -36,11 +32,11 @@ final class SplashViewController: BaseViewController {
 
 //MARK: Make View
 extension SplashViewController {
-    func addSubview() {
+    private func addSubview() {
         self.view.addSubview(imageView)
     }
 
-    func applyConstraints() {
+    private func applyConstraints() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -52,7 +48,7 @@ extension SplashViewController {
             )
         ])
     }
-    func makeView() {
+    private func makeView() {
         addSubview()
         applyConstraints()
     }
@@ -65,15 +61,16 @@ extension SplashViewController {
             fetchProfile(token: token)
             switchToTabBarController()
         } else {
-            let viewController = AuthViewController()
-            let navigationViewController = UINavigationController(rootViewController: viewController)
+            let authVC = AuthViewController()
+            let navController = UINavigationController(
+                rootViewController: authVC
+            )
+            authVC.delegate = self
 
-            viewController.delegate = self
+            navController.modalPresentationStyle = .fullScreen
+            navController.modalTransitionStyle = .crossDissolve
 
-            navigationViewController.modalPresentationStyle = .fullScreen
-            navigationViewController.modalTransitionStyle = .crossDissolve
-
-            self.present(navigationViewController, animated: true)
+            self.present(navController, animated: true)
         }
     }
 }
@@ -86,7 +83,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     ) {
         UIBlocingProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let token):
                 self.fetchProfile(token: token)
@@ -95,20 +92,22 @@ extension SplashViewController: AuthViewControllerDelegate {
                     self.showErrorAlert()
                     UIBlocingProgressHUD.dismiss()
                 }
-                break
             }
         }
     }
+}
 
-    func showErrorAlert() {
+//MARK: Error Alert
+extension SplashViewController {
+    private func showErrorAlert() {
         guard let keyWindow = getKeyWindow(),
-                  let topViewController = keyWindow.rootViewController?.topMostViewController() else {
-                return
-            }
+                  let topViewController = keyWindow
+            .rootViewController?.topMostViewController()
+        else { return }
 
         let alert = UIAlertController(
-            title: "Ой",
-            message: "Что то пошло не так",
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
             preferredStyle: .alert
         )
 
@@ -130,6 +129,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
 }
 
+//MARK: Fetch profile information
 extension SplashViewController {
     func fetchProfile(token: String) {
         profileService.fetchProfile(token) {
@@ -163,7 +163,7 @@ extension SplashViewController {
     }
 }
 
-//MARK: Create root ViewController
+//MARK: Create root ViewController and inject profile info
 extension SplashViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {

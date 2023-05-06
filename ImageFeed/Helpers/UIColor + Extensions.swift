@@ -59,12 +59,12 @@ extension URLSession {
 
 extension UIViewController {
     func topMostViewController() -> UIViewController {
-        if let presentedViewController = self.presentedViewController {
-            return presentedViewController.topMostViewController()
+        if let presentedVC = self.presentedViewController {
+            return presentedVC.topMostViewController()
         }
 
-        if let navigationController = self as? UINavigationController {
-            return navigationController.visibleViewController?.topMostViewController() ?? self
+        if let navController = self as? UINavigationController {
+            return navController.visibleViewController?.topMostViewController() ?? self
         }
 
         if let tabBarController = self as? UITabBarController {

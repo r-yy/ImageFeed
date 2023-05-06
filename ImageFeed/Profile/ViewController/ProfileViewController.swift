@@ -9,17 +9,9 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: BaseViewController {
-    private var userpicImageView: CircularImageView = {
-        let imageView = CircularImageView()
+    private var userpicImageView = CircularImageView()
 
-//        imageView.image = UIImage(
-//            named: "myImage"
-//        )
-
-        return imageView
-    }()
-
-    var nameLabel: UILabel = {
+    private var nameLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .ypWhite
@@ -31,7 +23,7 @@ final class ProfileViewController: BaseViewController {
         return label
     }()
 
-    var usernameLabel: UILabel = {
+    private var usernameLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .ypGray
@@ -43,7 +35,7 @@ final class ProfileViewController: BaseViewController {
         return label
     }()
 
-    var descriptionLabel: UILabel = {
+    private var descriptionLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .white
@@ -71,11 +63,13 @@ final class ProfileViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         updateUI()
-
-        addSubviews()
-        applyConstraints()
+        makeView()
     }
 
     private func updateUI() {
@@ -86,7 +80,7 @@ final class ProfileViewController: BaseViewController {
         updateProfile(profile: profile, imageURL: profileImage)
     }
 
-    func updateProfile(profile: Profile, imageURL: String) {
+    private func updateProfile(profile: Profile, imageURL: String) {
         nameLabel.text = profile.name
         usernameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
@@ -96,7 +90,7 @@ final class ProfileViewController: BaseViewController {
 
     private func fetchImage(urlString: String) {
         guard let url = URL(string: urlString) else {
-            assertionFailure("Unable to construct profile image URL")
+            assertionFailure("Unable to construct URL: \(urlString)")
             return
         }
         userpicImageView.kf.setImage(
@@ -114,9 +108,7 @@ extension ProfileViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(exitButton)
     }
-}
 
-extension ProfileViewController {
     private func applyConstraints() {
         userpicImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -175,5 +167,10 @@ extension ProfileViewController {
             )
 
         ])
+    }
+
+    private func makeView() {
+        addSubviews()
+        applyConstraints()
     }
 }

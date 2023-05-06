@@ -9,8 +9,7 @@ import UIKit
 
 final class ImagesListViewController: BaseViewController {
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
 
@@ -43,9 +42,11 @@ final class ImagesListViewController: BaseViewController {
 
         tableView.dataSource = self
         tableView.delegate = self
+    }
 
-        addSubviews()
-        applyConstraints()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        makeView()
     }
 }
 
@@ -116,13 +117,12 @@ extension ImagesListViewController: UITableViewDataSource {
     }
 }
 
+//MARK: Make View
 extension ImagesListViewController {
     private func addSubviews() {
         self.view.addSubview(tableView)
     }
-}
 
-extension ImagesListViewController {
     private func applyConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -140,5 +140,10 @@ extension ImagesListViewController {
                 equalTo: self.view.leadingAnchor
             )
         ])
+    }
+
+    private func makeView() {
+        addSubviews()
+        applyConstraints()
     }
 }

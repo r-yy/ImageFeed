@@ -16,6 +16,7 @@ final class OAuth2Service {
     private var lastCode: String?
 
     private let session = URLSession.shared
+    private let network = Network.shared
 
     func fetchAuthToken(
         code: String,
@@ -49,25 +50,18 @@ final class OAuth2Service {
     }
 
     private func makeAuthTokenRequest(code: String) -> URLRequest {
-        guard let baseURL = URL(string: API.OAuthTokenURLString)
-        else { preconditionFailure("Auth token URL is unvailable") }
-
-        let queryItems = [
+        let queryParams = [
             URLQueryItem(name: "client_id", value: API.accessKey),
             URLQueryItem(name: "client_secret", value: API.secretKey),
             URLQueryItem(name: "redirect_uri", value: API.redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
+        let url = network.getURL(
+            queryParams: queryParams,
+            baseURL: API.OAuthTokenURLString
+        )
 
-        var urlComponents = URLComponents(
-            url: baseURL, resolvingAgainstBaseURL: false)
-        urlComponents?.queryItems = queryItems
-
-
-        guard let url = urlComponents?.url else {
-            preconditionFailure("Unable to construct urlComponents")
-        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 

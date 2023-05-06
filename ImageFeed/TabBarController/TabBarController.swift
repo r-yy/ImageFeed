@@ -8,36 +8,43 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    private let imagesListViewController = ImagesListViewController()
+    private let profileViewController = ProfileViewController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        makeTabBar()
+    }
 
-        let imagesListViewController = ImagesListViewController()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        customizeTabBar()
+    }
+
+    private func makeTabBar() {
         imagesListViewController.tabBarItem = UITabBarItem(
             title: nil,
             image: UIImage(named: "imagesListActive"),
             selectedImage: nil
         )
 
-        let profileViewController = ProfileViewController()
         profileViewController.tabBarItem = UITabBarItem(
             title: nil,
-            image: UIImage(named: "ProfileActive"),
+            image: UIImage(named: "profileActive"),
             selectedImage: nil
         )
 
-        self.viewControllers = [imagesListViewController, profileViewController]
+        self.viewControllers = [
+            imagesListViewController,
+            profileViewController
+        ]
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        customizeUI()
-    }
-
-    private func customizeUI() {
-        self.tabBar.backgroundColor = .ypBlack
-        self.tabBar.barTintColor = .ypBlack
-        self.tabBar.tintColor = .ypWhite
-        self.tabBar.isTranslucent = false
-        self.tabBar.clipsToBounds = true
+    private func customizeTabBar() {
+        tabBar.backgroundColor = .ypBlack
+        tabBar.barTintColor = .ypBlack
+        tabBar.tintColor = .ypWhite
+        tabBar.isTranslucent = false
+        tabBar.clipsToBounds = true
     }
 }

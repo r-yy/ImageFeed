@@ -8,8 +8,6 @@
 import UIKit
 
 final class AuthViewController: BaseViewController {
-    private let segueIdentifier = "ShowAuthWebView"
-
     private var logoImage: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "logoUnsplash")
@@ -48,14 +46,17 @@ final class AuthViewController: BaseViewController {
 
     @objc
     private func openWebViewVC() {
-        let webViewViewController = WebViewViewController()
+        let webViewVC = WebViewViewController()
 
-        webViewViewController.delegate = self
+        webViewVC.delegate = self
 
-        webViewViewController.modalPresentationStyle = .fullScreen
-        webViewViewController.modalTransitionStyle = .crossDissolve
+        webViewVC.modalPresentationStyle = .fullScreen
+        webViewVC.modalTransitionStyle = .crossDissolve
 
-        self.navigationController?.pushViewController(webViewViewController, animated: true)
+        self.navigationController?.pushViewController(
+            webViewVC,
+            animated: true
+        )
 
     }
 }
