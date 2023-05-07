@@ -17,6 +17,7 @@ final class OAuth2Service {
 
     private let session = URLSession.shared
     private let urlMaker = URLMaker.shared
+    private let tokenStorage = OAuth2TokenStorage.shared
 
     func fetchAuthToken(
         code: String,
@@ -30,13 +31,14 @@ final class OAuth2Service {
 
         let request = makeAuthTokenRequest(code: code)
 
-        let task = session.objectTask(for: request) {
-            [weak self] (result: Result<OAuthToken, Error>) in
+        let task = session.objectTask(for: request) { [weak self] (result:
+            Result<OAuthToken, Error>) in
+
             guard let self else { return }
 
             switch result {
             case .success(let token):
-                OAuth2TokenStorage.shared.token = token.accessToken
+                self.tokenStorage.token = token.accessToken
                 completion(.success(token.accessToken))
                 self.task = nil
             case .failure:

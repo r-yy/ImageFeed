@@ -15,9 +15,10 @@ final class SplashViewController: BaseViewController {
         return view
     }()
 
-    private var oAuthService = OAuth2Service()
-    private var profileService = ProfileService()
-    private var profileImageService = ProfileImageService()
+    private let oAuthService = OAuth2Service()
+    private let profileService = ProfileService()
+    private let profileImageService = ProfileImageService()
+    private let tokenStorage = OAuth2TokenStorage.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +58,7 @@ extension SplashViewController {
 //MARK: Choose next screen
 extension SplashViewController {
     private func showNextScreen() {
-        if let token = OAuth2TokenStorage.shared.token {
+        if let token = tokenStorage.token {
             fetchProfile(token: token)
             switchToTabBarController()
         } else {
