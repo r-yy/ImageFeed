@@ -48,8 +48,7 @@ extension URLSession {
                         completion(.success(result))
                     }
                 }
-                catch let error {
-                    assertionFailure("Decoding error: \(error)")
+                catch {
                     mainQueue.async {
                         completion(.failure(FetchError.codeError))
                     }
