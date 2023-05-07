@@ -11,7 +11,7 @@ protocol WebViewViewControllerDelegate {
     func webViewViewController(
         _ vc: WebViewViewController,
         didAuthenticateWithCode code: String)
-    func webViewViewControllerDidCandel(
+    func webViewViewControllerDidCancel(
         _ vc: WebViewViewController
     )
 }

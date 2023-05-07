@@ -20,7 +20,7 @@ final class ProfileService {
 
     func fetchProfile(
         _ token: String,
-        completition: @escaping (Result<Profile, Error>) -> Void
+        completion: @escaping (Result<Profile, Error>) -> Void
     ) {
         task?.cancel()
 
@@ -44,9 +44,9 @@ final class ProfileService {
             switch result {
             case .success(let profile):
                 self.currentProfile = profile
-                completition(.success(profile))
+                completion(.success(profile))
             case .failure:
-                completition(.failure(FetchError.codeError))
+                completion(.failure(FetchError.codeError))
                 return
             }
         }

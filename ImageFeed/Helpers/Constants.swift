@@ -13,7 +13,7 @@ import Foundation
 //
 //    static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
 //
-//    static let acessScope = "public+read_user+write_likes"
+//    static let accessScope = "public+read_user+write_likes"
 //
 //
 //    static let defaultBaseUrl: URL = {
@@ -35,7 +35,7 @@ struct API {
 
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
 
-    static let acessScope = "public+read_user+write_likes"
+    static let accessScope = "public+read_user+write_likes"
 
 
     static let defaultBaseUrl: URL = {

@@ -22,7 +22,7 @@ final class ProfileImageService {
     func fetchProfileImage(
         _ username: String,
         token: String,
-        completition: @escaping (Result<String,Error>) -> Void
+        completion: @escaping (Result<String,Error>) -> Void
     ) {
         task?.cancel()
 
@@ -46,9 +46,9 @@ final class ProfileImageService {
             switch result {
             case .success(let user):
                 self.imageUrl = user.profileImage.large
-                completition(.success(user.profileImage.large))
+                completion(.success(user.profileImage.large))
             case .failure:
-                completition(.failure(FetchError.codeError))
+                completion(.failure(FetchError.codeError))
                 return
             }
         }

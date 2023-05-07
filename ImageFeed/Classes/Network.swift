@@ -34,7 +34,7 @@ final class Network {
         guard let urlComponents = URLComponents(
             string: baseURL
         ) else {
-            preconditionFailure("URL: \(baseURL) is unvailable")
+            preconditionFailure("URL: \(baseURL) is unavailable")
         }
 
         var composedURL = urlComponents

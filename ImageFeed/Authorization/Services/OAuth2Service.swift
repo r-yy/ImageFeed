@@ -20,7 +20,7 @@ final class OAuth2Service {
 
     func fetchAuthToken(
         code: String,
-        completition: @escaping (Result<String, Error>) -> Void
+        completion: @escaping (Result<String, Error>) -> Void
     ) {
         assert(Thread.isMainThread)
 
@@ -36,11 +36,11 @@ final class OAuth2Service {
 
             switch result {
             case .success(let token):
-                OAuth2TokenStorage.shared.token = token.accesToken
-                completition(.success(token.accesToken))
+                OAuth2TokenStorage.shared.token = token.accessToken
+                completion(.success(token.accessToken))
                 self.task = nil
             case .failure:
-                completition(.failure(FetchError.codeError))
+                completion(.failure(FetchError.codeError))
                 self.lastCode = nil
                 return
             }

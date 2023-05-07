@@ -8,7 +8,7 @@
 import UIKit
 import ProgressHUD
 
-final class UIBlocingProgressHUD {
+final class UIBlockingProgressHUD {
     private static var window: UIWindow? {
         UIApplication.shared.windows.first
     }

@@ -31,7 +31,7 @@ final class ImagesListViewController: BaseViewController {
         tableView.backgroundColor = .ypBlack
         tableView.register(
             ImagesListCell.self,
-            forCellReuseIdentifier: ImagesListCell.reuseIdentifer
+            forCellReuseIdentifier: ImagesListCell.reuseIdentifier
         )
 
         return tableView
@@ -95,7 +95,7 @@ extension ImagesListViewController: UITableViewDataSource {
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: ImagesListCell.reuseIdentifer,
+            withIdentifier: ImagesListCell.reuseIdentifier,
             for: indexPath
         )
         

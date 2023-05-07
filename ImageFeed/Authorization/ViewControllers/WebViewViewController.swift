@@ -50,7 +50,7 @@ final class WebViewViewController: UIViewController {
 
     @objc
     private func backToAuthVC() {
-        delegate?.webViewViewControllerDidCandel(self)
+        delegate?.webViewViewControllerDidCancel(self)
     }
 }
 
@@ -72,7 +72,7 @@ extension WebViewViewController {
             ),
             URLQueryItem(
                 name: "scope",
-                value: API.acessScope
+                value: API.accessScope
             )
         ]
         let url = network.getURL(

@@ -81,7 +81,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         _ vc: AuthViewController,
         didAuthenticateWithCode code: String
     ) {
-        UIBlocingProgressHUD.show()
+        UIBlockingProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             switch result {
@@ -90,7 +90,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .failure:
                 DispatchQueue.main.async {
                     self.showErrorAlert()
-                    UIBlocingProgressHUD.dismiss()
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -140,7 +140,7 @@ extension SplashViewController {
             case .failure:
                 DispatchQueue.main.async {
                     self.showErrorAlert()
-                    UIBlocingProgressHUD.dismiss()
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
@@ -152,11 +152,11 @@ extension SplashViewController {
             switch result {
             case .success:
                 self.switchToTabBarController()
-                UIBlocingProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
             case .failure:
                 DispatchQueue.main.async {
                     self.showErrorAlert()
-                    UIBlocingProgressHUD.dismiss()
+                    UIBlockingProgressHUD.dismiss()
                 }
             }
         }
