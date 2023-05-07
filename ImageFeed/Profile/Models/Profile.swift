@@ -34,11 +34,17 @@ struct Profile: Decodable {
             String.self,
             forKey: CodingKeys.firstName
         )
-        let lastName = try container.decode(
-            String.self,
-            forKey: CodingKeys.lastName
-        )
-        name = "\(firstName) \(lastName)"
+
+        do {
+            let lastName = try container.decode(
+                String.self,
+                forKey: CodingKeys.lastName
+            )
+            name = "\(firstName) \(lastName)"
+        }
+        catch {
+            name = firstName
+        }
 
         loginName = "@\(username)"
 
