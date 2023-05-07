@@ -33,13 +33,12 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
 
         loadWebView()
+        makeView()
         webView.navigationDelegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        makeView()
         addObserver()
     }
 

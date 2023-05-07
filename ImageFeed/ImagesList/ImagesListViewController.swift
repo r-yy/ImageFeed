@@ -42,10 +42,7 @@ final class ImagesListViewController: BaseViewController {
 
         tableView.dataSource = self
         tableView.delegate = self
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         makeView()
     }
 }
