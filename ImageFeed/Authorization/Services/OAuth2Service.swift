@@ -16,7 +16,7 @@ final class OAuth2Service {
     private var lastCode: String?
 
     private let session = URLSession.shared
-    private let network = Network.shared
+    private let urlMaker = URLMaker.shared
 
     func fetchAuthToken(
         code: String,
@@ -56,7 +56,7 @@ final class OAuth2Service {
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
-        let url = network.getURL(
+        let url = urlMaker.getURL(
             queryParams: queryParams,
             baseURL: API.OAuthTokenURLString
         )

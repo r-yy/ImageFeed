@@ -12,7 +12,7 @@ final class ProfileImageService {
         case codeError
     }
 
-    private let network = Network.shared
+    private let urlMaker = URLMaker.shared
     private let session = URLSession.shared
 
     private var task: URLSessionTask?
@@ -28,7 +28,7 @@ final class ProfileImageService {
 
         assert(Thread.isMainThread)
 
-        let url = network.getURL(
+        let url = urlMaker.getURL(
             withPath: API.usersPath + username,
             baseURL: API.defaultBaseUrl
         )

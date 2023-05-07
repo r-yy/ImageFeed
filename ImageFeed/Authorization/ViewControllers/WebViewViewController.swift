@@ -9,7 +9,7 @@ import WebKit
 
 final class WebViewViewController: UIViewController {
     private let webView = WKWebView()
-    private let network = Network.shared
+    private let urlMaker = URLMaker.shared
 
     private let backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -75,7 +75,7 @@ extension WebViewViewController {
                 value: API.accessScope
             )
         ]
-        let url = network.getURL(
+        let url = urlMaker.getURL(
             queryParams: queryParams,
             baseURL: API.authUrlString
         )

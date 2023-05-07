@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class Network {
-    static let shared = Network()
+final class URLMaker {
+    static let shared = URLMaker()
 
     func getURL(withPath: String, baseURL: URL) -> URL {
         if var urlComponents = URLComponents(
