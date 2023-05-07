@@ -49,7 +49,6 @@ final class ProfileImageService {
                 completion(.success(user.profileImage.large))
             case .failure:
                 completion(.failure(FetchError.codeError))
-                return
             }
         }
         self.task = task

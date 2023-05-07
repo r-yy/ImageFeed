@@ -42,7 +42,6 @@ final class OAuth2Service {
             case .failure:
                 completion(.failure(FetchError.codeError))
                 self.lastCode = nil
-                return
             }
         }
         self.task = task

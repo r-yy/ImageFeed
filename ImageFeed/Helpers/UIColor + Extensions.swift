@@ -25,14 +25,12 @@ extension URLSession {
         let task = dataTask(with: request) {
             data, response, error in
             DispatchQueue.global(qos: .utility).async {
-                if
-                    let error {
+                if let error {
                     completion(.failure(error))
                 }
 
-                if
-                    let response = response as? HTTPURLResponse,
-                    response.statusCode < 200 || response.statusCode > 299 {
+                if let response = response as? HTTPURLResponse,
+                   response.statusCode < 200 || response.statusCode > 299 {
                     completion(.failure(FetchError.codeError))
                 }
 

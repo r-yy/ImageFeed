@@ -47,7 +47,6 @@ final class ProfileService {
                 completion(.success(profile))
             case .failure:
                 completion(.failure(FetchError.codeError))
-                return
             }
         }
         self.task = task
