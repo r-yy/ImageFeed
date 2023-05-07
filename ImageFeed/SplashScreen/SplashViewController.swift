@@ -76,7 +76,7 @@ extension SplashViewController {
     }
 }
 
-//MARK: Switch screen after authorization
+//MARK: Switch screen after authorisation
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(
         _ vc: AuthViewController,
@@ -89,10 +89,8 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let token):
                 self.fetchProfile(token: token)
             case .failure:
-                DispatchQueue.main.async {
-                    self.showErrorAlert()
-                    UIBlockingProgressHUD.dismiss()
-                }
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
             }
         }
     }
@@ -139,10 +137,8 @@ extension SplashViewController {
             case .success(let profile):
                 self.fetchImage(username: profile.username, token: token)
             case .failure:
-                DispatchQueue.main.async {
-                    self.showErrorAlert()
-                    UIBlockingProgressHUD.dismiss()
-                }
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
             }
         }
     }
@@ -152,13 +148,11 @@ extension SplashViewController {
             result in
             switch result {
             case .success:
-                self.switchToTabBarController()
                 UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController()
             case .failure:
-                DispatchQueue.main.async {
-                    self.showErrorAlert()
-                    UIBlockingProgressHUD.dismiss()
-                }
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
             }
         }
     }

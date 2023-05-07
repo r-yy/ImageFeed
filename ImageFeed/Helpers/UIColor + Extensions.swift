@@ -22,16 +22,23 @@ extension URLSession {
         for request: URLRequest,
         completion: @escaping (Result<T, Error>) -> Void
     ) -> URLSessionTask {
+        let globalQueue = DispatchQueue.global(qos: .utility)
+        let mainQueue = DispatchQueue.main
+
         let task = dataTask(with: request) {
             data, response, error in
-            DispatchQueue.global(qos: .utility).async {
+            globalQueue.async {
                 if let error {
-                    completion(.failure(error))
+                    mainQueue.async {
+                        completion(.failure(error))
+                    }
                 }
 
                 if let response = response as? HTTPURLResponse,
                    response.statusCode < 200 || response.statusCode > 299 {
-                    completion(.failure(FetchError.codeError))
+                    mainQueue.async {
+                        completion(.failure(FetchError.codeError))
+                    }
                 }
 
                 guard let data else {
@@ -41,13 +48,15 @@ extension URLSession {
 
                 do {
                     let result = try JSONDecoder().decode(T.self, from: data)
-                    DispatchQueue.main.async {
+                    mainQueue.async {
                         completion(.success(result))
                     }
                 }
                 catch let error {
                     assertionFailure("Decoding error: \(error)")
-                    completion(.failure(FetchError.codeError))
+                    mainQueue.async {
+                        completion(.failure(FetchError.codeError))
+                    }
                 }
             }
         }
