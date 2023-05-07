@@ -19,10 +19,9 @@ final class OAuth2TokenStorage {
             keychainWrapper.string(forKey: key)
         }
         set {
-            guard let newValue else {
-                preconditionFailure("Auth token is nil")
+            if let newValue {
+                keychainWrapper.set(newValue, forKey: key)
             }
-            keychainWrapper.set(newValue, forKey: key)
         }
     }
 }
