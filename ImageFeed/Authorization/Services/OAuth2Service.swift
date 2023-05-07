@@ -36,14 +36,15 @@ final class OAuth2Service {
 
             guard let self else { return }
 
+            self.task = nil
+            self.lastCode = nil
+
             switch result {
             case .success(let token):
                 self.tokenStorage.token = token.accessToken
                 completion(.success(token.accessToken))
-                self.task = nil
             case .failure:
                 completion(.failure(FetchError.codeError))
-                self.lastCode = nil
             }
         }
         self.task = task
