@@ -6,22 +6,14 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: BaseViewController {
-    private var userpicImageView: CircularImageView = {
-        let imageView = CircularImageView()
-
-        imageView.image = UIImage(
-            named: "myImage"
-        )
-
-        return imageView
-    }()
+    private var userpicImageView = CircularImageView()
 
     private var nameLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "Рамиль Янбердин"
         label.textColor = .ypWhite
         label.font = UIFont(
             name: "SF Pro Text Bold",
@@ -34,7 +26,6 @@ final class ProfileViewController: BaseViewController {
     private var usernameLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "@yanram"
         label.textColor = .ypGray
         label.font = UIFont(
             name: "SF Pro Text Regular",
@@ -47,7 +38,6 @@ final class ProfileViewController: BaseViewController {
     private var descriptionLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "Hello, world!"
         label.textColor = .white
         label.font = UIFont(
             name: "SF Pro Text Regular",
@@ -68,11 +58,41 @@ final class ProfileViewController: BaseViewController {
         return button
     }()
 
+    var profileService: ProfileService?
+    var profileImageService: ProfileImageService?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addSubviews()
-        applyConstraints()
+        updateUI()
+        makeView()
+    }
+
+    private func updateUI() {
+        guard let profile = profileService?.currentProfile,
+              let profileImage = profileImageService?.imageUrl
+        else { return }
+        
+        updateProfile(profile: profile, imageURL: profileImage)
+    }
+
+    private func updateProfile(profile: Profile, imageURL: String) {
+        nameLabel.text = profile.name
+        usernameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+
+        fetchImage(urlString: imageURL)
+    }
+
+    private func fetchImage(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            assertionFailure("Unable to construct URL: \(urlString)")
+            return
+        }
+        userpicImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "imageStub")
+        )
     }
 }
 
@@ -84,9 +104,7 @@ extension ProfileViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(exitButton)
     }
-}
 
-extension ProfileViewController {
     private func applyConstraints() {
         userpicImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -145,5 +163,10 @@ extension ProfileViewController {
             )
 
         ])
+    }
+
+    private func makeView() {
+        addSubviews()
+        applyConstraints()
     }
 }

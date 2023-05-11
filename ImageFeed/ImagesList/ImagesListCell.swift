@@ -8,7 +8,7 @@
 import UIKit
 
 final class ImagesListCell: UITableViewCell {
-    static var reuseIdentifer = "ImagesListCell"
+    static var reuseIdentifier = "ImagesListCell"
 
     private let contentImage: UIImageView = {
         let imageView = UIImageView()
@@ -119,7 +119,7 @@ extension ImagesListCell {
     }
 }
 
-//MARK: Configurate cell
+//MARK: Configure cell
 extension ImagesListCell {
     enum LikeButtonNames: String {
         case activeLike

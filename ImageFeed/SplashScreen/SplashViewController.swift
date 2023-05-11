@@ -6,22 +6,25 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: BaseViewController {
-    enum SegueIdentifiers: String {
-        case ShowAuthScreen, ShowMainScreen
-    }
-
     private let imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "Vector")
         return view
     }()
 
-    private var oAuthService = OAuth2Service()
+    private let oAuthService = OAuth2Service()
+    private let profileService = ProfileService()
+    private let profileImageService = ProfileImageService()
+    private let tokenStorage = OAuth2TokenStorage.shared
+    private let alertPresenter = AlertPresenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tokenStorage.manageKeyChain()
         makeView()
     }
 
@@ -33,11 +36,11 @@ final class SplashViewController: BaseViewController {
 
 //MARK: Make View
 extension SplashViewController {
-    func addSubview() {
+    private func addSubview() {
         self.view.addSubview(imageView)
     }
 
-    func applyConstraints() {
+    private func applyConstraints() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -49,7 +52,7 @@ extension SplashViewController {
             )
         ])
     }
-    func makeView() {
+    private func makeView() {
         addSubview()
         applyConstraints()
     }
@@ -58,63 +61,96 @@ extension SplashViewController {
 //MARK: Choose next screen
 extension SplashViewController {
     private func showNextScreen() {
-        if let _ = OAuth2TokenStorage.shared.token {
+        if let token = tokenStorage.keyChainToken {
+            fetchProfile(token: token)
             switchToTabBarController()
         } else {
-            performSegue(
-                withIdentifier: SegueIdentifiers.ShowAuthScreen.rawValue,
-                sender: nil
+            let authVC = AuthViewController()
+            let navController = UINavigationController(
+                rootViewController: authVC
             )
+            authVC.delegate = self
+
+            navController.modalPresentationStyle = .fullScreen
+            navController.modalTransitionStyle = .crossDissolve
+
+            self.present(navController, animated: true)
         }
     }
 }
 
-//MARK: Delegate declaration
-extension SplashViewController {
-    override func prepare(
-        for segue: UIStoryboardSegue,
-        sender: Any?
-    ) {
-        if segue.identifier == SegueIdentifiers
-            .ShowAuthScreen.rawValue {
-
-            guard let navigationController = segue
-                .destination as? UINavigationController,
-
-                  let viewController = navigationController
-                .viewControllers[0] as? AuthViewController else {
-
-                assertionFailure("Failed to prepare to ShowAuthScreen")
-                return
-            }
-            viewController.delegate = self
-        }
-    }
-}
-
-//MARK: Switch screen after authorization
+//MARK: Switch screen after authorisation
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(
         _ vc: AuthViewController,
         didAuthenticateWithCode code: String
     ) {
+        UIBlockingProgressHUD.show()
         oAuthService.fetchAuthToken(code: code) { [weak self] result in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self.switchToTabBarController()
-                case .failure:
-                    //TODO: Make alert
-                    break
-                }
+            guard let self else { return }
+            switch result {
+            case .success(let token):
+                self.fetchProfile(token: token)
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
             }
         }
     }
 }
 
-//MARK: Create root ViewController
+//MARK: Error Alert
+extension SplashViewController {
+    private func showErrorAlert() {
+        guard let keyWindow = getKeyWindow(),
+                  let topViewController = keyWindow
+            .rootViewController?.topMostViewController()
+        else { return }
+
+        alertPresenter.showErrorAlert(vc: topViewController)
+    }
+
+    private func getKeyWindow() -> UIWindow? {
+        return UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .filter { $0.isKeyWindow }
+            .first
+    }
+}
+
+//MARK: Fetch profile information
+extension SplashViewController {
+    func fetchProfile(token: String) {
+        profileService.fetchProfile(token) {
+            result in
+            switch result {
+            case .success(let profile):
+                self.fetchImage(username: profile.username, token: token)
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
+            }
+        }
+    }
+
+    func fetchImage(username: String, token: String) {
+        profileImageService.fetchProfileImage(username, token: token) {
+            result in
+            switch result {
+            case .success:
+                UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showErrorAlert()
+            }
+        }
+    }
+}
+
+//MARK: Create root ViewController and inject profile info
 extension SplashViewController {
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
@@ -122,8 +158,14 @@ extension SplashViewController {
             return
         }
 
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+        let tabBarController = TabBarController()
+
+        if let profileVC = tabBarController.children.first(where: {
+            $0 is ProfileViewController
+        }) as? ProfileViewController {
+            profileVC.profileService = profileService
+            profileVC.profileImageService = profileImageService
+        }
 
         window.rootViewController = tabBarController
     }

@@ -9,6 +9,7 @@ import WebKit
 
 final class WebViewViewController: UIViewController {
     private let webView = WKWebView()
+    private let urlMaker = URLMaker.shared
 
     private let backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -24,45 +25,38 @@ final class WebViewViewController: UIViewController {
         return progressView
     }()
 
+    private var observer: NSKeyValueObservation?
+
     var delegate: WebViewViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loadWebView()
+        makeView()
         webView.navigationDelegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        makeView()
         addObserver()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        removeObserver()
+        observer?.invalidate()
     }
 
     @objc
     private func backToAuthVC() {
-        delegate?.webViewViewControllerDidCandel(self)
+        delegate?.webViewViewControllerDidCancel(self)
     }
 }
 
 //MARK: Load WebView
 extension WebViewViewController {
-    private func getURL() -> URL {
-        guard let urlComponents = URLComponents(
-            string: API.authUrlString
-        ) else {
-            assertionFailure("Auth URL is unvailable")
-            return URL(string: "about:blank")!
-        }
-
-        var composedURL = urlComponents
-        composedURL.queryItems = [
+    private func loadWebView() {
+        let queryParams: [URLQueryItem] = [
             URLQueryItem(
                 name: "client_id",
                 value: API.accessKey
@@ -77,19 +71,15 @@ extension WebViewViewController {
             ),
             URLQueryItem(
                 name: "scope",
-                value: API.acessScope
+                value: API.accessScope
             )
         ]
+        let url = urlMaker.getURL(
+            queryParams: queryParams,
+            baseURL: API.authUrlString
+        )
+        let request = URLRequest(url: url)
 
-        guard let url = composedURL.url else {
-            assertionFailure("Unable to construct composed Auth URL")
-            return URL(string: "about:blank")!
-        }
-        return url
-    }
-
-    private func loadWebView() {
-        let request = URLRequest(url: getURL())
         webView.load(request)
     }
 }
@@ -131,57 +121,25 @@ extension WebViewViewController: WKNavigationDelegate {
 
 //MARK: KVO
 extension WebViewViewController {
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(
-                forKeyPath: keyPath,
-                of: object,
-                change: change,
-                context: context
-            )
-        }
-    }
-
     private func updateProgress() {
-        updateProgressSmoothly(
-            to: Float(webView.estimatedProgress),
-            duration: 0.8
-        )
+        let duration = 0.8
+        let progress: Float = Float(webView.estimatedProgress)
+
+        UIView.animate(withDuration: duration, animations: {
+            self.progressView.setProgress(progress, animated: true)
+        }) {
+            _ in
+            self.progressView.progress = 1.0
+        }
+
         progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
     }
 
     private func addObserver() {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-
-    private func removeObserver() {
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil)
-    }
-
-    private func updateProgressSmoothly(
-        to value: Float,
-        duration: TimeInterval
-    ) {
-        UIView.animate(withDuration: duration, animations: {
-            self.progressView.setProgress(value, animated: true)
-        }) {
-            _ in
-            self.progressView.progress = 1.0
+        observer = webView.observe(\.estimatedProgress) {
+            [weak self] _, _ in
+            guard let self else { return }
+            self.updateProgress()
         }
     }
 }

@@ -8,8 +8,6 @@
 import UIKit
 
 final class AuthViewController: BaseViewController {
-    private let segueIdentifier = "ShowAuthWebView"
-
     private var logoImage: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "logoUnsplash")
@@ -39,19 +37,23 @@ final class AuthViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         makeView()
     }
 
     @objc
     private func openWebViewVC() {
-        performSegue(
-            withIdentifier: "ShowAuthWebView",
-            sender: self
+        let webViewVC = WebViewViewController()
+
+        webViewVC.delegate = self
+
+        webViewVC.modalPresentationStyle = .fullScreen
+        webViewVC.modalTransitionStyle = .crossDissolve
+
+        self.navigationController?.pushViewController(
+            webViewVC,
+            animated: true
         )
+
     }
 }
 
@@ -113,25 +115,6 @@ extension AuthViewController {
     }
 }
 
-//MARK: Segue to WebView
-extension AuthViewController {
-    override func prepare(
-        for segue: UIStoryboardSegue,
-        sender: Any?
-    ) {
-        if segue.identifier == segueIdentifier {
-            guard let vc = segue
-                .destination as? WebViewViewController else {
-
-                assertionFailure("Failed to prepare \(segueIdentifier)")
-                return
-            }
-            vc.delegate = self
-        } else {
-            prepare(for: segue, sender: sender)
-        }
-    }
-}
 
 //MARK: Delegate implementation
 extension AuthViewController: WebViewViewControllerDelegate {
@@ -145,7 +128,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         )
     }
 
-    func webViewViewControllerDidCandel(
+    func webViewViewControllerDidCancel(
         _ vc: WebViewViewController
     ) {
         navigationController?.popViewController(animated: true)

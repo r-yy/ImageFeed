@@ -12,77 +12,62 @@ final class OAuth2Service {
         case codeError
     }
 
+    private var task: URLSessionTask?
+    private var lastCode: String?
+
+    private let session = URLSession.shared
+    private let urlMaker = URLMaker.shared
+    private let tokenStorage = OAuth2TokenStorage.shared
+
     func fetchAuthToken(
         code: String,
-        completition: @escaping (Result<String, Error>) -> Void
+        completion: @escaping (Result<String, Error>) -> Void
     ) {
-        guard let urlComponents = URLComponents(
-            string: API.OAuthTokenURLString
-        ) else {
-            assertionFailure("Auth token URL is unvailable")
-            return
-        }
+        assert(Thread.isMainThread)
 
-        var composedURL = urlComponents
-        composedURL.queryItems = [
-            URLQueryItem(
-                name: "client_id",
-                value: API.accessKey
-            ),
-            URLQueryItem(
-                name: "client_secret",
-                value: API.secretKey
-            ),
-            URLQueryItem(
-                name: "redirect_uri",
-                value: API.redirectURI
-            ),
-            URLQueryItem(
-                name: "code",
-                value: code
-            ),
-            URLQueryItem(
-                name: "grant_type",
-                value: "authorization_code"
-            )
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+
+        let request = makeAuthTokenRequest(code: code)
+
+        let task = session.objectTask(for: request) { [weak self] (result:
+            Result<OAuthToken, Error>) in
+
+            guard let self else { return }
+
+            switch result {
+            case .success(let token):
+                self.tokenStorage.keyChainToken = token.accessToken
+                self.tokenStorage.userDefaultsToken = "saved"
+
+                completion(.success(token.accessToken))
+            case .failure:
+                completion(.failure(FetchError.codeError))
+            }
+            self.task = nil
+            self.lastCode = nil
+        }
+        self.task = task
+        task.resume()
+    }
+
+    private func makeAuthTokenRequest(code: String) -> URLRequest {
+        let queryParams = [
+            URLQueryItem(name: "client_id", value: API.accessKey),
+            URLQueryItem(name: "client_secret", value: API.secretKey),
+            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
-
-        guard let url = composedURL.url else {
-            assertionFailure("Unable to construct composed Auth token URL")
-            return
-        }
+        let url = urlMaker.getURL(
+            queryParams: queryParams,
+            baseURL: API.OAuthTokenURLString
+        )
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
-        let task = URLSession.shared.dataTask(
-            with: request
-        ) { data, response, error in
-            if
-                let error = error {
-                completition(.failure(error))
-                return
-            }
-
-            if
-                let response = response as? HTTPURLResponse,
-                response.statusCode < 200 || response.statusCode >= 300 {
-                completition(.failure(FetchError.codeError))
-                return
-            }
-
-            guard let data = data else { return }
-
-            do {
-                let oAuthToken = try JSONDecoder().decode(OAuthToken.self, from: data)
-                OAuth2TokenStorage.shared.token = oAuthToken.accesToken
-                completition(.success(oAuthToken.accesToken))
-            }
-            catch let decodingError {
-                assertionFailure("Decoding error: \(decodingError)")
-                completition(.failure(FetchError.codeError))
-            }
-        }
-        task.resume()
+        return request
     }
 }

@@ -9,8 +9,7 @@ import UIKit
 
 final class ImagesListViewController: BaseViewController {
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    
+
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
 
@@ -29,11 +28,10 @@ final class ImagesListViewController: BaseViewController {
             right: 0
         )
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundView = UIView()
-        tableView.backgroundView?.backgroundColor = .ypBlack
+        tableView.backgroundColor = .ypBlack
         tableView.register(
             ImagesListCell.self,
-            forCellReuseIdentifier: ImagesListCell.reuseIdentifer
+            forCellReuseIdentifier: ImagesListCell.reuseIdentifier
         )
 
         return tableView
@@ -45,8 +43,7 @@ final class ImagesListViewController: BaseViewController {
         tableView.dataSource = self
         tableView.delegate = self
 
-        addSubviews()
-        applyConstraints()
+        makeView()
     }
 }
 
@@ -56,10 +53,14 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        performSegue(
-            withIdentifier: showSingleImageSegueIdentifier,
-            sender: indexPath
-        )
+        let viewController = SingleImageViewController()
+        let image = UIImage(named: photosName[indexPath.row])
+        viewController.image = image
+
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+
+        present(viewController, animated: true)
     }
     
     func tableView(
@@ -91,7 +92,7 @@ extension ImagesListViewController: UITableViewDataSource {
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
-            withIdentifier: ImagesListCell.reuseIdentifer,
+            withIdentifier: ImagesListCell.reuseIdentifier,
             for: indexPath
         )
         
@@ -113,28 +114,12 @@ extension ImagesListViewController: UITableViewDataSource {
     }
 }
 
-extension ImagesListViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard let vc = segue.destination as? SingleImageViewController,
-                  let indexPath = sender as? IndexPath else {
-                return
-            }
-            let image = UIImage(named: photosName[indexPath.row])
-            vc.image = image
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-}
-
+//MARK: Make View
 extension ImagesListViewController {
     private func addSubviews() {
         self.view.addSubview(tableView)
     }
-}
 
-extension ImagesListViewController {
     private func applyConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -152,5 +137,10 @@ extension ImagesListViewController {
                 equalTo: self.view.leadingAnchor
             )
         ])
+    }
+
+    private func makeView() {
+        addSubviews()
+        applyConstraints()
     }
 }
