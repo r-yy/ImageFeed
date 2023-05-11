@@ -14,6 +14,7 @@
 		E41706A02A02BC0400166399 /* URLMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E417069F2A02BC0400166399 /* URLMaker.swift */; };
 		E41706A52A03C33F00166399 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41706A42A03C33F00166399 /* ProfileImageService.swift */; };
 		E41706A72A03C41F00166399 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41706A62A03C41F00166399 /* ProfileImage.swift */; };
+		E437C8722A0D368400DB8A80 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E437C8712A0D368400DB8A80 /* AlertPresenter.swift */; };
 		E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43AB17729D0C122005361BF /* ImagesListCell.swift */; };
 		E43AB17A29D0CF59005361BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E43AB17929D0CF59005361BF /* Main.storyboard */; };
 		E44AA81129E305F5000A8F03 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44AA81029E305F5000A8F03 /* BaseViewController.swift */; };
@@ -53,6 +54,7 @@
 		E417069F2A02BC0400166399 /* URLMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLMaker.swift; sourceTree = "<group>"; };
 		E41706A42A03C33F00166399 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		E41706A62A03C41F00166399 /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
+		E437C8712A0D368400DB8A80 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		E43AB17729D0C122005361BF /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		E43AB17929D0CF59005361BF /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E44AA81029E305F5000A8F03 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,14 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		E437C8702A0D367400DB8A80 /* AlertPresenter */ = {
+			isa = PBXGroup;
+			children = (
+				E437C8712A0D368400DB8A80 /* AlertPresenter.swift */,
+			);
+			path = AlertPresenter;
+			sourceTree = "<group>";
+		};
 		E43AB17629D0C102005361BF /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +190,7 @@
 		E4A9749A29C3C96C00C30D23 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				E437C8702A0D367400DB8A80 /* AlertPresenter */,
 				E4C7D62A2A05767B000FF18D /* TabBarController */,
 				E4D2B78029F7D45D007289AD /* SplashScreen */,
 				E40FC5F129F4530C00A810A7 /* Authorization */,
@@ -379,6 +390,7 @@
 				E43AB17829D0C122005361BF /* ImagesListCell.swift in Sources */,
 				E4C7D6322A07E620000FF18D /* UIViewController+topMostViewController.swift in Sources */,
 				E41706A52A03C33F00166399 /* ProfileImageService.swift in Sources */,
+				E437C8722A0D368400DB8A80 /* AlertPresenter.swift in Sources */,
 				E4D2B77F29F74EDD007289AD /* OAuth2TokenStorage.swift in Sources */,
 				E40FC5F329F4531A00A810A7 /* AuthViewController.swift in Sources */,
 				E4F2F0A629F715C100172E8A /* WebViewViewControllerDelegate.swift in Sources */,

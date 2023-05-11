@@ -19,9 +19,12 @@ final class SplashViewController: BaseViewController {
     private let profileService = ProfileService()
     private let profileImageService = ProfileImageService()
     private let tokenStorage = OAuth2TokenStorage.shared
+    private let alertPresenter = AlertPresenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tokenStorage.manageKeyChain()
         makeView()
     }
 
@@ -58,7 +61,7 @@ extension SplashViewController {
 //MARK: Choose next screen
 extension SplashViewController {
     private func showNextScreen() {
-        if let token = tokenStorage.token {
+        if let token = tokenStorage.keyChainToken {
             fetchProfile(token: token)
             switchToTabBarController()
         } else {
@@ -104,18 +107,7 @@ extension SplashViewController {
             .rootViewController?.topMostViewController()
         else { return }
 
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert
-        )
-
-        let action = UIAlertAction(title: "ОК", style: .default) { _ in
-            alert.dismiss(animated: true)
-        }
-
-        alert.addAction(action)
-        topViewController.present(alert, animated: false)
+        alertPresenter.showErrorAlert(vc: topViewController)
     }
 
     private func getKeyWindow() -> UIWindow? {

@@ -22,15 +22,23 @@ final class TabBarController: UITabBarController {
     }
 
     private func makeTabBar() {
+        let profileTabBarItem: UITabBarItem = {
+            let image = UIImage(systemName: "person.crop.circle.fill")
+            let data = image?.pngData()
+
+            let item = UITabBarItem(
+                title: nil,
+                image: UIImage(data: data ?? Data(), scale: 1.9),
+                selectedImage: nil
+            )
+
+            return item
+        }()
+        profileViewController.tabBarItem = profileTabBarItem
+
         imagesListViewController.tabBarItem = UITabBarItem(
             title: nil,
-            image: UIImage(named: "imagesListActive"),
-            selectedImage: nil
-        )
-
-        profileViewController.tabBarItem = UITabBarItem(
-            title: nil,
-            image: UIImage(named: "profileActive"),
+            image: UIImage(systemName: "rectangle.stack.fill"),
             selectedImage: nil
         )
 
