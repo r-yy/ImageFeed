@@ -10,7 +10,7 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     static var reuseIdentifier = "ImagesListCell"
 
-    private let contentImage: UIImageView = {
+    let contentImage: UIImageView = {
         let imageView = UIImageView()
 
         imageView.layer.masksToBounds = true

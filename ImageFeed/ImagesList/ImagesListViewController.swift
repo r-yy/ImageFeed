@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: BaseViewController {
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
@@ -37,13 +38,17 @@ final class ImagesListViewController: BaseViewController {
         return tableView
     }()
 
+    private let imagesListService = ImagesListService()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.dataSource = self
         tableView.delegate = self
+        imagesListService.delegate = self
 
         makeView()
+        imagesListService.fetchImagesList()
     }
 }
 
@@ -67,13 +72,10 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
-        guard let image = UIImage(
-            named: photosName[indexPath.row]
-        ) else {
-            return tableView.rowHeight
-        }
-        let scale = tableView.bounds.size.width / image.size.width
-        return ceil(image.size.height * scale)
+        let photo = imagesListService.photos[indexPath.row]
+        let scale = tableView.bounds.size.width / photo.size.width
+
+        return ceil(photo.size.height * scale)
 
     }
 }
@@ -84,7 +86,7 @@ extension ImagesListViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        photosName.count
+        imagesListService.photos.count
     }
     
     func tableView(
@@ -99,8 +101,8 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-        
-        let contentImage = UIImage(named: photosName[indexPath.row])
+        let contentImage = UIImage()
+
         let date = dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
 
@@ -142,5 +144,29 @@ extension ImagesListViewController {
     private func makeView() {
         addSubviews()
         applyConstraints()
+    }
+}
+
+extension ImagesListViewController {
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        guard let cell = cell as? ImagesListCell else { return }
+
+        if indexPath.row >= imagesListService.photos.count - 1 {
+            imagesListService.fetchImagesList()
+        } else {
+            let photo = imagesListService.photos[indexPath.row]
+            let url = URL(string: photo.thumbImageURL)
+            cell.contentImage.kf.setImage(with: url)
+        }
+    }
+}
+
+extension ImagesListViewController: ImagesListDelegate {
+    func addData() {
+        tableView.reloadData()
     }
 }
