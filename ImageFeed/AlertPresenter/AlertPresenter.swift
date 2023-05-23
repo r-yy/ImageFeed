@@ -22,4 +22,20 @@ final class AlertPresenter {
         alert.addAction(action)
         vc.present(alert, animated: false)
     }
+
+    func showExitAlert(vc: UIViewController, delegate: AlertPresenterDelegate) {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        let exitAction = UIAlertAction(title: "Да", style: .default) {_ in
+            delegate.exit()
+        }
+        let dismissAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+
+        alert.addAction(exitAction)
+        alert.addAction(dismissAction)
+        vc.present(alert, animated: true)
+    }
 }

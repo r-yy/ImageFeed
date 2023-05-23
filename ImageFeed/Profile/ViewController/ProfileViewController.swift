@@ -54,9 +54,13 @@ final class ProfileViewController: BaseViewController {
             UIImage(named: "exit"),
             for: .normal
         )
+        button.addTarget(nil, action: #selector(exitButtonDidTap), for: .touchUpInside)
 
         return button
     }()
+
+    private let tokenStorage = OAuth2TokenStorage.shared
+    private let alertPresenter = AlertPresenter()
 
     var profileService: ProfileService?
     var profileImageService: ProfileImageService?
@@ -66,6 +70,11 @@ final class ProfileViewController: BaseViewController {
 
         updateUI()
         makeView()
+    }
+
+    @objc
+    private func exitButtonDidTap() {
+        alertPresenter.showExitAlert(vc: self, delegate: self)
     }
 
     private func updateUI() {
@@ -93,6 +102,16 @@ final class ProfileViewController: BaseViewController {
             with: url,
             placeholder: UIImage(named: "imageStub")
         )
+    }
+
+    private func switchToSplashVC() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Failed to invalid configuration")
+            return
+        }
+        let splashVC = SplashViewController()
+
+        window.rootViewController = splashVC
     }
 }
 
@@ -168,5 +187,13 @@ extension ProfileViewController {
     private func makeView() {
         addSubviews()
         applyConstraints()
+    }
+}
+
+extension ProfileViewController: AlertPresenterDelegate {
+    func exit() {
+        tokenStorage.deleteToken()
+        WebViewViewController.clean()
+        switchToSplashVC()
     }
 }
