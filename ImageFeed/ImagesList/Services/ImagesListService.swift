@@ -8,9 +8,12 @@
 import Foundation
 
 final class ImagesListService {
+    private enum NetworkError: Error {
+        case codeError
+    }
     var photos: [Photo] = []
     var loadedPage = 0
-    var delegate: ImagesListDelegate?
+    weak var delegate: ImagesListDelegate?
 
     private var task: URLSessionTask?
 
@@ -61,5 +64,68 @@ final class ImagesListService {
         }
         task.resume()
         self.task = task
+    }
+
+    func changeLike(
+        photoID: String,
+        isLiked: Bool,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        let path = "/\(photoID)/like"
+
+        let url = urlMaker.getURL(withPath: API.photosPath + path, baseURL: API.defaultBaseUrl)
+
+        var request = URLRequest(url: url)
+        guard let accessToken = token.keyChainToken else {
+            return
+        }
+        request.setValue(
+            "Bearer \(accessToken)",
+            forHTTPHeaderField: "Authorization"
+        )
+        if isLiked {
+            request.httpMethod = "DELETE"
+        } else {
+            request.httpMethod = "POST"
+        }
+
+        let task = session.dataTask(with: request) {
+            data, response, error in
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let response = response as? HTTPURLResponse,
+                   response.statusCode == 200 || response.statusCode == 201 {
+                    DispatchQueue.main.async {
+                        self.updateLikesState(photoID: photoID)
+                        self.delegate?.syncPhotos()
+                        completion(.success(()))
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(NetworkError.codeError))
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+
+    private func updateLikesState(photoID: String) {
+        guard let index = photos.firstIndex(where: { $0.id == photoID }) else {
+            return
+        }
+
+        let photo = photos[index]
+
+        let newPhoto = Photo(
+            id: photo.id,
+            size: photo.size,
+            createdAt: photo.createdAt,
+            welcomeDescription: photo.welcomeDescription,
+            thumpImageURL: photo.thumbImageURL,
+            largeImageURL: photo.largeImageURL,
+            isLiked: !photo.isLiked
+        )
+
+        photos[index] = newPhoto
     }
 }

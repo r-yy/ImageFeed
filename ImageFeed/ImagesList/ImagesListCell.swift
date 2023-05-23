@@ -34,10 +34,15 @@ final class ImagesListCell: UITableViewCell {
 
     private let likeButton: UIButton = {
         let button = UIButton()
+
+        button.addTarget(nil, action: #selector(likeButtonTapped), for: .touchUpInside)
+
         return button
     }()
     
     private var subview: GradientBlurView?
+
+    weak var delegate: ImagesListDelegate?
 
     override init(
         style: UITableViewCell.CellStyle,
@@ -64,6 +69,21 @@ final class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         contentImage.kf.cancelDownloadTask()
+    }
+
+    @objc
+    private func likeButtonTapped() {
+        delegate?.cellDidTapLike(cell: self)
+    }
+
+    func changeLikeState(isLiked: Bool) {
+        let buttonImage = isLiked ? UIImage(
+            named: LikeButtonNames.inactiveLike.rawValue
+        ) : UIImage(
+            named: LikeButtonNames.activeLike.rawValue
+        )
+        likeButton.setImage(buttonImage, for: .normal)
+        likeButton.setTitle(String(), for: .normal)
     }
 }
 
@@ -136,9 +156,9 @@ extension ImagesListCell {
         dateLabel.text = date
 
         let buttonImage = isLiked ? UIImage(
-            named: LikeButtonNames.inactiveLike.rawValue
-        ) : UIImage(
             named: LikeButtonNames.activeLike.rawValue
+        ) : UIImage(
+            named: LikeButtonNames.inactiveLike.rawValue
         )
         likeButton.setImage(buttonImage, for: .normal)
         likeButton.setTitle(String(), for: .normal)

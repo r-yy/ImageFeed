@@ -9,4 +9,6 @@ import Foundation
 
 protocol ImagesListDelegate: AnyObject {
     func addData()
+    func cellDidTapLike(cell: ImagesListCell)
+    func syncPhotos()
 }

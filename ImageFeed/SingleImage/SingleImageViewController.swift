@@ -6,24 +6,20 @@
 //
 
 import UIKit
+import Kingfisher
+import ProgressHUD
 
 final class SingleImageViewController: BaseViewController {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
 
-        scrollView.minimumZoomScale = 0.1
+        scrollView.minimumZoomScale = 0.01
         scrollView.maximumZoomScale = 1.25
 
         return scrollView
     }()
 
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-
-        imageView.image = image
-
-        return imageView
-    }()
+    private let imageView = UIImageView()
 
     private lazy var backButton: UIButton = {
         let button = UIButton()
@@ -57,13 +53,28 @@ final class SingleImageViewController: BaseViewController {
         return button
     }()
 
-    var image: UIImage! {
+    var photo: Photo? {
         didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(
-                image: imageView.image
-            )
+            if let photo = photo,
+               let url = URL(string: photo.largeImageURL) {
+
+                ProgressHUD.animationType = .singleCirclePulse
+                ProgressHUD.colorProgress = .ypWhite
+                ProgressHUD.show()
+                imageView.kf.setImage(with: url) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let image):
+                        let size = image.image.size
+                        self.rescaleAndCenterImageInScrollView(imageSize: size)
+                        ProgressHUD.dismiss()
+                    case .failure:
+                        assertionFailure()
+                        ProgressHUD.dismiss()
+                    }
+
+                }
+            }
         }
     }
 
@@ -74,10 +85,6 @@ final class SingleImageViewController: BaseViewController {
 
         addSubviews()
         applyConstraints()
-
-        rescaleAndCenterImageInScrollView(
-            image: imageView.image
-        )
     }
 
     @objc
@@ -102,9 +109,9 @@ extension SingleImageViewController: UIScrollViewDelegate {
         _ scrollView: UIScrollView
     ) {
         let xOffset =
-        (scrollView.visibleSize.width - imageView.frame.width) / 2
+        (scrollView.contentSize.width - imageView.frame.width) / 2
         let yOffset =
-        (scrollView.visibleSize.height - imageView.frame.height) / 2
+        (scrollView.contentSize.height - imageView.frame.height) / 2
         scrollView.contentInset = UIEdgeInsets(
             top: yOffset,
             left: xOffset,
@@ -116,22 +123,15 @@ extension SingleImageViewController: UIScrollViewDelegate {
 
 extension SingleImageViewController {
     private func rescaleAndCenterImageInScrollView(
-        image: UIImage?
+        imageSize: CGSize?
     ) {
-        guard let image else { return }
-        
+        guard let imageSize = imageSize else { return }
         view.layoutIfNeeded()
-        let yScale = scrollView.bounds.size.width / image.size.width
-        let xScale = scrollView.bounds.size.height / image.size.height
-        let maxScale = max(xScale, yScale)
-        let scale = min(
-            scrollView.maximumZoomScale,
-            max(
-                scrollView.minimumZoomScale,
-                maxScale
-            )
-        )
+        let yScale = scrollView.bounds.size.width / imageSize.width
+        let xScale = scrollView.bounds.size.height / imageSize.height
+        let scale = min(yScale, xScale)
         scrollView.setZoomScale(scale, animated: false)
+        scrollView.minimumZoomScale = scale
         scrollView.layoutIfNeeded()
 
         let xPoint =
@@ -141,6 +141,7 @@ extension SingleImageViewController {
         scrollView.setContentOffset(
             CGPoint(x: xPoint, y: yPoint),
             animated: false)
+
     }
 }
 

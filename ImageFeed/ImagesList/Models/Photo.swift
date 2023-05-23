@@ -74,4 +74,22 @@ struct Photo: Decodable {
             Bool.self, forKey: .isLiked
         )
     }
+
+    init(
+        id: String,
+        size: CGSize,
+        createdAt: Date?,
+        welcomeDescription: String?,
+        thumpImageURL: String,
+        largeImageURL: String,
+        isLiked: Bool
+    ) {
+        self.id = id
+        self.size = size
+        self.createdAt = createdAt
+        self.welcomeDescription = welcomeDescription
+        self.thumbImageURL = thumpImageURL
+        self.largeImageURL = largeImageURL
+        self.isLiked = isLiked
+    }
 }

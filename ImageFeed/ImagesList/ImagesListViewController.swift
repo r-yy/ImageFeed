@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: BaseViewController {
     var photos: [Photo] = []
@@ -39,6 +40,7 @@ final class ImagesListViewController: BaseViewController {
     }()
 
     private var imagesListService = ImagesListService()
+    private var alertPresenter = AlertPresenter()
 
 
     override func viewDidLoad() {
@@ -53,6 +55,10 @@ final class ImagesListViewController: BaseViewController {
 
         makeView()
         imagesListService.fetchImagesList()
+        ProgressHUD.show()
+        ProgressHUD.animationType = .singleCirclePulse
+        ProgressHUD.colorBackground = .clear
+        ProgressHUD.colorHUD = .ypBlack
     }
 }
 
@@ -62,9 +68,11 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
+        guard let url = URL(string: photos[indexPath.row].largeImageURL) else {
+            return
+        }
         let viewController = SingleImageViewController()
-//        let image = UIImage(named: photosName[indexPath.row])
-//        viewController.image = image
+        viewController.photo = photos[indexPath.row]
 
         viewController.modalPresentationStyle = .fullScreen
         viewController.modalTransitionStyle = .crossDissolve
@@ -107,11 +115,21 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.delegate = self
+
         let imageURL = photos[indexPath.row].thumbImageURL
         guard let url = URL(string: imageURL) else { return UITableViewCell() }
-        imageListCell.contentImage.kf.setImage(with: url, placeholder: UIImage(named: "stub"))
+        imageListCell.contentImage.kf.setImage(with: url, placeholder: UIImage(named: "stub")) {
+            result in
+            switch result {
+            case .success:
+                ProgressHUD.dismiss()
+            default:
+                ProgressHUD.dismiss()
+            }
+        }
         let date = dateFormatter.string(from: Date())
-        let isLiked = indexPath.row % 2 == 0
+        let isLiked = photos[indexPath.row].isLiked
 
         imageListCell.configCell(
             date: date,
@@ -179,5 +197,29 @@ extension ImagesListViewController: ImagesListDelegate {
                 tableView.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
         }
+    }
+
+    func cellDidTapLike(cell: ImagesListCell) {
+        UIBlockingProgressHUD.show()
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        let photo = photos[indexPath.row]
+
+        imagesListService.changeLike(photoID: photo.id, isLiked: photo.isLiked) {
+            (result: Result<Void, Error>) in
+            switch result {
+            case .success:
+                cell.changeLikeState(isLiked: photo.isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.alertPresenter.showErrorAlert(vc: self)
+            }
+        }
+    }
+
+    func syncPhotos() {
+        photos = imagesListService.photos
     }
 }
