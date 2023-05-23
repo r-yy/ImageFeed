@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static var reuseIdentifier = "ImagesListCell"
@@ -60,6 +61,10 @@ final class ImagesListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contentImage.kf.cancelDownloadTask()
+    }
 }
 
 extension ImagesListCell {
@@ -126,9 +131,7 @@ extension ImagesListCell {
         case inactiveLike
     }
     
-    func configCell(image: UIImage?, date: String, isLiked: Bool) {
-        contentImage.image = image
-
+    func configCell(date: String, isLiked: Bool) {
         
         dateLabel.text = date
 

@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 final class ImagesListViewController: BaseViewController {
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
+    var photos: [Photo] = []
 
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -38,7 +38,8 @@ final class ImagesListViewController: BaseViewController {
         return tableView
     }()
 
-    private let imagesListService = ImagesListService()
+    private var imagesListService = ImagesListService()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,9 @@ final class ImagesListViewController: BaseViewController {
         tableView.dataSource = self
         tableView.delegate = self
         imagesListService.delegate = self
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 500
 
         makeView()
         imagesListService.fetchImagesList()
@@ -59,8 +63,8 @@ extension ImagesListViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         let viewController = SingleImageViewController()
-        let image = UIImage(named: photosName[indexPath.row])
-        viewController.image = image
+//        let image = UIImage(named: photosName[indexPath.row])
+//        viewController.image = image
 
         viewController.modalPresentationStyle = .fullScreen
         viewController.modalTransitionStyle = .crossDissolve
@@ -68,16 +72,18 @@ extension ImagesListViewController: UITableViewDelegate {
         present(viewController, animated: true)
     }
     
-    func tableView(
-        _ tableView: UITableView,
-        heightForRowAt indexPath: IndexPath
-    ) -> CGFloat {
-        let photo = imagesListService.photos[indexPath.row]
-        let scale = tableView.bounds.size.width / photo.size.width
-
-        return ceil(photo.size.height * scale)
-
-    }
+//    func tableView(
+//        _ tableView: UITableView,
+//        heightForRowAt indexPath: IndexPath
+//    ) -> CGFloat {
+//        if didImagesFetched[indexPath.row] != false {
+//            let photo = photos[indexPath.row]
+//            let scale = tableView.bounds.size.width / photo.size.width
+//            return ceil(photo.size.height * scale)
+//        } else {
+//            return 200
+//        }
+//    }
 }
 
 //MARK: TableView data source
@@ -86,7 +92,7 @@ extension ImagesListViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        imagesListService.photos.count
+        return photos.count
     }
     
     func tableView(
@@ -101,13 +107,13 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
-        let contentImage = UIImage()
-
+        let imageURL = photos[indexPath.row].thumbImageURL
+        guard let url = URL(string: imageURL) else { return UITableViewCell() }
+        imageListCell.contentImage.kf.setImage(with: url, placeholder: UIImage(named: "stub"))
         let date = dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
 
         imageListCell.configCell(
-            image: contentImage,
             date: date,
             isLiked: isLiked
         )
@@ -153,20 +159,25 @@ extension ImagesListViewController {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        guard let cell = cell as? ImagesListCell else { return }
-
-        if indexPath.row >= imagesListService.photos.count - 1 {
+        if indexPath.row == photos.count - 1 {
             imagesListService.fetchImagesList()
-        } else {
-            let photo = imagesListService.photos[indexPath.row]
-            let url = URL(string: photo.thumbImageURL)
-            cell.contentImage.kf.setImage(with: url)
         }
     }
 }
 
 extension ImagesListViewController: ImagesListDelegate {
     func addData() {
-        tableView.reloadData()
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
     }
 }
