@@ -31,6 +31,7 @@ struct Photo: Decodable {
         case full
     }
 
+    //MARK: Custom init from decoder
     init(from decoder: Decoder) throws {
         let container = try decoder.container(
             keyedBy: CodingKeys.self
@@ -75,6 +76,7 @@ struct Photo: Decodable {
         )
     }
 
+    //MARK: System init
     init(
         id: String,
         size: CGSize,

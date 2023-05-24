@@ -35,6 +35,8 @@ final class ImagesListViewController: BaseViewController {
             ImagesListCell.self,
             forCellReuseIdentifier: ImagesListCell.reuseIdentifier
         )
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 500
 
         return tableView
     }()
@@ -50,15 +52,10 @@ final class ImagesListViewController: BaseViewController {
         tableView.delegate = self
         imagesListService.delegate = self
 
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 500
-
         makeView()
+
+        showProgressHUDIndicator()
         imagesListService.fetchImagesList()
-        ProgressHUD.show()
-        ProgressHUD.animationType = .singleCirclePulse
-        ProgressHUD.colorBackground = .clear
-        ProgressHUD.colorHUD = .ypBlack
     }
 }
 
@@ -68,9 +65,6 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        guard let url = URL(string: photos[indexPath.row].largeImageURL) else {
-            return
-        }
         let viewController = SingleImageViewController()
         viewController.photo = photos[indexPath.row]
 
@@ -79,19 +73,6 @@ extension ImagesListViewController: UITableViewDelegate {
 
         present(viewController, animated: true)
     }
-    
-//    func tableView(
-//        _ tableView: UITableView,
-//        heightForRowAt indexPath: IndexPath
-//    ) -> CGFloat {
-//        if didImagesFetched[indexPath.row] != false {
-//            let photo = photos[indexPath.row]
-//            let scale = tableView.bounds.size.width / photo.size.width
-//            return ceil(photo.size.height * scale)
-//        } else {
-//            return 200
-//        }
-//    }
 }
 
 //MARK: TableView data source
@@ -128,7 +109,11 @@ extension ImagesListViewController: UITableViewDataSource {
                 ProgressHUD.dismiss()
             }
         }
-        let date = dateFormatter.string(from: Date())
+
+        var date = String()
+        if let dateFromData = photos[indexPath.row].createdAt {
+            date = dateFormatter.string(from: dateFromData)
+        }
         let isLiked = photos[indexPath.row].isLiked
 
         imageListCell.configCell(
@@ -171,6 +156,7 @@ extension ImagesListViewController {
     }
 }
 
+//MARK: Upload next page
 extension ImagesListViewController {
     func tableView(
         _ tableView: UITableView,
@@ -183,6 +169,7 @@ extension ImagesListViewController {
     }
 }
 
+//MARK: ImagesList Delegate
 extension ImagesListViewController: ImagesListDelegate {
     func addData() {
         let oldCount = photos.count
@@ -221,5 +208,13 @@ extension ImagesListViewController: ImagesListDelegate {
 
     func syncPhotos() {
         photos = imagesListService.photos
+    }
+}
+
+//MARK: Show indicator
+extension ImagesListViewController {
+    private func showProgressHUDIndicator() {
+        ProgressHUD.show()
+        ProgressHUD.animationType = .singleCirclePulse
     }
 }

@@ -35,7 +35,11 @@ final class ImagesListCell: UITableViewCell {
     private let likeButton: UIButton = {
         let button = UIButton()
 
-        button.addTarget(nil, action: #selector(likeButtonTapped), for: .touchUpInside)
+        button.addTarget(
+            nil,
+            action: #selector(likeButtonTapped),
+            for: .touchUpInside
+        )
 
         return button
     }()
@@ -74,16 +78,6 @@ final class ImagesListCell: UITableViewCell {
     @objc
     private func likeButtonTapped() {
         delegate?.cellDidTapLike(cell: self)
-    }
-
-    func changeLikeState(isLiked: Bool) {
-        let buttonImage = isLiked ? UIImage(
-            named: LikeButtonNames.inactiveLike.rawValue
-        ) : UIImage(
-            named: LikeButtonNames.activeLike.rawValue
-        )
-        likeButton.setImage(buttonImage, for: .normal)
-        likeButton.setTitle(String(), for: .normal)
     }
 }
 
@@ -150,9 +144,9 @@ extension ImagesListCell {
         case activeLike
         case inactiveLike
     }
-    
+
     func configCell(date: String, isLiked: Bool) {
-        
+
         dateLabel.text = date
 
         let buttonImage = isLiked ? UIImage(
@@ -200,5 +194,23 @@ extension ImagesListCell {
                 constant: -4
             )
         ])
+    }
+}
+
+//MARK: Change button image state
+extension ImagesListCell {
+    func changeLikeState(isLiked: Bool) {
+        let buttonImage = isLiked ? UIImage(named: LikeButtonNames.inactiveLike.rawValue)
+                                  : UIImage(named: LikeButtonNames.activeLike.rawValue)
+
+        let transform = CGAffineTransform(scaleX: 2, y: 2)
+        self.likeButton.setImage(buttonImage, for: .normal)
+        self.likeButton.setTitle(String(), for: .normal)
+
+        UIView.animate(withDuration: 0.5) {
+            self.likeButton.imageView?.transform = transform
+        } completion: { _ in
+            self.likeButton.imageView?.transform = .identity
+        }
     }
 }

@@ -21,6 +21,7 @@ final class ImagesListService {
     private var token = OAuth2TokenStorage.shared
     private var session = URLSession.shared
 
+    //MARK: Upload images list
     func fetchImagesList() {
         assert(Thread.isMainThread)
 
@@ -66,6 +67,7 @@ final class ImagesListService {
         self.task = task
     }
 
+    //MARK: Send like action
     func changeLike(
         photoID: String,
         isLiked: Bool,
@@ -73,7 +75,10 @@ final class ImagesListService {
     ) {
         let path = "/\(photoID)/like"
 
-        let url = urlMaker.getURL(withPath: API.photosPath + path, baseURL: API.defaultBaseUrl)
+        let url = urlMaker.getURL(
+            withPath: API.photosPath + path,
+            baseURL: API.defaultBaseUrl
+        )
 
         var request = URLRequest(url: url)
         guard let accessToken = token.keyChainToken else {
@@ -109,8 +114,11 @@ final class ImagesListService {
         task.resume()
     }
 
+    //MARK: Update like state
     private func updateLikesState(photoID: String) {
-        guard let index = photos.firstIndex(where: { $0.id == photoID }) else {
+        guard let index = photos.firstIndex(
+            where: { $0.id == photoID }
+        ) else {
             return
         }
 

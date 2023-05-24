@@ -54,7 +54,11 @@ final class ProfileViewController: BaseViewController {
             UIImage(named: "exit"),
             for: .normal
         )
-        button.addTarget(nil, action: #selector(exitButtonDidTap), for: .touchUpInside)
+        button.addTarget(
+            nil,
+            action: #selector(exitButtonDidTap),
+            for: .touchUpInside
+        )
 
         return button
     }()

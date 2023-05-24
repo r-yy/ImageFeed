@@ -66,7 +66,9 @@ final class SingleImageViewController: BaseViewController {
                     switch result {
                     case .success(let image):
                         let size = image.image.size
-                        self.rescaleAndCenterImageInScrollView(imageSize: size)
+                        self.rescaleAndCenterImageInScrollView(
+                            imageSize: size
+                        )
                         ProgressHUD.dismiss()
                     case .failure:
                         assertionFailure()
