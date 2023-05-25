@@ -9,15 +9,21 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: BaseViewController {
-    private var userpicImageView = CircularImageView()
+    private var userpicImageView: UIImageView = {
+        let view = UIImageView()
+
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 35
+
+        return view
+    }()
 
     private var nameLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .ypWhite
         label.font = UIFont(
-            name: "SF Pro Text Bold",
-            size: 23
+            name: "SF Pro Text Bold", size: 23
         )
 
         return label
@@ -28,8 +34,7 @@ final class ProfileViewController: BaseViewController {
 
         label.textColor = .ypGray
         label.font = UIFont(
-            name: "SF Pro Text Regular",
-            size: 13
+            name: "SF Pro Text Regular", size: 13
         )
 
         return label
@@ -40,8 +45,7 @@ final class ProfileViewController: BaseViewController {
 
         label.textColor = .white
         label.font = UIFont(
-            name: "SF Pro Text Regular",
-            size: 13
+            name: "SF Pro Text Regular", size: 13
         )
 
         return label
@@ -51,8 +55,7 @@ final class ProfileViewController: BaseViewController {
         let button = UIButton()
 
         button.setImage(
-            UIImage(named: "exit"),
-            for: .normal
+            UIImage(named: "exit"), for: .normal
         )
         button.addTarget(
             nil,
@@ -102,9 +105,10 @@ final class ProfileViewController: BaseViewController {
             assertionFailure("Unable to construct URL: \(urlString)")
             return
         }
+        let stubsView = StubsAnimation()
         userpicImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "imageStub")
+            placeholder: stubsView
         )
     }
 

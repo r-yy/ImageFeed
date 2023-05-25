@@ -58,9 +58,12 @@ final class SingleImageViewController: BaseViewController {
             if let photo = photo,
                let url = URL(string: photo.largeImageURL) {
 
-                ProgressHUD.animationType = .singleCirclePulse
-                ProgressHUD.colorProgress = .ypWhite
-                ProgressHUD.show()
+                if !ImageCache.default.isCached(forKey: url.absoluteString) {
+                    ProgressHUD.animationType = .singleCirclePulse
+                    ProgressHUD.colorProgress = .ypWhite
+                    ProgressHUD.show()
+                }
+
                 imageView.kf.setImage(with: url) { [weak self] result in
                     guard let self = self else { return }
                     switch result {
@@ -69,12 +72,10 @@ final class SingleImageViewController: BaseViewController {
                         self.rescaleAndCenterImageInScrollView(
                             imageSize: size
                         )
-                        ProgressHUD.dismiss()
                     case .failure:
                         assertionFailure()
-                        ProgressHUD.dismiss()
                     }
-
+                    ProgressHUD.dismiss()
                 }
             }
         }

@@ -63,7 +63,6 @@ extension SplashViewController {
     private func showNextScreen() {
         if let token = tokenStorage.keyChainToken {
             fetchProfile(token: token)
-            switchToTabBarController()
         } else {
             let authVC = AuthViewController()
             let navController = UINavigationController(
@@ -123,8 +122,8 @@ extension SplashViewController {
 //MARK: Fetch profile information
 extension SplashViewController {
     func fetchProfile(token: String) {
-        profileService.fetchProfile(token) {
-            result in
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let profile):
                 self.fetchImage(username: profile.username, token: token)
@@ -137,7 +136,8 @@ extension SplashViewController {
 
     func fetchImage(username: String, token: String) {
         profileImageService.fetchProfileImage(username, token: token) {
-            result in
+            [weak self] result in
+            guard let self else { return }
             switch result {
             case .success:
                 UIBlockingProgressHUD.dismiss()

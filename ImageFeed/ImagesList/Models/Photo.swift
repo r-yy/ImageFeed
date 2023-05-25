@@ -10,9 +10,9 @@ import Foundation
 struct Photo: Decodable {
     let id: String
     let size: CGSize
-    let createdAt: Date?
+    let createdAt: String?
     let welcomeDescription: String?
-    let thumbImageURL: String
+    let smallImageURL: String
     let largeImageURL: String
     let isLiked: Bool
 
@@ -27,7 +27,7 @@ struct Photo: Decodable {
     }
 
     private enum URLsCodingKeys: String, CodingKey {
-        case thumb
+        case small
         case full
     }
 
@@ -52,12 +52,9 @@ struct Photo: Decodable {
             width: Double(width), height: Double(height)
         )
 
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime]
-        if let dateString = try? container.decode(
-            String.self, forKey: .createdAt),
-           let createdAt = formatter.date(from: dateString) {
-            self.createdAt = createdAt
+        if let date = try? container.decode(
+            String.self, forKey: .createdAt) {
+            self.createdAt = date
         } else {
             self.createdAt = nil
         }
@@ -65,8 +62,8 @@ struct Photo: Decodable {
         welcomeDescription = try container.decode(
             String?.self, forKey: .description
         )
-        thumbImageURL = try urlsNestedContainer.decode(
-            String.self, forKey: .thumb
+        smallImageURL = try urlsNestedContainer.decode(
+            String.self, forKey: .small
         )
         largeImageURL = try urlsNestedContainer.decode(
             String.self, forKey: .full
@@ -80,9 +77,9 @@ struct Photo: Decodable {
     init(
         id: String,
         size: CGSize,
-        createdAt: Date?,
+        createdAt: String?,
         welcomeDescription: String?,
-        thumpImageURL: String,
+        smallImageURL: String,
         largeImageURL: String,
         isLiked: Bool
     ) {
@@ -90,7 +87,7 @@ struct Photo: Decodable {
         self.size = size
         self.createdAt = createdAt
         self.welcomeDescription = welcomeDescription
-        self.thumbImageURL = thumpImageURL
+        self.smallImageURL = smallImageURL
         self.largeImageURL = largeImageURL
         self.isLiked = isLiked
     }

@@ -50,6 +50,7 @@ final class ProfileImageService {
             case .failure:
                 completion(.failure(FetchError.codeError))
             }
+            self.task = nil
         }
         self.task = task
         task.resume()

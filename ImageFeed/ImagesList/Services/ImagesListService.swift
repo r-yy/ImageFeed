@@ -12,7 +12,7 @@ final class ImagesListService {
         case codeError
     }
     var photos: [Photo] = []
-    var loadedPage = 0
+
     weak var delegate: ImagesListDelegate?
 
     private var task: URLSessionTask?
@@ -20,6 +20,7 @@ final class ImagesListService {
     private var urlMaker = URLMaker.shared
     private var token = OAuth2TokenStorage.shared
     private var session = URLSession.shared
+    private var loadedPage = 1
 
     //MARK: Upload images list
     func fetchImagesList() {
@@ -27,10 +28,9 @@ final class ImagesListService {
 
         task?.cancel()
 
-        let currentPage = loadedPage == 0 ? 1 : loadedPage + 1
         let queryParams = [
             URLQueryItem(
-                name: "page", value: String(currentPage)
+                name: "page", value: String(loadedPage)
             )
         ]
         let url = urlMaker.getURL(
@@ -62,9 +62,10 @@ final class ImagesListService {
             case .failure:
                 assertionFailure()
             }
+            self.task = nil
         }
-        task.resume()
         self.task = task
+        task.resume()
     }
 
     //MARK: Send like action
@@ -129,7 +130,7 @@ final class ImagesListService {
             size: photo.size,
             createdAt: photo.createdAt,
             welcomeDescription: photo.welcomeDescription,
-            thumpImageURL: photo.thumbImageURL,
+            smallImageURL: photo.smallImageURL,
             largeImageURL: photo.largeImageURL,
             isLiked: !photo.isLiked
         )

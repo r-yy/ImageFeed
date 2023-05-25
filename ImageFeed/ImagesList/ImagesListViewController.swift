@@ -12,13 +12,14 @@ import ProgressHUD
 final class ImagesListViewController: BaseViewController {
     var photos: [Photo] = []
 
-    private lazy var dateFormatter: DateFormatter = {
+    private lazy var dateFormatterToPresent: DateFormatter = {
         let formatter = DateFormatter()
 
         formatter.dateFormat = "dd MMMM yyyy"
 
         return formatter
     }()
+    private let isoDateFormatter = ISO8601DateFormatter()
 
     private var tableView: UITableView = {
         let tableView = UITableView()
@@ -35,15 +36,12 @@ final class ImagesListViewController: BaseViewController {
             ImagesListCell.self,
             forCellReuseIdentifier: ImagesListCell.reuseIdentifier
         )
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 500
 
         return tableView
     }()
 
     private var imagesListService = ImagesListService()
     private var alertPresenter = AlertPresenter()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +52,6 @@ final class ImagesListViewController: BaseViewController {
 
         makeView()
 
-        showProgressHUDIndicator()
         imagesListService.fetchImagesList()
     }
 }
@@ -72,6 +69,15 @@ extension ImagesListViewController: UITableViewDelegate {
         viewController.modalTransitionStyle = .crossDissolve
 
         present(viewController, animated: true)
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        let photo = photos[indexPath.row]
+        let scale = tableView.bounds.size.width / photo.size.width * 0.9
+        return ceil(photo.size.height * scale)
     }
 }
 
@@ -98,29 +104,34 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         imageListCell.delegate = self
 
-        let imageURL = photos[indexPath.row].thumbImageURL
-        guard let url = URL(string: imageURL) else { return UITableViewCell() }
-        imageListCell.contentImage.kf.setImage(with: url, placeholder: UIImage(named: "stub")) {
+        var cellDate = String()
+        if let stringDate = photos[indexPath.row].createdAt,
+           let date = isoDateFormatter.date(from: stringDate) {
+            cellDate = dateFormatterToPresent.string(from: date)
+        }
+
+        let isLiked = photos[indexPath.row].isLiked
+        let imageURL = photos[indexPath.row].smallImageURL
+        let stubsView = StubsAnimation()
+        
+        guard let url = URL(string: imageURL) else {
+            return UITableViewCell()
+        }
+
+        imageListCell.contentImage.kf.setImage(
+            with: url, placeholder: stubsView
+        ) {
             result in
             switch result {
             case .success:
-                ProgressHUD.dismiss()
+                imageListCell.configCell(
+                    date: cellDate, isLiked: isLiked
+                )
             default:
-                ProgressHUD.dismiss()
+                break
             }
+            ProgressHUD.dismiss()
         }
-
-        var date = String()
-        if let dateFromData = photos[indexPath.row].createdAt {
-            date = dateFormatter.string(from: dateFromData)
-        }
-        let isLiked = photos[indexPath.row].isLiked
-
-        imageListCell.configCell(
-            date: date,
-            isLiked: isLiked
-        )
-
         return imageListCell
     }
 }
@@ -174,7 +185,7 @@ extension ImagesListViewController: ImagesListDelegate {
     func addData() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
+        syncPhotos()
 
         if oldCount != newCount {
             tableView.performBatchUpdates {
@@ -186,21 +197,24 @@ extension ImagesListViewController: ImagesListDelegate {
         }
     }
 
-    func cellDidTapLike(cell: ImagesListCell) {
-        UIBlockingProgressHUD.show()
+    func cellDidTapLike(
+        cell: ImagesListCell,
+        completion: @escaping (Result<Bool, Error>) -> Void
+    ) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
         let photo = photos[indexPath.row]
 
-        imagesListService.changeLike(photoID: photo.id, isLiked: photo.isLiked) {
+        imagesListService.changeLike(
+            photoID: photo.id, isLiked: photo.isLiked
+        ) {
             (result: Result<Void, Error>) in
             switch result {
             case .success:
                 cell.changeLikeState(isLiked: photo.isLiked)
-                UIBlockingProgressHUD.dismiss()
+                completion(.success(!photo.isLiked))
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 self.alertPresenter.showErrorAlert(vc: self)
             }
         }
@@ -208,13 +222,5 @@ extension ImagesListViewController: ImagesListDelegate {
 
     func syncPhotos() {
         photos = imagesListService.photos
-    }
-}
-
-//MARK: Show indicator
-extension ImagesListViewController {
-    private func showProgressHUDIndicator() {
-        ProgressHUD.show()
-        ProgressHUD.animationType = .singleCirclePulse
     }
 }
