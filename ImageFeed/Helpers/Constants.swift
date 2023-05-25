@@ -27,4 +27,5 @@ struct API {
 
     static let mePath = "/me"
     static let usersPath = "/users/"
+    static let photosPath = "/photos"
 }

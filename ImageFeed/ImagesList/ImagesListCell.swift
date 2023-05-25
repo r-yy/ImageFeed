@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     static var reuseIdentifier = "ImagesListCell"
 
-    private let contentImage: UIImageView = {
+    let contentImage: UIImageView = {
         let imageView = UIImageView()
 
         imageView.layer.masksToBounds = true
@@ -33,10 +34,25 @@ final class ImagesListCell: UITableViewCell {
 
     private let likeButton: UIButton = {
         let button = UIButton()
+
+        button.addTarget(
+            nil,
+            action: #selector(likeButtonTapped),
+            for: .touchUpInside
+        )
+        button.setTitle(String(), for: .normal)
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 1)
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowRadius = 2.0
+        button.clipsToBounds = false
+
         return button
     }()
     
-    private var subview: GradientBlurView?
+    private var subview = GradientBlurView()
+
+    weak var delegate: ImagesListDelegate?
 
     override init(
         style: UITableViewCell.CellStyle,
@@ -51,7 +67,6 @@ final class ImagesListCell: UITableViewCell {
         contentView.clipsToBounds = true
         addSubviews()
         applyConstraints()
-        addGradient()
     }
 
     required init?(
@@ -60,6 +75,28 @@ final class ImagesListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contentImage.kf.cancelDownloadTask()
+        subview.isHidden = true
+        dateLabel.text = nil
+        likeButton.setImage(nil, for: .normal)
+    }
+
+    @objc
+    private func likeButtonTapped() {
+        delegate?.cellDidTapLike(cell: self) {
+            (result: Result<Bool, Error>) in
+            switch result {
+            case .success(let success):
+                self.changeLikeState(isLiked: success)
+            case .failure:
+                assertionFailure()
+            }
+            self.likeButton.layer.removeAllAnimations()
+        }
+        animateButton()
+    }
 }
 
 extension ImagesListCell {
@@ -125,57 +162,73 @@ extension ImagesListCell {
         case activeLike
         case inactiveLike
     }
-    
-    func configCell(image: UIImage?, date: String, isLiked: Bool) {
-        contentImage.image = image
 
-        
+    func configCell(date: String, isLiked: Bool) {
+
         dateLabel.text = date
 
         let buttonImage = isLiked ? UIImage(
-            named: LikeButtonNames.inactiveLike.rawValue
-        ) : UIImage(
             named: LikeButtonNames.activeLike.rawValue
+        ) : UIImage(
+            named: LikeButtonNames.inactiveLike.rawValue
         )
         likeButton.setImage(buttonImage, for: .normal)
         likeButton.setTitle(String(), for: .normal)
+
+        subview.isHidden = false
+        addGradient()
     }
 }
 
 //MARK: Add gradient on cell
 extension ImagesListCell {
     func addGradient() {
-        subview = GradientBlurView()
-        
-        guard let overlayView = subview else {
-            return
-        }
-        
-        overlayView.layer.masksToBounds = true
-        overlayView.layer.cornerRadius = 16
-        overlayView.layer.maskedCorners = [
+        subview.layer.masksToBounds = true
+        subview.layer.cornerRadius = 16
+        subview.layer.maskedCorners = [
             .layerMaxXMaxYCorner,
             .layerMinXMaxYCorner]
-        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        subview.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(overlayView)
+        contentView.addSubview(subview)
                 
         NSLayoutConstraint.activate([
-            overlayView.heightAnchor.constraint(
+            subview.heightAnchor.constraint(
                 equalToConstant: 30
             ),
-            overlayView.leadingAnchor.constraint(
+            subview.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
                 constant: 16
             ),
-            overlayView.trailingAnchor.constraint(
+            subview.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor,
                 constant: -16
             ),
-            overlayView.bottomAnchor.constraint(
+            subview.bottomAnchor.constraint(
                 equalTo: contentView.bottomAnchor,
                 constant: -4
             )
         ])
+    }
+}
+
+//MARK: Change button image state
+extension ImagesListCell {
+    func changeLikeState(isLiked: Bool) {
+        let buttonImage = isLiked ? UIImage(named: LikeButtonNames.activeLike.rawValue)
+                                  : UIImage(named: LikeButtonNames.inactiveLike.rawValue)
+
+        self.likeButton.setImage(buttonImage, for: .normal)
+    }
+
+    private func animateButton() {
+        UIView.animateKeyframes(withDuration: 0.4, delay: 0, options: [.repeat]) {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5) {
+                self.likeButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            }
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                self.likeButton.transform = .identity
+            }
+        }
     }
 }

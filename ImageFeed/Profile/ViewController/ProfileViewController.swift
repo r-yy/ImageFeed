@@ -9,15 +9,21 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: BaseViewController {
-    private var userpicImageView = CircularImageView()
+    private var userpicImageView: UIImageView = {
+        let view = UIImageView()
+
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 35
+
+        return view
+    }()
 
     private var nameLabel: UILabel = {
         let label = UILabel()
 
         label.textColor = .ypWhite
         label.font = UIFont(
-            name: "SF Pro Text Bold",
-            size: 23
+            name: "SF Pro Text Bold", size: 23
         )
 
         return label
@@ -28,8 +34,7 @@ final class ProfileViewController: BaseViewController {
 
         label.textColor = .ypGray
         label.font = UIFont(
-            name: "SF Pro Text Regular",
-            size: 13
+            name: "SF Pro Text Regular", size: 13
         )
 
         return label
@@ -40,8 +45,7 @@ final class ProfileViewController: BaseViewController {
 
         label.textColor = .white
         label.font = UIFont(
-            name: "SF Pro Text Regular",
-            size: 13
+            name: "SF Pro Text Regular", size: 13
         )
 
         return label
@@ -51,12 +55,19 @@ final class ProfileViewController: BaseViewController {
         let button = UIButton()
 
         button.setImage(
-            UIImage(named: "exit"),
-            for: .normal
+            UIImage(named: "exit"), for: .normal
+        )
+        button.addTarget(
+            nil,
+            action: #selector(exitButtonDidTap),
+            for: .touchUpInside
         )
 
         return button
     }()
+
+    private let tokenStorage = OAuth2TokenStorage.shared
+    private let alertPresenter = AlertPresenter()
 
     var profileService: ProfileService?
     var profileImageService: ProfileImageService?
@@ -66,6 +77,11 @@ final class ProfileViewController: BaseViewController {
 
         updateUI()
         makeView()
+    }
+
+    @objc
+    private func exitButtonDidTap() {
+        alertPresenter.showExitAlert(vc: self, delegate: self)
     }
 
     private func updateUI() {
@@ -89,10 +105,21 @@ final class ProfileViewController: BaseViewController {
             assertionFailure("Unable to construct URL: \(urlString)")
             return
         }
+        let stubsView = StubsAnimation()
         userpicImageView.kf.setImage(
             with: url,
-            placeholder: UIImage(named: "imageStub")
+            placeholder: stubsView
         )
+    }
+
+    private func switchToSplashVC() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Failed to invalid configuration")
+            return
+        }
+        let splashVC = SplashViewController()
+
+        window.rootViewController = splashVC
     }
 }
 
@@ -168,5 +195,13 @@ extension ProfileViewController {
     private func makeView() {
         addSubviews()
         applyConstraints()
+    }
+}
+
+extension ProfileViewController: AlertPresenterDelegate {
+    func exit() {
+        tokenStorage.deleteToken()
+        WebViewViewController.clean()
+        switchToSplashVC()
     }
 }

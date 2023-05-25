@@ -22,9 +22,9 @@ final class ProfileService {
         _ token: String,
         completion: @escaping (Result<Profile, Error>) -> Void
     ) {
-        task?.cancel()
-
         assert(Thread.isMainThread)
+
+        task?.cancel()
 
         let url = urlMaker.getURL(
             withPath: API.mePath,
@@ -48,6 +48,7 @@ final class ProfileService {
             case .failure:
                 completion(.failure(FetchError.codeError))
             }
+            self.task = nil
         }
         self.task = task
         task.resume()
