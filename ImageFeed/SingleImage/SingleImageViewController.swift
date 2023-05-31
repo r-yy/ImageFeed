@@ -68,9 +68,10 @@ final class SingleImageViewController: BaseViewController {
                     guard let self = self else { return }
                     switch result {
                     case .success(let image):
-                        let size = image.image.size
+                        self.imageSize = image.image.size
                         self.rescaleAndCenterImageInScrollView(
-                            imageSize: size
+                            imageSize: self.imageSize,
+                            animated: false
                         )
                     case .failure:
                         assertionFailure()
@@ -81,6 +82,22 @@ final class SingleImageViewController: BaseViewController {
         }
     }
 
+    private var singleTap: UITapGestureRecognizer = {
+        let singleTap = UITapGestureRecognizer()
+        singleTap.numberOfTapsRequired = 1
+        return singleTap
+    }()
+
+    private var doubleTap: UITapGestureRecognizer = {
+        let doubleTap = UITapGestureRecognizer()
+        doubleTap.numberOfTapsRequired = 2
+        return doubleTap
+    }()
+
+    private var imageSize: CGSize?
+    private var startScale: CGFloat?
+    private var isScrollViewDidZoomed = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -88,6 +105,11 @@ final class SingleImageViewController: BaseViewController {
 
         addSubviews()
         applyConstraints()
+
+        singleTap.require(toFail: doubleTap)
+        scrollView.addGestureRecognizer(singleTap)
+        scrollView.addGestureRecognizer(doubleTap)
+        doubleTap.addTarget(self, action: #selector(handleDoubleTap))
     }
 
     @objc
@@ -98,6 +120,25 @@ final class SingleImageViewController: BaseViewController {
     @objc
     private func shareButtonTapped() {
         presentActivityViewController()
+    }
+
+    @objc
+    private func handleDoubleTap() {
+        if isScrollViewDidZoomed {
+            rescaleAndCenterImageInScrollView(imageSize: imageSize, animated: true)
+        } else {
+            scrollView.setZoomScale(0.2, animated: true)
+            scrollView.layoutIfNeeded()
+
+            let xPoint =
+            (scrollView.contentSize.width - scrollView.bounds.size.width) / 2
+            let yPoint =
+            (scrollView.contentSize.height - scrollView.bounds.size.height) / 2
+            scrollView.setContentOffset(
+                CGPoint(x: xPoint, y: yPoint),
+                animated: false)
+            isScrollViewDidZoomed = true
+        }
     }
 }
 
@@ -114,27 +155,30 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let xOffset =
         (scrollView.contentSize.width - imageView.frame.width) / 2
         let yOffset =
-        (scrollView.contentSize.height - imageView.frame.height) / 2
+        (scrollView.visibleSize.height - imageView.frame.height) / 2
         scrollView.contentInset = UIEdgeInsets(
             top: yOffset,
             left: xOffset,
             bottom: yOffset,
             right: xOffset
         )
+        isScrollViewDidZoomed = true
     }
 }
 
 extension SingleImageViewController {
     private func rescaleAndCenterImageInScrollView(
-        imageSize: CGSize?
+        imageSize: CGSize?,
+        animated: Bool
     ) {
         guard let imageSize = imageSize else { return }
         view.layoutIfNeeded()
         let yScale = scrollView.bounds.size.width / imageSize.width
         let xScale = scrollView.bounds.size.height / imageSize.height
         let scale = min(yScale, xScale)
-        scrollView.setZoomScale(scale, animated: false)
+        scrollView.setZoomScale(scale, animated: animated)
         scrollView.minimumZoomScale = scale
+        startScale = scale
         scrollView.layoutIfNeeded()
 
         let xPoint =
@@ -144,7 +188,7 @@ extension SingleImageViewController {
         scrollView.setContentOffset(
             CGPoint(x: xPoint, y: yPoint),
             animated: false)
-
+        isScrollViewDidZoomed = false
     }
 }
 

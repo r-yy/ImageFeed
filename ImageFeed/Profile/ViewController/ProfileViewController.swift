@@ -198,7 +198,7 @@ extension ProfileViewController {
     }
 }
 
-extension ProfileViewController: AlertPresenterDelegate {
+extension ProfileViewController: AlertPresenterExitDelegate {
     func exit() {
         tokenStorage.deleteToken()
         WebViewViewController.clean()
