@@ -130,10 +130,10 @@ extension ProfileView {
                 constant: -26
             ),
             exitButton.widthAnchor.constraint(
-                equalToConstant: 24
+                equalToConstant: 50
             ),
             exitButton.heightAnchor.constraint(
-                equalToConstant: 24
+                equalToConstant: 50
             )
 
         ])

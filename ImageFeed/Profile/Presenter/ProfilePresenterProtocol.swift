@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
+    var exitAlert: AlertPresenter { get set }
 
     func getProfile()
     func exit()

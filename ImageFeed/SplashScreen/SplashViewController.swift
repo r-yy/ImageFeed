@@ -163,11 +163,14 @@ extension SplashViewController {
         if let profileVC = tabBarController.children.first(where: {
             $0 is ProfileViewController
         }) as? ProfileViewController {
-            let profilePresenter = ProfilePresenter()
-            profileVC.profilePresenter = profilePresenter
+            let profilePresenter = ProfilePresenter(
+                exitAlert: alertPresenter,
+                profileService: profileService,
+                profileImageService: profileImageService
+            )
+            profileVC.presenter = profilePresenter
             profilePresenter.view = profileVC
-            profilePresenter.profileService = profileService
-            profilePresenter.profileImageService = profileImageService
+
         }
 
         window.rootViewController = tabBarController
