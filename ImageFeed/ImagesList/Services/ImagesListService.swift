@@ -22,6 +22,8 @@ final class ImagesListService {
     private var session = URLSession.shared
     private var loadedPage = 1
 
+    private let api = API.production
+
     //MARK: Upload images list
     func fetchImagesList() {
         assert(Thread.isMainThread)
@@ -34,7 +36,7 @@ final class ImagesListService {
             )
         ]
         let url = urlMaker.getURL(
-            withPath: API.photosPath, baseURL: API.defaultBaseUrl
+            withPath: api.photosPath, baseURL: api.defaultBaseUrl
         )
         let urlWithQueryParams = urlMaker.getURL(
             queryParams: queryParams, baseURL: url.absoluteString
@@ -77,8 +79,8 @@ final class ImagesListService {
         let path = "/\(photoID)/like"
 
         let url = urlMaker.getURL(
-            withPath: API.photosPath + path,
-            baseURL: API.defaultBaseUrl
+            withPath: api.photosPath + path,
+            baseURL: api.defaultBaseUrl
         )
 
         var request = URLRequest(url: url)

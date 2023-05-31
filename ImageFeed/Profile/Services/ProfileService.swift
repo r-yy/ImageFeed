@@ -13,6 +13,7 @@ final class ProfileService {
     }
     private let urlMaker = URLMaker.shared
     private let session = URLSession.shared
+    private let api = API.production
 
     private var task: URLSessionTask?
 
@@ -27,8 +28,8 @@ final class ProfileService {
         task?.cancel()
 
         let url = urlMaker.getURL(
-            withPath: API.mePath,
-            baseURL: API.defaultBaseUrl
+            withPath: api.mePath,
+            baseURL: api.defaultBaseUrl
         )
 
         var request = URLRequest(url: url)

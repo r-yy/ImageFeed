@@ -14,6 +14,7 @@ final class ProfileImageService {
 
     private let urlMaker = URLMaker.shared
     private let session = URLSession.shared
+    private let api = API.production
 
     private var task: URLSessionTask?
 
@@ -29,8 +30,8 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
 
         let url = urlMaker.getURL(
-            withPath: API.usersPath + username,
-            baseURL: API.defaultBaseUrl
+            withPath: api.usersPath + username,
+            baseURL: api.defaultBaseUrl
         )
 
         var request = URLRequest(url: url)
