@@ -22,21 +22,6 @@ final class ProfileViewTests: XCTestCase {
         //Then
         XCTAssertTrue(presenter.getProfileCalled)
     }
-
-    func testPresenterCallsSwitchToSplashVC() throws {
-        //Given
-        let presenter = ProfilePresenter()
-        let profileVC = ProfileViewControllerSpy()
-        presenter.view = profileVC
-        profileVC.presenter = presenter
-
-        //When
-        presenter.exit()
-
-        //Then
-        XCTAssertTrue(profileVC.switchToSplashVCCalled)
-
-    }
 }
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
@@ -49,18 +34,5 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
 
     func exit() {
 
-    }
-}
-
-final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
-    var presenter: ImageFeed.ProfilePresenterProtocol?
-    var switchToSplashVCCalled = false
-
-    func setProfile(profile: ImageFeed.Profile, imageURL: URL) {
-
-    }
-
-    func switchToSplashVC() {
-        switchToSplashVCCalled = true
     }
 }

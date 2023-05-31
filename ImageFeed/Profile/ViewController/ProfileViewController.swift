@@ -55,14 +55,4 @@ extension ProfileViewController: ProfileViewControllerProtocol {
             with: imageURL, placeholder: placeholder
         )
     }
-
-    func switchToSplashVC() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Failed to invalid configuration")
-            return
-        }
-        let splashVC = SplashViewController()
-
-        window.rootViewController = splashVC
-    }
 }

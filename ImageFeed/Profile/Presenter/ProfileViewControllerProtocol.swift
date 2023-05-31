@@ -11,5 +11,4 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
 
     func setProfile(profile: Profile, imageURL: URL)
-    func switchToSplashVC()
 }

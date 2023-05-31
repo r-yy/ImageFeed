@@ -5,7 +5,7 @@
 //  Created by Ramil Yanberdin on 31.05.2023.
 //
 
-import Foundation
+import UIKit
 
 final class ProfilePresenter: ProfilePresenterProtocol {
     private let tokenStorage = OAuth2TokenStorage.shared
@@ -27,6 +27,16 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     func exit() {
         tokenStorage.deleteToken()
         WebViewViewController.clean()
-        view?.switchToSplashVC()
+        switchToSplashVC()
+    }
+
+    private func switchToSplashVC() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Failed to invalid configuration")
+            return
+        }
+        let splashVC = SplashViewController()
+
+        window.rootViewController = splashVC
     }
 }
