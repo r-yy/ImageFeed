@@ -21,6 +21,7 @@ final class ProfileViewController: BaseViewController {
         return view
     }()
 
+    var exitAlert: AlertPresenter?
     var presenter: ProfilePresenterProtocol?
 
     override func loadView() {
@@ -37,9 +38,8 @@ final class ProfileViewController: BaseViewController {
     private func exitButtonDidTap() {
         guard let presenter else { return }
 
-        presenter.exitAlert.showExitAlert(
-            viewController: self, delegate: presenter
-        )
+        exitAlert = AlertPresenter()
+        exitAlert?.showExitAlert(viewController: self, delegate: presenter)
     }
 }
 
