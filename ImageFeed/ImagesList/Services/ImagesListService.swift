@@ -60,7 +60,7 @@ final class ImagesListService {
                 self.loadedPage += 1
                 self.delegate?.addData()
             case .failure:
-                assertionFailure()
+                self.delegate?.showServerErrorAlert()
             }
             self.task = nil
         }

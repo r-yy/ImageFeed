@@ -23,7 +23,7 @@ final class AlertPresenter {
         vc.present(alert, animated: false)
     }
 
-    func showExitAlert(vc: UIViewController, delegate: AlertPresenterDelegate) {
+    func showExitAlert(vc: UIViewController, delegate: AlertPresenterExitDelegate) {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены что хотите выйти?",
@@ -33,6 +33,22 @@ final class AlertPresenter {
             delegate.exit()
         }
         let dismissAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+
+        alert.addAction(exitAction)
+        alert.addAction(dismissAction)
+        vc.present(alert, animated: true)
+    }
+
+    func showServerErrorAlert(vc: UIViewController, delegate: AlertPresenterReloadDelegate) {
+        let alert = UIAlertController(
+            title: "Ошибка",
+            message: "Не удалось получить изображения с сервера",
+            preferredStyle: .alert
+        )
+        let exitAction = UIAlertAction(title: "Повторить", style: .default) {_ in
+            delegate.reloadImages()
+        }
+        let dismissAction = UIAlertAction(title: "Отмена", style: .default, handler: nil)
 
         alert.addAction(exitAction)
         alert.addAction(dismissAction)

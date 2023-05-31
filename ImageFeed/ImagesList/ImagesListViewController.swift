@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: BaseViewController {
+final class ImagesListViewController: BaseViewController, AlertPresenterReloadDelegate {
     var photos: [Photo] = []
 
     private lazy var dateFormatterToPresent: DateFormatter = {
@@ -222,5 +222,13 @@ extension ImagesListViewController: ImagesListDelegate {
 
     func syncPhotos() {
         photos = imagesListService.photos
+    }
+
+    func showServerErrorAlert() {
+        alertPresenter.showServerErrorAlert(vc: self, delegate: self)
+    }
+
+    func reloadImages() {
+        imagesListService.fetchImagesList()
     }
 }
