@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class StubsAnimation: UIView {
+final class ImagesPlaceholder: UIView {
     let gradient = CAGradientLayer()
     let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
     var animationLayers = Set<CALayer>()
@@ -51,6 +51,6 @@ final class StubsAnimation: UIView {
     }
 }
 
-extension StubsAnimation: Placeholder {
+extension ImagesPlaceholder: Placeholder {
 
 }

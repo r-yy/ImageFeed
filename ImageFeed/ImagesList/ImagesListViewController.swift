@@ -112,7 +112,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
         let isLiked = photos[indexPath.row].isLiked
         let imageURL = photos[indexPath.row].smallImageURL
-        let stubsView = StubsAnimation()
+        let stubsView = ImagesPlaceholder()
         
         guard let url = URL(string: imageURL) else {
             return UITableViewCell()

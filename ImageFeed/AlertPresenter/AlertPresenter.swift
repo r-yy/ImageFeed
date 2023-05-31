@@ -23,7 +23,7 @@ final class AlertPresenter {
         vc.present(alert, animated: false)
     }
 
-    func showExitAlert(vc: UIViewController, delegate: AlertPresenterExitDelegate) {
+    func showExitAlert(viewController: UIViewController, delegate: ProfilePresenterProtocol) {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены что хотите выйти?",
@@ -36,7 +36,7 @@ final class AlertPresenter {
 
         alert.addAction(exitAction)
         alert.addAction(dismissAction)
-        vc.present(alert, animated: true)
+        viewController.present(alert, animated: true)
     }
 
     func showServerErrorAlert(vc: UIViewController, delegate: AlertPresenterReloadDelegate) {
