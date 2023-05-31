@@ -33,7 +33,7 @@ final class AuthHelper: AuthHelperProtocol {
         return codeItem.value
     }
 
-    private func authURL() -> URL {
+    func authURL() -> URL {
         let queryParams: [URLQueryItem] = [
             URLQueryItem(
                 name: "client_id", value: api.accessKey
