@@ -8,19 +8,15 @@
 import Foundation
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
-    private lazy var imagesListService: ImagesListService = {
-        let service = ImagesListService()
-        service.presenter = self
-        return service
-    }()
-
     private let cellDateFormatter = CellDateFormatter()
 
     weak var view: ImagesListViewControllerProtocol?
+    var imagesListService: ImagesListServiceProtocol?
 
     var photos: [Photo] = []
 
     func appendRows() {
+        guard let imagesListService else { return }
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
         let rows = Array(oldCount..<newCount)
@@ -32,10 +28,12 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
 
     func syncPhotos() {
+        guard let imagesListService else { return }
         photos = imagesListService.photos
     }
 
     func fetchImagesList() {
+        guard let imagesListService else { return }
         imagesListService.fetchImagesList()
     }
 
@@ -43,9 +41,10 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
         cell: ImagesListCell,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        guard let indexPath = view?.imagesListView.tableView.indexPath(
-            for: cell
-        ) else { return }
+        guard let indexPath = view?.imagesListView.tableView.indexPath(for: cell),
+              let imagesListService else {
+            return
+        }
         let photo = photos[indexPath.row]
 
         imagesListService.changeLike(

@@ -157,10 +157,11 @@ extension SplashViewController {
             assertionFailure("Failed to invalid configuration")
             return
         }
-
+        let imagesListService = ImagesListService()
         let tabBarController = TabBarController(
             profileService: profileService,
-            profileImageService: profileImageService
+            profileImageService: profileImageService,
+            imagesListService: imagesListService
         )
 
         window.rootViewController = tabBarController

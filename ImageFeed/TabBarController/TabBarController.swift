@@ -15,10 +15,12 @@ final class TabBarController: UITabBarController {
 
     let profileService: ProfileService
     let profileImageService: ProfileImageService
+    var imagesListService: ImagesListServiceProtocol
 
-    init(profileService: ProfileService, profileImageService: ProfileImageService) {
+    init(profileService: ProfileService, profileImageService: ProfileImageService, imagesListService: ImagesListServiceProtocol) {
         self.profileService = profileService
         self.profileImageService = profileImageService
+        self.imagesListService = imagesListService
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -75,6 +77,8 @@ final class TabBarController: UITabBarController {
     private func setDependencies() {
         imagesListVC.presenter = imagesListPresenter
         imagesListPresenter.view = imagesListVC
+        imagesListPresenter.imagesListService = imagesListService
+        imagesListService.presenter = imagesListPresenter
         profileVC.presenter = profilePresenter
         profilePresenter.view = profileVC
         profilePresenter.profileService = profileService

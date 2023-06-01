@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ImagesListService {
+final class ImagesListService: ImagesListServiceProtocol {
     private enum NetworkError: Error {
         case codeError
     }
