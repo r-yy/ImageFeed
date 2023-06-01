@@ -23,6 +23,21 @@ final class ImagesListViewTests: XCTestCase {
         XCTAssertTrue(presenter.didFetchImagesListCalled)
     }
 
+    func testViewControllerCallsTableViewPresenterMethods() throws {
+        //Given
+        let imagesListVC = ImagesListViewController()
+        let presenter = ImagesListPresenterSpy()
+        imagesListVC.presenter = presenter
+        presenter.view = imagesListVC
+
+        //When
+        let _ = imagesListVC.view
+
+        //Then
+        XCTAssertTrue(presenter.appendRowsCalled)
+        XCTAssertTrue(presenter.prepareCalled)
+    }
+
     func testPresenterCallsShowErrorAlert() throws {
         //Given
         let imagesListVC = ImagesListViewControllerSpy()
@@ -43,9 +58,11 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
 
     var photos: [Photo] = []
     var didFetchImagesListCalled = false
+    var appendRowsCalled = false
+    var prepareCalled = false
 
     func appendRows() {
-        
+        appendRowsCalled = true
     }
 
     func syncPhotos() {
@@ -61,7 +78,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     }
 
     func prepare(cell: ImageFeed.ImagesListCell, at row: Int) {
-
+        prepareCalled = true
     }
 
     func shouldUploadNewPage(currentRow: Int) {
