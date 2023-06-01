@@ -46,33 +46,42 @@ final class ImageFeedUITests: XCTestCase {
     func testFeed() throws {
         let tablesQuery = app.tables
 
-        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        cell.swipeUp()
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        let finish = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+        start.press(forDuration: 0.7, thenDragTo: finish)
         sleep(2)
 
         let cellToTapLike = tablesQuery.descendants(matching: .cell).element(boundBy: 2)
-        cellToTapLike.buttons["LikeButtonOff"].tap()
+        cellToTapLike.buttons["LikeButton"].tap()
         sleep(3)
 
-        cellToTapLike.buttons["LikeButtonOn"].tap()
+        cellToTapLike.buttons["LikeButton"].tap()
         sleep(2)
 
         cellToTapLike.tap()
         sleep(5)
 
         let image = app.scrollViews.element(boundBy: 0)
-        image.pinch(withScale: 3, velocity: 4)
-        sleep(3)
+        image.doubleTap()
+        sleep(2)
 
-        image.pinch(withScale: 0.3, velocity: 4)
-        sleep(3)
+        image.doubleTap()
+        sleep(2)
 
-        let button = app.scrollViews.buttons["BackButton"]
-        button.tap()
-        
+        app.scrollViews.buttons["BackButton"].tap()        
     }
 
     func testProfile() throws {
+        sleep(3)
+        app.tabBars.buttons.element(boundBy: 1).tap()
+
+        XCTAssertTrue(app.staticTexts["Рамиль"].exists)
+        XCTAssertTrue(app.staticTexts["@ramyan"].exists)
+
+        app.buttons["ExitButton"].tap()
+
+        app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
+
         
     }
 

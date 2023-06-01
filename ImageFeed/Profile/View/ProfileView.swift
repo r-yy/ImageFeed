@@ -56,6 +56,7 @@ final class ProfileView: UIView {
         button.setImage(
             UIImage(named: "exit"), for: .normal
         )
+        button.accessibilityIdentifier = "ExitButton"
 
         return button
     }()
