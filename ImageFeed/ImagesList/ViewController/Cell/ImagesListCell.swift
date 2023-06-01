@@ -52,7 +52,7 @@ final class ImagesListCell: UITableViewCell {
     
     private var subview = GradientBlurView()
 
-    weak var delegate: ImagesListDelegate?
+    var presenter: ImagesListPresenterProtocol?
 
     override init(
         style: UITableViewCell.CellStyle,
@@ -85,13 +85,13 @@ final class ImagesListCell: UITableViewCell {
 
     @objc
     private func likeButtonTapped() {
-        delegate?.cellDidTapLike(cell: self) {
+        presenter?.cellDidTapLike(cell: self) {
             (result: Result<Bool, Error>) in
             switch result {
             case .success(let success):
                 self.changeLikeState(isLiked: success)
             case .failure:
-                assertionFailure()
+                self.presenter?.showErrorAlert()
             }
             self.likeButton.layer.removeAllAnimations()
         }

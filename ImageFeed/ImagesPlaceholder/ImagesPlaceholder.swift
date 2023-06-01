@@ -45,6 +45,7 @@ final class ImagesPlaceholder: UIView {
     private func addAnimation() {
         gradientChangeAnimation.duration = 1.0
         gradientChangeAnimation.repeatCount = .infinity
+        gradientChangeAnimation.autoreverses = true
         gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
         gradientChangeAnimation.toValue = [0, 0.8, 1]
         gradient.add(gradientChangeAnimation, forKey: "locationsChange")

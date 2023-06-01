@@ -13,7 +13,7 @@ final class ImagesListService {
     }
     var photos: [Photo] = []
 
-    weak var delegate: ImagesListDelegate?
+    var presenter: ImagesListPresenterProtocol?
 
     private var task: URLSessionTask?
 
@@ -60,9 +60,9 @@ final class ImagesListService {
             case .success(let success):
                 self.photos.append(contentsOf: success)
                 self.loadedPage += 1
-                self.delegate?.addData()
+                self.presenter?.appendRows()
             case .failure:
-                self.delegate?.showServerErrorAlert()
+                self.presenter?.showErrorAlert()
             }
             self.task = nil
         }
@@ -104,7 +104,7 @@ final class ImagesListService {
                    response.statusCode == 200 || response.statusCode == 201 {
                     DispatchQueue.main.async {
                         self.updateLikesState(photoID: photoID)
-                        self.delegate?.syncPhotos()
+                        self.presenter?.syncPhotos()
                         completion(.success(()))
                     }
                 } else {

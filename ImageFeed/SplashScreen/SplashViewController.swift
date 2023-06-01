@@ -106,7 +106,7 @@ extension SplashViewController {
             .rootViewController?.topMostViewController()
         else { return }
 
-        alertPresenter.showErrorAlert(vc: topViewController)
+        alertPresenter.showErrorAlert(viewController: topViewController)
     }
 
     private func getKeyWindow() -> UIWindow? {
@@ -158,18 +158,10 @@ extension SplashViewController {
             return
         }
 
-        let tabBarController = TabBarController()
-
-        if let profileVC = tabBarController.children.first(where: {
-            $0 is ProfileViewController
-        }) as? ProfileViewController {
-            let profilePresenter = ProfilePresenter()
-            profileVC.presenter = profilePresenter
-            profilePresenter.view = profileVC
-            profilePresenter.profileService = profileService
-            profilePresenter.profileImageService = profileImageService
-
-        }
+        let tabBarController = TabBarController(
+            profileService: profileService,
+            profileImageService: profileImageService
+        )
 
         window.rootViewController = tabBarController
     }

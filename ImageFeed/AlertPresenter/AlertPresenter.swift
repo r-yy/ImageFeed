@@ -8,7 +8,7 @@
 import UIKit
 
 final class AlertPresenter {
-    func showErrorAlert(vc: UIViewController) {
+    func showErrorAlert(viewController: UIViewController) {
         let alert = UIAlertController(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
@@ -20,7 +20,7 @@ final class AlertPresenter {
         }
 
         alert.addAction(action)
-        vc.present(alert, animated: false)
+        viewController.present(alert, animated: false)
     }
 
     func showExitAlert(viewController: UIViewController, delegate: ProfilePresenterProtocol) {
@@ -37,21 +37,5 @@ final class AlertPresenter {
         alert.addAction(exitAction)
         alert.addAction(dismissAction)
         viewController.present(alert, animated: true)
-    }
-
-    func showServerErrorAlert(vc: UIViewController, delegate: AlertPresenterReloadDelegate) {
-        let alert = UIAlertController(
-            title: "Ошибка",
-            message: "Не удалось получить изображения с сервера",
-            preferredStyle: .alert
-        )
-        let exitAction = UIAlertAction(title: "Повторить", style: .default) {_ in
-            delegate.reloadImages()
-        }
-        let dismissAction = UIAlertAction(title: "Отмена", style: .default, handler: nil)
-
-        alert.addAction(exitAction)
-        alert.addAction(dismissAction)
-        vc.present(alert, animated: true)
     }
 }
