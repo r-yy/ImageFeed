@@ -46,7 +46,7 @@ final class ImagesListCell: UITableViewCell {
         button.layer.shadowOpacity = 0.5
         button.layer.shadowRadius = 2.0
         button.clipsToBounds = false
-        button.accessibilityIdentifier = "LikeButton"
+        button.accessibilityIdentifier = "LikeButtonOff"
 
         return button
     }()
@@ -216,8 +216,14 @@ extension ImagesListCell {
 //MARK: Change button image state
 extension ImagesListCell {
     func changeLikeState(isLiked: Bool) {
-        let buttonImage = isLiked ? UIImage(named: LikeButtonNames.activeLike.rawValue)
-                                  : UIImage(named: LikeButtonNames.inactiveLike.rawValue)
+        var buttonImage: UIImage
+        if isLiked {
+            buttonImage = UIImage(named: LikeButtonNames.activeLike.rawValue)!
+            likeButton.accessibilityIdentifier = "LikeButtonOn"
+        } else {
+            buttonImage = UIImage(named: LikeButtonNames.inactiveLike.rawValue)!
+            likeButton.accessibilityIdentifier = "LikeButtonOff"
+        }
 
         self.likeButton.setImage(buttonImage, for: .normal)
     }
