@@ -10,8 +10,8 @@ import UIKit
 final class ProfilePresenter: ProfilePresenterProtocol {
     private let tokenStorage = OAuth2TokenStorage.shared
 
-    var profileService: ProfileService?
-    var profileImageService: ProfileImageService?
+    var profileService: ProfileServiceProtocol?
+    var profileImageService: ProfileImageServiceProtocol?
     
     weak var view: ProfileViewControllerProtocol?
 

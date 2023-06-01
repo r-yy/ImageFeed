@@ -67,6 +67,10 @@
 		E4F9526B2A28B4B300477A5A /* ImagesListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F9526A2A28B4B300477A5A /* ImagesListViewTests.swift */; };
 		E4F9526D2A28C5A600477A5A /* MockImagesList.json in Resources */ = {isa = PBXBuildFile; fileRef = E4F9526C2A28C5A600477A5A /* MockImagesList.json */; };
 		E4F9526F2A28C64200477A5A /* ImagesListServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F9526E2A28C64200477A5A /* ImagesListServiceProtocol.swift */; };
+		E4F952712A28E6B100477A5A /* MockProfile.json in Resources */ = {isa = PBXBuildFile; fileRef = E4F952702A28E6B100477A5A /* MockProfile.json */; };
+		E4F952752A28E9A500477A5A /* MockProfileImage.json in Resources */ = {isa = PBXBuildFile; fileRef = E4F952742A28E9A500477A5A /* MockProfileImage.json */; };
+		E4F952772A28E9BF00477A5A /* ProfileServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F952762A28E9BF00477A5A /* ProfileServiceProtocol.swift */; };
+		E4F952792A28EA2D00477A5A /* ProfileImageServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F952782A28EA2D00477A5A /* ProfileImageServiceProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +144,10 @@
 		E4F9526A2A28B4B300477A5A /* ImagesListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewTests.swift; sourceTree = "<group>"; };
 		E4F9526C2A28C5A600477A5A /* MockImagesList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockImagesList.json; sourceTree = "<group>"; };
 		E4F9526E2A28C64200477A5A /* ImagesListServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceProtocol.swift; sourceTree = "<group>"; };
+		E4F952702A28E6B100477A5A /* MockProfile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockProfile.json; sourceTree = "<group>"; };
+		E4F952742A28E9A500477A5A /* MockProfileImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockProfileImage.json; sourceTree = "<group>"; };
+		E4F952762A28E9BF00477A5A /* ProfileServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileServiceProtocol.swift; sourceTree = "<group>"; };
+		E4F952782A28EA2D00477A5A /* ProfileImageServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageServiceProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +188,8 @@
 			children = (
 				E417069A2A02B7E500166399 /* ProfileService.swift */,
 				E41706A42A03C33F00166399 /* ProfileImageService.swift */,
+				E4F952762A28E9BF00477A5A /* ProfileServiceProtocol.swift */,
+				E4F952782A28EA2D00477A5A /* ProfileImageServiceProtocol.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -417,6 +427,8 @@
 				E4F952412A279ADD00477A5A /* WebViewTests.swift */,
 				E4F952532A27BF6200477A5A /* ProfileViewTests.swift */,
 				E4F9526A2A28B4B300477A5A /* ImagesListViewTests.swift */,
+				E4F952702A28E6B100477A5A /* MockProfile.json */,
+				E4F952742A28E9A500477A5A /* MockProfileImage.json */,
 				E4F9526C2A28C5A600477A5A /* MockImagesList.json */,
 			);
 			path = ImageFeedTests;
@@ -588,7 +600,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4F952752A28E9A500477A5A /* MockProfileImage.json in Resources */,
 				E4F9526D2A28C5A600477A5A /* MockImagesList.json in Resources */,
+				E4F952712A28E6B100477A5A /* MockProfile.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +620,7 @@
 				E4A3B09129F2D406001D15C0 /* API.swift in Sources */,
 				E4D2B77D29F73E4A007289AD /* OAuth2Service.swift in Sources */,
 				E44C56E829FD7FE90089AAAF /* UIBlockingProgressHUD.swift in Sources */,
+				E4F952792A28EA2D00477A5A /* ProfileImageServiceProtocol.swift in Sources */,
 				E4F952602A27DC4C00477A5A /* ImagesListPresenter.swift in Sources */,
 				E4D2B78229F7D46D007289AD /* SplashViewController.swift in Sources */,
 				E4D2B77929F73D39007289AD /* OAuthToken.swift in Sources */,
@@ -631,6 +646,7 @@
 				E44DB9CC2A1BA86600157FC1 /* Photo.swift in Sources */,
 				E4F952322A277F4D00477A5A /* WebViewPresenterProtocol.swift in Sources */,
 				E4F9526F2A28C64200477A5A /* ImagesListServiceProtocol.swift in Sources */,
+				E4F952772A28E9BF00477A5A /* ProfileServiceProtocol.swift in Sources */,
 				E40FC5F529F45C7600A810A7 /* WebViewViewController.swift in Sources */,
 				E4F952642A27F2B900477A5A /* Extension+UITableViewDataSource.swift in Sources */,
 				E44AA81129E305F5000A8F03 /* BaseViewController.swift in Sources */,

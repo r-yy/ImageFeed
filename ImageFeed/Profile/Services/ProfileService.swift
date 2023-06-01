@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ProfileService {
+final class ProfileService: ProfileServiceProtocol {
     private enum FetchError: Error {
         case codeError
     }
@@ -17,7 +17,7 @@ final class ProfileService {
 
     private var task: URLSessionTask?
 
-    private(set) var currentProfile: Profile?
+    var currentProfile: Profile?
 
     func fetchProfile(
         _ token: String,
