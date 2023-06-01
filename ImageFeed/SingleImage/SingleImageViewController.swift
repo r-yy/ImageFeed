@@ -33,6 +33,7 @@ final class SingleImageViewController: BaseViewController {
             action: #selector(backButtonTapped),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = "BackButton"
 
         return button
     }()

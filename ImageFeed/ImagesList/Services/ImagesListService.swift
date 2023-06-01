@@ -62,7 +62,8 @@ final class ImagesListService: ImagesListServiceProtocol {
                 self.loadedPage += 1
                 self.presenter?.appendRows()
             case .failure:
-                self.presenter?.showErrorAlert()
+//                self.presenter?.showErrorAlert()
+                print("")
             }
             self.task = nil
         }

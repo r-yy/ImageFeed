@@ -30,6 +30,7 @@ final class AuthViewController: BaseViewController {
             action: #selector(openWebViewVC),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = "Auth"
         return button
     }()
 

@@ -8,7 +8,11 @@
 import WebKit
 
 final class WebViewViewController: UIViewController {
-    private let webView = WKWebView()
+    private let webView: WKWebView = {
+        let view = WKWebView()
+        view.accessibilityIdentifier = "AuthWebView"
+        return view
+    }()
     private let urlMaker = URLMaker.shared
 
     private let backButton: UIBarButtonItem = {

@@ -46,6 +46,7 @@ final class ImagesListCell: UITableViewCell {
         button.layer.shadowOpacity = 0.5
         button.layer.shadowRadius = 2.0
         button.clipsToBounds = false
+        button.accessibilityIdentifier = "LikeButton"
 
         return button
     }()
