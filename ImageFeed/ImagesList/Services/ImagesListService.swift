@@ -21,12 +21,16 @@ final class ImagesListService: ImagesListServiceProtocol {
     private var token = OAuth2TokenStorage.shared
     private var session = URLSession.shared
     private var loadedPage = 1
+    private var isLoading = false
 
     private let api = API.production
 
     //MARK: Upload images list
     func fetchImagesList() {
         assert(Thread.isMainThread)
+
+        if isLoading { return }
+        isLoading = true
 
         task?.cancel()
 
@@ -62,9 +66,9 @@ final class ImagesListService: ImagesListServiceProtocol {
                 self.loadedPage += 1
                 self.presenter?.appendRows()
             case .failure:
-//                self.presenter?.showErrorAlert()
-                print("")
+                self.presenter?.showErrorAlert()
             }
+            self.isLoading = false
             self.task = nil
         }
         self.task = task

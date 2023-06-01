@@ -27,35 +27,37 @@ final class ImageFeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
-        loginTextField.typeText("hfvbkmm@gmail.com")
+        //MARK: Необходимо указать свой логин
+        loginTextField.typeText("TYPE HERE")
         start.press(forDuration: 0.05, thenDragTo: finish)
 
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
-        passwordTextField.typeText("samsi4-nepmyz-ryzBed\n")
+        //MARK: Необходимо указать свой пароль \n прошу не удалять, нужен для теста
+        passwordTextField.typeText("TYPE HERE\n")
 
         print(app.debugDescription)
+        sleep(3)
 
-        let tablesQuery = app.tables
-        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        let cell = app.tables.descendants(matching: .cell).element(boundBy: 0)
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
 
     }
 
     func testFeed() throws {
-        let tablesQuery = app.tables
-
+        sleep(3)
         let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-        let finish = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
-        start.press(forDuration: 0.7, thenDragTo: finish)
-        sleep(2)
-
-        let cellToTapLike = tablesQuery.descendants(matching: .cell).element(boundBy: 2)
-        cellToTapLike.buttons["LikeButton"].tap()
+        let finish = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.4))
+        start.press(forDuration: 1, thenDragTo: finish)
         sleep(3)
 
-        cellToTapLike.buttons["LikeButton"].tap()
+        let cellToTapLike = app.tables.children(matching: .cell).element(boundBy: 1)
+        let likeButton = cellToTapLike.buttons["LikeButton"]
+        likeButton.tap()
+        sleep(3)
+
+        likeButton.tap()
         sleep(2)
 
         cellToTapLike.tap()
@@ -68,15 +70,16 @@ final class ImageFeedUITests: XCTestCase {
         image.doubleTap()
         sleep(2)
 
-        app.scrollViews.buttons["BackButton"].tap()        
+        app.buttons["BackButton"].tap()
     }
 
     func testProfile() throws {
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
 
-        XCTAssertTrue(app.staticTexts["Рамиль"].exists)
-        XCTAssertTrue(app.staticTexts["@ramyan"].exists)
+        //MARK: Необходимо изменить на свои данные
+        XCTAssertTrue(app.staticTexts["TYPE HERE"].exists)
+        XCTAssertTrue(app.staticTexts["TYPE HERE"].exists)
 
         app.buttons["ExitButton"].tap()
 
