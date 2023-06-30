@@ -30,6 +30,7 @@ final class AuthViewController: BaseViewController {
             action: #selector(openWebViewVC),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = "Auth"
         return button
     }()
 
@@ -43,15 +44,18 @@ final class AuthViewController: BaseViewController {
     @objc
     private func openWebViewVC() {
         let webViewVC = WebViewViewController()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
 
+        webViewVC.presenter = webViewPresenter
+        webViewPresenter.view = webViewVC
         webViewVC.delegate = self
 
         webViewVC.modalPresentationStyle = .fullScreen
         webViewVC.modalTransitionStyle = .crossDissolve
 
         self.navigationController?.pushViewController(
-            webViewVC,
-            animated: true
+            webViewVC, animated: true
         )
 
     }

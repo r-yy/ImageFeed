@@ -46,13 +46,16 @@ final class ImagesListCell: UITableViewCell {
         button.layer.shadowOpacity = 0.5
         button.layer.shadowRadius = 2.0
         button.clipsToBounds = false
+        button.accessibilityIdentifier = "LikeButton"
 
         return button
     }()
+
+    private var index: Int?
     
     private var subview = GradientBlurView()
 
-    weak var delegate: ImagesListDelegate?
+    var presenter: ImagesListPresenterProtocol?
 
     override init(
         style: UITableViewCell.CellStyle,
@@ -85,13 +88,13 @@ final class ImagesListCell: UITableViewCell {
 
     @objc
     private func likeButtonTapped() {
-        delegate?.cellDidTapLike(cell: self) {
+        presenter?.cellDidTapLike(index: index) {
             (result: Result<Bool, Error>) in
             switch result {
             case .success(let success):
                 self.changeLikeState(isLiked: success)
             case .failure:
-                assertionFailure()
+                self.presenter?.showErrorAlert()
             }
             self.likeButton.layer.removeAllAnimations()
         }
@@ -163,9 +166,10 @@ extension ImagesListCell {
         case inactiveLike
     }
 
-    func configCell(date: String, isLiked: Bool) {
+    func configCell(date: String, isLiked: Bool, index: Int) {
 
         dateLabel.text = date
+        self.index = index
 
         let buttonImage = isLiked ? UIImage(
             named: LikeButtonNames.activeLike.rawValue

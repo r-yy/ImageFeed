@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-22",
+    "description": "Beautiful landscape",
+    "urls": {
+      "small": "https://example.com/small1.jpg",
+      "full": "https://example.com/full1.jpg"
+    },
+    "liked_by_user": true
+  },
+  {
+    "id": "2",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "3",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "4",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "5",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "6",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "7",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "8",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "9",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-21",
+    "description": "Ocean view",
+    "urls": {
+      "small": "https://example.com/small2.jpg",
+      "full": "https://example.com/full2.jpg"
+    },
+    "liked_by_user": false
+  },
+  {
+    "id": "10",
+    "width": 640,
+    "height": 480,
+    "created_at": "2023-05-13",
+    "description": "Sunset at the beach",
+    "urls": {
+      "small": "https://example.com/small10.jpg",
+      "full": "https://example.com/full10.jpg"
+    },
+    "liked_by_user": true
+  }
+]

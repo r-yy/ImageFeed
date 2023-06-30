@@ -18,6 +18,7 @@ final class OAuth2Service {
     private let session = URLSession.shared
     private let urlMaker = URLMaker.shared
     private let tokenStorage = OAuth2TokenStorage.shared
+    private let api = API.production
 
     func fetchAuthToken(
         code: String,
@@ -54,15 +55,15 @@ final class OAuth2Service {
 
     private func makeAuthTokenRequest(code: String) -> URLRequest {
         let queryParams = [
-            URLQueryItem(name: "client_id", value: API.accessKey),
-            URLQueryItem(name: "client_secret", value: API.secretKey),
-            URLQueryItem(name: "redirect_uri", value: API.redirectURI),
+            URLQueryItem(name: "client_id", value: api.accessKey),
+            URLQueryItem(name: "client_secret", value: api.secretKey),
+            URLQueryItem(name: "redirect_uri", value: api.redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         let url = urlMaker.getURL(
             queryParams: queryParams,
-            baseURL: API.OAuthTokenURLString
+            baseURL: api.OAuthTokenURLString
         )
 
         var request = URLRequest(url: url)

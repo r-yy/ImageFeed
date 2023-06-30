@@ -106,7 +106,7 @@ extension SplashViewController {
             .rootViewController?.topMostViewController()
         else { return }
 
-        alertPresenter.showErrorAlert(vc: topViewController)
+        alertPresenter.showErrorAlert(viewController: topViewController)
     }
 
     private func getKeyWindow() -> UIWindow? {
@@ -157,15 +157,12 @@ extension SplashViewController {
             assertionFailure("Failed to invalid configuration")
             return
         }
-
-        let tabBarController = TabBarController()
-
-        if let profileVC = tabBarController.children.first(where: {
-            $0 is ProfileViewController
-        }) as? ProfileViewController {
-            profileVC.profileService = profileService
-            profileVC.profileImageService = profileImageService
-        }
+        let imagesListService = ImagesListService()
+        let tabBarController = TabBarController(
+            profileService: profileService,
+            profileImageService: profileImageService,
+            imagesListService: imagesListService
+        )
 
         window.rootViewController = tabBarController
     }

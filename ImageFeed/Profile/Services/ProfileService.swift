@@ -7,16 +7,17 @@
 
 import Foundation
 
-final class ProfileService {
+final class ProfileService: ProfileServiceProtocol {
     private enum FetchError: Error {
         case codeError
     }
     private let urlMaker = URLMaker.shared
     private let session = URLSession.shared
+    private let api = API.production
 
     private var task: URLSessionTask?
 
-    private(set) var currentProfile: Profile?
+    var currentProfile: Profile?
 
     func fetchProfile(
         _ token: String,
@@ -27,8 +28,8 @@ final class ProfileService {
         task?.cancel()
 
         let url = urlMaker.getURL(
-            withPath: API.mePath,
-            baseURL: API.defaultBaseUrl
+            withPath: api.mePath,
+            baseURL: api.defaultBaseUrl
         )
 
         var request = URLRequest(url: url)

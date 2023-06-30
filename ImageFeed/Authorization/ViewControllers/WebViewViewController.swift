@@ -8,7 +8,11 @@
 import WebKit
 
 final class WebViewViewController: UIViewController {
-    private let webView = WKWebView()
+    private let webView: WKWebView = {
+        let view = WKWebView()
+        view.accessibilityIdentifier = "AuthWebView"
+        return view
+    }()
     private let urlMaker = URLMaker.shared
 
     private let backButton: UIBarButtonItem = {
@@ -28,11 +32,12 @@ final class WebViewViewController: UIViewController {
     private var observer: NSKeyValueObservation?
 
     var delegate: WebViewViewControllerDelegate?
+    var presenter: WebViewPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadWebView()
+        presenter?.viewDidLoad()
         makeView()
         webView.navigationDelegate = self
     }
@@ -64,37 +69,6 @@ final class WebViewViewController: UIViewController {
     }
 }
 
-//MARK: Load WebView
-extension WebViewViewController {
-    private func loadWebView() {
-        let queryParams: [URLQueryItem] = [
-            URLQueryItem(
-                name: "client_id",
-                value: API.accessKey
-            ),
-            URLQueryItem(
-                name: "redirect_uri",
-                value: API.redirectURI
-            ),
-            URLQueryItem(
-                name: "response_type",
-                value: "code"
-            ),
-            URLQueryItem(
-                name: "scope",
-                value: API.accessScope
-            )
-        ]
-        let url = urlMaker.getURL(
-            queryParams: queryParams,
-            baseURL: API.authUrlString
-        )
-        let request = URLRequest(url: url)
-
-        webView.load(request)
-    }
-}
-
 //MARK: WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
@@ -116,41 +90,37 @@ extension WebViewViewController: WKNavigationDelegate {
     private func code(
         from navigationAction: WKNavigationAction
     ) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let queryItems = urlComponents.queryItems,
-            let codeItem = queryItems.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
+        guard let url = navigationAction.request.url else {
             return nil
         }
+        return presenter?.code(from: url)
     }
 }
 
 //MARK: KVO
 extension WebViewViewController {
-    private func updateProgress() {
+    func setProgressValue(_ newValue: Float) {
         let duration = 0.8
-        let progress: Float = Float(webView.estimatedProgress)
 
         UIView.animate(withDuration: duration, animations: {
-            self.progressView.setProgress(progress, animated: true)
+            self.progressView.setProgress(newValue, animated: true)
         }) {
             _ in
             self.progressView.progress = 1.0
         }
+    }
 
-        progressView.isHidden = abs(progressView.progress - 1.0) <= 0.001
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
 
     private func addObserver() {
         observer = webView.observe(\.estimatedProgress) {
             [weak self] _, _ in
             guard let self else { return }
-            self.updateProgress()
+            self.presenter?.didUpdateProgressValue(
+                self.webView.estimatedProgress
+            )
         }
     }
 }
@@ -203,5 +173,11 @@ extension WebViewViewController {
         addSubview()
         applyConstraints()
         preferNavigationBar()
+    }
+}
+
+extension WebViewViewController: WebViewViewControllerProtocol {
+    func load(request: URLRequest) {
+        webView.load(request)
     }
 }

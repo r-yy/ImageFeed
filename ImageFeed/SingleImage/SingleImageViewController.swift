@@ -33,6 +33,7 @@ final class SingleImageViewController: BaseViewController {
             action: #selector(backButtonTapped),
             for: .touchUpInside
         )
+        button.accessibilityIdentifier = "BackButton"
 
         return button
     }()
@@ -74,7 +75,7 @@ final class SingleImageViewController: BaseViewController {
                             animated: false
                         )
                     case .failure:
-                        assertionFailure()
+                        self.imageView.image = UIImage(named: "stub")
                     }
                     ProgressHUD.dismiss()
                 }
@@ -115,6 +116,7 @@ final class SingleImageViewController: BaseViewController {
     @objc
     private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
+        ProgressHUD.dismiss()
     }
 
     @objc

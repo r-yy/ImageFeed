@@ -7,13 +7,13 @@
 
 import Foundation
 
-final class ImagesListService {
+final class ImagesListService: ImagesListServiceProtocol {
     private enum NetworkError: Error {
         case codeError
     }
     var photos: [Photo] = []
 
-    weak var delegate: ImagesListDelegate?
+    var presenter: ImagesListPresenterProtocol?
 
     private var task: URLSessionTask?
 
@@ -21,10 +21,16 @@ final class ImagesListService {
     private var token = OAuth2TokenStorage.shared
     private var session = URLSession.shared
     private var loadedPage = 1
+    private var isLoading = false
+
+    private let api = API.production
 
     //MARK: Upload images list
     func fetchImagesList() {
         assert(Thread.isMainThread)
+
+        if isLoading { return }
+        isLoading = true
 
         task?.cancel()
 
@@ -34,7 +40,7 @@ final class ImagesListService {
             )
         ]
         let url = urlMaker.getURL(
-            withPath: API.photosPath, baseURL: API.defaultBaseUrl
+            withPath: api.photosPath, baseURL: api.defaultBaseUrl
         )
         let urlWithQueryParams = urlMaker.getURL(
             queryParams: queryParams, baseURL: url.absoluteString
@@ -58,10 +64,11 @@ final class ImagesListService {
             case .success(let success):
                 self.photos.append(contentsOf: success)
                 self.loadedPage += 1
-                self.delegate?.addData()
+                self.presenter?.appendRows()
             case .failure:
-                self.delegate?.showServerErrorAlert()
+                self.presenter?.showErrorAlert()
             }
+            self.isLoading = false
             self.task = nil
         }
         self.task = task
@@ -77,8 +84,8 @@ final class ImagesListService {
         let path = "/\(photoID)/like"
 
         let url = urlMaker.getURL(
-            withPath: API.photosPath + path,
-            baseURL: API.defaultBaseUrl
+            withPath: api.photosPath + path,
+            baseURL: api.defaultBaseUrl
         )
 
         var request = URLRequest(url: url)
@@ -102,7 +109,7 @@ final class ImagesListService {
                    response.statusCode == 200 || response.statusCode == 201 {
                     DispatchQueue.main.async {
                         self.updateLikesState(photoID: photoID)
-                        self.delegate?.syncPhotos()
+                        self.presenter?.syncPhotos()
                         completion(.success(()))
                     }
                 } else {
