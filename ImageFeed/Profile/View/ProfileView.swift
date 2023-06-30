@@ -46,6 +46,7 @@ final class ProfileView: UIView {
         label.font = UIFont(
             name: "SF Pro Text Regular", size: 13
         )
+        label.numberOfLines = 5
 
         return label
     }()

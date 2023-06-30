@@ -21,8 +21,8 @@ struct API {
     let photosPath = "/photos"
 
     static let production = API(
-        accessKey: "doLPUOLi1Ypom-FZmM09AlIKUpPkh6oI-dRFhhgqa_Q",
-        secretKey: "ZOKm4tVrTxHuEMXVLX8ooSL-zt3Ru6zdhY_NypoOYBY",
+        accessKey: "fJU-SNaFDZrSAmAxjTOACtBmht7Ri4OFx7MuZE2gYkY",
+        secretKey: "Lbz32DeaydPVs_7RgQ3Y7agHZ-xeyDsAXlhxhr5TPQg",
         redirectURI: "urn:ietf:wg:oauth:2.0:oob",
         accessScope: "public+read_user+write_likes",
         defaultBaseUrl: "https://api.unsplash.com",

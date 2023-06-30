@@ -23,11 +23,16 @@ final class ImagesListCell: UITableViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
 
-        label.textColor = .ypWhite
+        label.textColor = .ypGray
         label.font = UIFont(
             name: "SF Pro Text Regular",
             size: 13
         )
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = CGSize(width: 0.2, height: 0.2)
+        label.layer.shadowOpacity = 0.6
+        label.layer.shadowRadius = 0
+        label.layer.masksToBounds = false
 
         return label
     }()
@@ -52,8 +57,6 @@ final class ImagesListCell: UITableViewCell {
     }()
 
     private var index: Int?
-    
-    private var subview = GradientBlurView()
 
     var presenter: ImagesListPresenterProtocol?
 
@@ -81,7 +84,6 @@ final class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         contentImage.kf.cancelDownloadTask()
-        subview.isHidden = true
         dateLabel.text = nil
         likeButton.setImage(nil, for: .normal)
     }
@@ -178,41 +180,6 @@ extension ImagesListCell {
         )
         likeButton.setImage(buttonImage, for: .normal)
         likeButton.setTitle(String(), for: .normal)
-
-        subview.isHidden = false
-        addGradient()
-    }
-}
-
-//MARK: Add gradient on cell
-extension ImagesListCell {
-    func addGradient() {
-        subview.layer.masksToBounds = true
-        subview.layer.cornerRadius = 16
-        subview.layer.maskedCorners = [
-            .layerMaxXMaxYCorner,
-            .layerMinXMaxYCorner]
-        subview.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(subview)
-                
-        NSLayoutConstraint.activate([
-            subview.heightAnchor.constraint(
-                equalToConstant: 30
-            ),
-            subview.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor,
-                constant: 16
-            ),
-            subview.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor,
-                constant: -16
-            ),
-            subview.bottomAnchor.constraint(
-                equalTo: contentView.bottomAnchor,
-                constant: -4
-            )
-        ])
     }
 }
 

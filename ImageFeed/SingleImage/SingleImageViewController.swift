@@ -25,9 +25,10 @@ final class SingleImageViewController: BaseViewController {
         let button = UIButton()
 
         button.setImage(
-            UIImage(named: "lightBack"),
+            UIImage(systemName: "xmark"),
             for: .normal
         )
+        button.imageView?.tintColor = .ypGray
         button.addTarget(
             self,
             action: #selector(backButtonTapped),
@@ -41,8 +42,14 @@ final class SingleImageViewController: BaseViewController {
     private lazy var shareButton: UIButton = {
         let button = UIButton()
 
+        let image = UIImage(
+            systemName: "arrowshape.turn.up.forward"
+        )?.withTintColor(.ypGray)
+
+        let imageData = image?.pngData()
+
         button.setImage(
-            UIImage(named: "share"),
+            UIImage(data: imageData ?? Data(), scale: 2),
             for: .normal
         )
         button.addTarget(
@@ -52,6 +59,18 @@ final class SingleImageViewController: BaseViewController {
         )
 
         return button
+    }()
+
+    private lazy var shareLabel: UILabel = {
+        let label = UILabel()
+
+        label.text = "share"
+        label.font = UIFont(
+            name: "SF Pro Text Bold", size: 12
+        )
+        label.textColor = .ypGray
+
+        return label
     }()
 
     var photo: Photo? {
@@ -129,7 +148,7 @@ final class SingleImageViewController: BaseViewController {
         if isScrollViewDidZoomed {
             rescaleAndCenterImageInScrollView(imageSize: imageSize, animated: true)
         } else {
-            scrollView.setZoomScale(0.2, animated: true)
+            scrollView.setZoomScale(2, animated: true)
             scrollView.layoutIfNeeded()
 
             let xPoint =
@@ -211,6 +230,8 @@ extension SingleImageViewController {
         scrollView.addSubview(imageView)
         self.view.addSubview(backButton)
         self.view.addSubview(shareButton)
+        self.view.addSubview(shareLabel)
+        view.bringSubviewToFront(shareButton)
     }
 }
 
@@ -220,6 +241,7 @@ extension SingleImageViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
         shareButton.translatesAutoresizingMaskIntoConstraints = false
+        shareLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(
@@ -250,9 +272,9 @@ extension SingleImageViewController {
                 equalTo: self.view.safeAreaLayoutGuide.topAnchor,
                 constant: 8
             ),
-            backButton.leadingAnchor.constraint(
-                equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-                constant: 8
+            backButton.trailingAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -8
             ),
             backButton.widthAnchor.constraint(
                 equalToConstant: 48
@@ -272,6 +294,13 @@ extension SingleImageViewController {
             ),
             shareButton.heightAnchor.constraint(
                 equalToConstant: 50
+            ),
+            shareLabel.topAnchor.constraint(
+                equalTo: shareButton.bottomAnchor,
+                constant: -10
+            ),
+            shareLabel.centerXAnchor.constraint(
+                equalTo: shareButton.centerXAnchor
             )
         ])
     }
