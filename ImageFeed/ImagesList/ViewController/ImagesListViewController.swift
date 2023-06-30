@@ -48,9 +48,20 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
         alertPresenter.showErrorAlert(viewController: self)
     }
 
-    func setCell(
-        cell: ImagesListCell, imageURL: URL, date: String?, isLiked: Bool
-    ) {
+    func setCell(cell: ImagesListCell, at row: Int) {
+        guard let presenter else { return }
+
+        let date = presenter.cellDateFormatter.getFormattedDate(
+            from: presenter.photos[row].createdAt
+        )
+
+        let url = presenter.photos[row].smallImageURL
+        let isLiked = presenter.photos[row].isLiked
+
+        guard let imageURL = URL(string: url) else {
+            return
+        }
+
         let placeholder = ImagesPlaceholder()
         cell.presenter = presenter
 
@@ -61,11 +72,20 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
             switch result {
             case .success:
                 cell.configCell(
-                    date: date ?? String(), isLiked: isLiked
+                    date: date, isLiked: isLiked, index: row
                 )
             default:
                 cell.contentImage.image = UIImage(named: "stub")
             }
         }
+    }
+
+    func getCellHeight(at row: Int) -> CGFloat {
+        guard let presenter else { return 100 }
+        let photo = presenter.photos[row]
+        let tableViewWidth = imagesListView.tableView.bounds.size.width
+        let photoWidth = photo.size.width
+        let scale = tableViewWidth / photoWidth * 0.9
+        return ceil(photo.size.height * scale)
     }
 }

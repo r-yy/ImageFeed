@@ -31,7 +31,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        presenter?.prepare(cell: imageListCell, at: indexPath.row)
+        setCell(cell: imageListCell, at: indexPath.row)
 
         return imageListCell
     }

@@ -50,6 +50,8 @@ final class ImagesListCell: UITableViewCell {
 
         return button
     }()
+
+    private var index: Int?
     
     private var subview = GradientBlurView()
 
@@ -86,7 +88,7 @@ final class ImagesListCell: UITableViewCell {
 
     @objc
     private func likeButtonTapped() {
-        presenter?.cellDidTapLike(cell: self) {
+        presenter?.cellDidTapLike(index: index) {
             (result: Result<Bool, Error>) in
             switch result {
             case .success(let success):
@@ -164,9 +166,10 @@ extension ImagesListCell {
         case inactiveLike
     }
 
-    func configCell(date: String, isLiked: Bool) {
+    func configCell(date: String, isLiked: Bool, index: Int) {
 
         dateLabel.text = date
+        self.index = index
 
         let buttonImage = isLiked ? UIImage(
             named: LikeButtonNames.activeLike.rawValue

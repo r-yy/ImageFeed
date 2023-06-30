@@ -8,7 +8,7 @@
 import Foundation
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
-    private let cellDateFormatter = CellDateFormatter()
+    var cellDateFormatter = CellDateFormatter()
 
     weak var view: ImagesListViewControllerProtocol?
     var imagesListService: ImagesListServiceProtocol?
@@ -38,14 +38,15 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
 
     func cellDidTapLike(
-        cell: ImagesListCell,
+        index: Int?,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        guard let indexPath = view?.imagesListView.tableView.indexPath(for: cell),
-              let imagesListService else {
+        guard let imagesListService,
+              let index else {
             return
         }
-        let photo = photos[indexPath.row]
+
+        let photo = photos[index]
 
         imagesListService.changeLike(
             photoID: photo.id, isLiked: photo.isLiked
@@ -60,35 +61,10 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
         }
     }
 
-    func prepare(cell: ImagesListCell, at row: Int) {
-        let date = cellDateFormatter.getFormattedDate(
-            from: photos[row].createdAt
-        )
-        let url = photos[row].smallImageURL
-        let isLiked = photos[row].isLiked
-
-        guard let imageURL = URL(string: url) else {
-            return
-        }
-
-        view?.setCell(
-            cell: cell, imageURL: imageURL, date: date, isLiked: isLiked
-        )
-    }
-
     func shouldUploadNewPage(currentRow: Int) {
         if currentRow == photos.count - 1 {
             fetchImagesList()
         }
-    }
-
-    func getCellHeight(at row: Int) -> CGFloat {
-        guard let view else { return 100 }
-        let photo = photos[row]
-        let tableViewWidth = view.imagesListView.tableView.bounds.size.width
-        let photoWidth = photo.size.width
-        let scale = tableViewWidth / photoWidth * 0.9
-        return ceil(photo.size.height * scale)
     }
 
     func showErrorAlert() {

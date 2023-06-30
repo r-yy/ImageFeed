@@ -25,10 +25,6 @@ extension ImagesListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
-        guard let presenter else {
-            alertPresenter.showErrorAlert(viewController: self)
-            return 100
-        }
-        return presenter.getCellHeight(at: indexPath.row)
+        return getCellHeight(at: indexPath.row)
     }
 }

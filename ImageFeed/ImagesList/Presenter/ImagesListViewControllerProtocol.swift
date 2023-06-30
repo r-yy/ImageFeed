@@ -13,10 +13,5 @@ protocol ImagesListViewControllerProtocol: AnyObject {
 
     func insertRows(at: [Int])
     func showErrorAlert()
-    func setCell(
-        cell: ImagesListCell,
-        imageURL: URL,
-        date: String?,
-        isLiked: Bool
-    )
+    func setCell(cell: ImagesListCell, at row: Int)
 }
