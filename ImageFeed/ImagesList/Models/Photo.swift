@@ -28,7 +28,7 @@ struct Photo: Decodable {
 
     private enum URLsCodingKeys: String, CodingKey {
         case small
-        case full
+        case regular
     }
 
     //MARK: Custom init from decoder
@@ -66,7 +66,7 @@ struct Photo: Decodable {
             String.self, forKey: .small
         )
         largeImageURL = try urlsNestedContainer.decode(
-            String.self, forKey: .full
+            String.self, forKey: .regular
         )
         isLiked = try container.decode(
             Bool.self, forKey: .isLiked

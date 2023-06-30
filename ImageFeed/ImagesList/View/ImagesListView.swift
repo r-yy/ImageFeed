@@ -19,6 +19,7 @@ final class ImagesListView: UIView {
         )
         tableView.showsVerticalScrollIndicator = false
         tableView.backgroundColor = .ypBlack
+        tableView.separatorStyle = .none
         tableView.register(
             ImagesListCell.self,
             forCellReuseIdentifier: ImagesListCell.reuseIdentifier

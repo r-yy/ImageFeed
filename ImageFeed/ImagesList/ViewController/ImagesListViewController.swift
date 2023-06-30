@@ -21,6 +21,8 @@ final class ImagesListViewController: BaseViewController {
     var alertPresenter = AlertPresenter()
     var presenter: ImagesListPresenterProtocol?
 
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+
     override func loadView() {
         super.loadView()
         view = imagesListView
@@ -87,5 +89,9 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
         let photoWidth = photo.size.width
         let scale = tableViewWidth / photoWidth * 0.9
         return ceil(photo.size.height * scale)
+    }
+
+    func generateFeedback() {
+        feedbackGenerator.impactOccurred()
     }
 }

@@ -14,4 +14,5 @@ protocol ImagesListViewControllerProtocol: AnyObject {
     func insertRows(at: [Int])
     func showErrorAlert()
     func setCell(cell: ImagesListCell, at row: Int)
+    func generateFeedback()
 }
